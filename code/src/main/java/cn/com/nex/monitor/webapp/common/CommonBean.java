@@ -2,14 +2,18 @@ package cn.com.nex.monitor.webapp.common;
 
 import lombok.Data;
 
+/**
+ * Bean共通父类。
+ */
 @Data
 public class CommonBean {
-    private Status status = Status.SUCESS;
+    private Status status = Status.SUCCESS;
     private String message;
+
+    public enum Status {
+        SUCCESS,
+        WARNING,
+        ERROR
+    }
 }
 
-enum Status {
-    SUCESS,
-    WARNING,
-    ERROR
-}

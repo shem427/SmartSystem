@@ -11,9 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Web Security配置类。
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
@@ -36,14 +39,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
-                .loginPage("/login").failureUrl("/login?error").successForwardUrl("/index")
+                .loginPage("/login").failureUrl("/login?error")
+                .defaultSuccessUrl("/index", true)
                 .permitAll()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/logout").permitAll()
                 .antMatchers("/js/**").permitAll()
-                .antMatchers("/scripts/**").permitAll()
+                .antMatchers("/img/**").permitAll()
+                .antMatchers("/i18n/**").permitAll()
+                .antMatchers("/script/**").permitAll()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/fonts/**").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
@@ -51,23 +57,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry)
                 .and().and()
-                .logout().logoutSuccessUrl("/login").invalidateHttpSession(true).clearAuthentication(true)
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login").invalidateHttpSession(true).clearAuthentication(true)
                 .and()
                 .httpBasic();
     }
 
     @Bean
-    public SessionRegistry sessionRegistry(){
-        return new SessionRegistryImpl();
+    public SessionRegistry getSessionRegistry(){
+        SessionRegistry sessionRegistry = new SessionRegistryImpl();
+        return sessionRegistry;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new MonitorPasswordEncoder();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(urlUserService).passwordEncoder(passwordEncoder);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

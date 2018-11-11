@@ -37,6 +37,15 @@ $(function() {
             $changePasswordLink.click(changePassword);
             $changePasswordSettingLink.click(changePassword);
 
+            $logoutLink.click(function(e) {
+                e.preventDefault();
+                $.mr.messageBox.confirm($.mr.resource.LOG_OUT_CONFIRM, '', {
+                    yes: function() {
+                        $('#logoutForm').submit();
+                    }
+                });
+            });
+
             // click dashboard link.
             $dashboardLink.trigger('click');
         },

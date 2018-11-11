@@ -2,6 +2,7 @@ package cn.com.nex.monitor.webapp.common;
 
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import cn.com.nex.monitor.webapp.user.dao.UserDao;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,10 +14,18 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 人员登陆Service类
+ */
 @Service
 public class MonitorUserService implements UserDetailsService {
+    /**
+     * DB中ROLE的分隔符
+     */
+    private static final String ROLE_SEPERATOR = ",";
+
     @Autowired
-    private UserDao userDao;
+    protected UserDao userDao;
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
@@ -24,12 +33,26 @@ public class MonitorUserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(userId + " do not exist!");
         }
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.getUserRole()));
-        if (userId.equals("000001")) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ACTUATOR"));
-        }
-        user.setAuthorities(grantedAuthorities);
+
+        user.setAuthorities(getAuthorities(user.getUserRoles()));
         return user;
+    }
+
+    /**
+     * 根据用户Role设置权限。
+     * @param userRoles db中存储的role
+     * @return 用户权限
+     */
+    private List<GrantedAuthority> getAuthorities(String userRoles) {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        if (StringUtils.isEmpty(userRoles)) {
+            return grantedAuthorities;
+        }
+        String[] roles = userRoles.split(ROLE_SEPERATOR);
+        for (String role : roles) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role));
+        }
+
+        return grantedAuthorities;
     }
 }

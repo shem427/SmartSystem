@@ -13,7 +13,7 @@ public class UserDao extends CommonDao<UserBean> {
     private static final String USER_ID = "USER_ID";
     private static final String USER_NAME = "USER_NAME";
     private static final String MAIL_ADDRESS = "MAIL_ADDRESS";
-    private static final String USER_ROLE = "USER_ROLE";
+    private static final String USER_ROLE = "USER_ROLES";
     private static final String PASSWORD = "USER_PASSWORD";
 
     @Override
@@ -22,7 +22,7 @@ public class UserDao extends CommonDao<UserBean> {
         bean.setUserId(rs.getString(USER_ID));
         bean.setName(rs.getString(USER_NAME));
         bean.setMailAddress(rs.getString(MAIL_ADDRESS));
-        bean.setUserRole(rs.getString(USER_ROLE));
+        bean.setUserRoles(rs.getString(USER_ROLE));
         bean.setPassword(rs.getString(PASSWORD));
 
         return bean;
