@@ -16,7 +16,7 @@ $(function() {
                     return;
                 }
                 $.mr.ajax({
-                    url: $.mr.contextPath + 'setting/savePassword',
+                    url: 'setting/savePassword',
                     type: 'post',
                     dataType: 'json',
                     data: {

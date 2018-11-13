@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DAO¹²Í¨¸¸Àà¡£
- * @param <T> BeanÀàĞÍ
+ * DAOå…±é€šçˆ¶ç±»ã€‚
+ * @param <T> Beanç±»å‹
  */
 public abstract class CommonDao<T extends CommonBean> {
     /**
@@ -21,9 +21,9 @@ public abstract class CommonDao<T extends CommonBean> {
     protected JdbcTemplate jdbcTemplate;
 
     /**
-     * ¸ù¾İID»ñÈ¡Bean¶ÔÏó¡£
+     * æ ¹æ®IDè·å–Beanå¯¹è±¡ã€‚
      * @param id id
-     * @return »ñÈ¡µÄBean¶ÔÏó
+     * @return è·å–çš„Beanå¯¹è±¡
      */
     public T get(String id) {
         String sql = "SELECT * FROM " + getTableName() + " WHERE " + idName() + "=?";
@@ -32,8 +32,8 @@ public abstract class CommonDao<T extends CommonBean> {
     }
 
     /**
-     * »ñÈ¡ËùÓĞµÄBean¶ÔÏóList¡£
-     * @return ËùÓĞµÄBean¶ÔÏóList
+     * è·å–æ‰€æœ‰çš„Beanå¯¹è±¡Listã€‚
+     * @return æ‰€æœ‰çš„Beanå¯¹è±¡List
      */
     public List<T> getAll() {
         String sql = "SELECT * FROM " + getTableName();
@@ -43,8 +43,8 @@ public abstract class CommonDao<T extends CommonBean> {
     }
 
     /**
-     * ´ÓResultSetÖĞ³éÈ¡Bean¶ÔÏó¡£
-     * @return Bean¶ÔÏó³éÈ¡lamada¡£
+     * ä»ResultSetä¸­æŠ½å–Beanå¯¹è±¡ã€‚
+     * @return Beanå¯¹è±¡æŠ½å–lamadaã€‚
      */
     protected ResultSetExtractor<T> getSingleExtractor() {
         return rs -> {
@@ -57,8 +57,8 @@ public abstract class CommonDao<T extends CommonBean> {
     }
 
     /**
-     * ´ÓResultSetÖĞ³éÈ¡Bean¶ÔÏó¡£
-     * @return Bean¶ÔÏó³éÈ¡lamada¡£
+     * ä»ResultSetä¸­æŠ½å–Beanå¯¹è±¡ã€‚
+     * @return Beanå¯¹è±¡æŠ½å–lamadaã€‚
      */
     protected ResultSetExtractor<List<T>> getAllExtractor() {
         return rs -> {
@@ -72,28 +72,28 @@ public abstract class CommonDao<T extends CommonBean> {
     }
 
     /**
-     * ´ÓResultSetÖĞ³éÈ¡Bean¶ÔÏó¡£
-     * @param rs ResultSet¶ÔÏó
-     * @return Bean¶ÔÏó
-     * @throws SQLException SQLÀıÍâ
+     * ä»ResultSetä¸­æŠ½å–Beanå¯¹è±¡ã€‚
+     * @param rs ResultSetå¯¹è±¡
+     * @return Beanå¯¹è±¡
+     * @throws SQLException SQLä¾‹å¤–
      */
     protected abstract T convertBean(ResultSet rs) throws SQLException;
 
     /**
-     * »ñÈ¡±íÃû¡£
-     * @return ±íÃû
+     * è·å–è¡¨åã€‚
+     * @return è¡¨å
      */
     protected abstract String getTableName();
 
     /**
-     * »ñÈ¡TABLE IDÁĞÃû
-     * @return TABLE IDÁĞÃû
+     * è·å–TABLE IDåˆ—å
+     * @return TABLE IDåˆ—å
      */
     protected abstract String idName();
 
     /**
-     * ĞÂ½¨Ö®ºó£¬»ñÈ¡²åÈëµÄIDÖµ¡£
-     * @return ²åÈëµÄIDÖµ
+     * æ–°å»ºä¹‹åï¼Œè·å–æ’å…¥çš„IDå€¼ã€‚
+     * @return æ’å…¥çš„IDå€¼
      */
     protected int getLastInsertId() {
         return jdbcTemplate.query("SELECT LAST_INSERT_ID() AS ID", rs -> {

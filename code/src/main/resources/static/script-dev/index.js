@@ -1,4 +1,5 @@
 $(function() {
+    var _self;
     $.mr.index = {
         init: function() {
             // menu link.
@@ -16,21 +17,29 @@ $(function() {
             var $sensorDetail5Link = $('#sensorDetail5Link');
             var $userLink = $('#userLink');
 
+            var menuItems = $('.menuItem');
+
             var changePassword = function(e) {
                 e.preventDefault();
-                $.mr.index.getWrapperPage(contextPath + 'setting/changePassword');
+                menuItems.removeClass('active');
+                $changePasswordSettingLink.addClass('active');
+                _self.getWrapperPage('setting/changePassword');
             };
 
             // dashboard link
             $dashboardLink.click(function(e) {
                 e.preventDefault();
-                $.mr.index.getWrapperPage(contextPath + 'dashboard/index');
+                menuItems.removeClass('active');
+                $dashboardLink.addClass('active');
+                _self.getWrapperPage('dashboard/index');
             });
 
             // user link
             $userLink.click(function(e) {
                 e.preventDefault();
-                $.mr.index.getWrapperPage(contextPath + 'user/index');
+                menuItems.removeClass('active');
+                $userLink.addClass('active');
+                _self.getWrapperPage('user/index');
             });
 
             // change password
@@ -66,5 +75,5 @@ $(function() {
         }
     };
 
-
+    _self = $.mr.index;
 });

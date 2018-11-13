@@ -7,7 +7,7 @@ $(function() {
         init: function() {
             $('#saveUserBtn').click(function() {
                 $.mr.ajax({
-                    url: contextPath + 'user/saveUser',
+                    url: 'user/saveUser',
                     type: 'post',
                     dataType: 'json',
                     data: {

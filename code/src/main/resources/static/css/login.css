@@ -87,13 +87,13 @@ body {
 .login-picture {
     display: inline-block;
     float: left;
-    width: 487px;
-    height: 450px;
+    width: 512px;
+    height: 480px;
     background: transparent url(../img/login-picture.png) 0 0 no-repeat;
 }
 
 #content {
-    border-top: 1px #18C0FF solid;
+    border-top: 1px #18C0FE solid;
 }
 
 #content>.wrapper {}

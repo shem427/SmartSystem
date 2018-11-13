@@ -80,7 +80,7 @@ $(function() {
 
             // get charts' data.
             $.mr.ajax({
-                url: contextPath + 'dashboard/getData',
+                url: 'dashboard/getData',
                 type: 'get',
                 dataType: 'json',
                 success: function(data) {
