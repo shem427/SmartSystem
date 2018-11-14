@@ -6,6 +6,7 @@
 
 body {
     background-color: #f8f8f8;
+	font-family: "微软雅黑";
 }
 
 #wrapper {
@@ -657,3 +658,39 @@ table.dataTable thead .sorting:after {
     color: #fff; /* active text color */
     background-color: #a94442; /* active bg color */
 }
+
+/*------------- Dashboard ST -------------*/
+.hospital-icon {
+    text-align: center;
+	padding: 12px;
+}
+
+.hospital-icon > i {
+	font-size: 7em;
+}
+.hospital-icon:hover {
+    background-color: #AFD9EE;
+	color: #0075B0;
+	cursor: pointer;
+}
+.hospital-icon .hospital-remark {
+	text-align: left;
+}
+.hospital-icon-error {
+    text-align: center;
+	padding: 12px;
+	color: #C7254E;
+	background-color: #204D74;
+}
+.hospital-icon-error:hover {
+	cursor: pointer;
+}
+.hospital-icon-error > i {
+	font-size: 7em;
+}
+.hospital-icon-error .hospital-remark {
+	text-align: left;
+	color: whitesmoke;
+
+}
+/*------------- Dashboard ED -------------*/
