@@ -661,8 +661,10 @@ table.dataTable thead .sorting:after {
 
 /*------------- Dashboard ST -------------*/
 .hospital-icon {
+	background-color: #f7fff9;
     text-align: center;
 	padding: 12px;
+	box-shadow:3px 3px 3px #aaaaaa;
 }
 
 .hospital-icon > i {
@@ -676,21 +678,15 @@ table.dataTable thead .sorting:after {
 .hospital-icon .hospital-remark {
 	text-align: left;
 }
-.hospital-icon-error {
-    text-align: center;
-	padding: 12px;
-	color: #C7254E;
-	background-color: #204D74;
+.hospital-icon.normal {
+	border-top: 5px solid #d6e9c6;
 }
-.hospital-icon-error:hover {
-	cursor: pointer;
+.hospital-icon.error {
+	border-top: 5px solid red;
+	color: red;
 }
-.hospital-icon-error > i {
-	font-size: 7em;
-}
-.hospital-icon-error .hospital-remark {
-	text-align: left;
-	color: whitesmoke;
-
+.hospital-icon.warning {
+	border-top: 5px solid yellow;
+	color: #F5E79E;
 }
 /*------------- Dashboard ED -------------*/
