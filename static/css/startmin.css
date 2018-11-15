@@ -659,6 +659,18 @@ table.dataTable thead .sorting:after {
     background-color: #a94442; /* active bg color */
 }
 
+.panel .panel-heading .panel-icon.pull-right {
+    border-left: 1px solid #AAA;
+    border-right: none;
+    box-shadow: inset 1px 0px 1px #fff;
+	text-align: center;
+    padding-left: 1em;
+	/*padding-right: 1em;*/
+	margin-left: 1em;
+    line-height: 2em;
+    margin-top: -0.25em;
+}
+
 /*------------- Dashboard ST -------------*/
 .hospital-icon {
 	background-color: #f7fff9;
@@ -679,14 +691,15 @@ table.dataTable thead .sorting:after {
 	text-align: left;
 }
 .hospital-icon.normal {
-	border-top: 5px solid #d6e9c6;
+	border: 5px solid #d6e9c6;
+	color: green;
 }
 .hospital-icon.error {
-	border-top: 5px solid red;
+	border: 5px solid #a00000;
 	color: red;
 }
 .hospital-icon.warning {
-	border-top: 5px solid yellow;
+	border: 5px solid yellow;
 	color: #F5E79E;
 }
 /*------------- Dashboard ED -------------*/
