@@ -96,124 +96,423 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">首页</h1>
+                        <h3 class="page-header">首页</h3>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
-                <!-- /.row -->
                 <div class="row">
-                	<div class="col-lg-6 col-md-12">
-                		<div class="panel panel-success">
-                			<div class="panel-heading">
-                                <i class="fa fa-bar-chart fa-fw"></i>&nbsp;紫外线辐射强度不合格率
-                            </div>
-                            <div class="panel-body">
-                                <div id="radiation-chart" style="width:100%;height:250px;"></div>
-                            </div>
-                		</div>
-                	</div>
-                	<div class="col-lg-6 col-md-12">
-                		<div class="panel panel-info">
-                			<div class="panel-heading">
-                                <i class="fa fa-bar-chart fa-fw"></i>&nbsp;温度不合格率
-                            </div>
-                            <div class="panel-body">
-                                <div id="temperature-chart" style="width:100%;height:250px;"></div>
-                            </div>
-                		</div>
-                	</div>
-                	<div class="col-lg-6 col-md-12">
-                		<div class="panel panel-warning">
-                			<div class="panel-heading">
-                                <i class="fa fa-bar-chart fa-fw"></i>&nbsp;湿度不合格率
-                           </div>
-                            <div class="panel-body">
-                                <div id="humidity-chart" style="width:100%;height:250px;"></div>
-                            </div>
-                		</div>
-                	</div>
-                	<div class="col-lg-6 col-md-12">
-                		<div class="panel panel-danger">
-                			<div class="panel-heading">
-                                <i class="fa fa-bar-chart fa-fw"></i>&nbsp;空气质量不合格率
-                            </div>
-                            <div class="panel-body">
-                                <div id="pm25-chart" style="width:100%;height:250px;"></div>
-                            </div>
-                		</div>
-                	</div>
-                </div>
-                <!--<div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-thermometer-half fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">温度：36</div>
-                                        <div>摄氏度</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">查看详细</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-bath fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">湿度：68</div>
-                                        <div>%</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">查看详细</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-				</div>
-				<div class="row">
-					<div class="col-lg-8">
-						<div class="panel panel-default">
-                            <div class="panel-heading">
-                                <i class="fa fa-line-chart fa-fw"></i>紫外线辐射强度
-                            </div>
-                            <div class="panel-body">
-                                <div id="intensity-line-chart" style="width:100%;height:300px;"></div>
-                            </div>
-                        </div>
+					<div class="col-md-12">
+						<div class="panel panel-default" id="hospital">
+							<div class="panel-heading">
+								<i class="fa fa-hospital-o fa-fw"></i>&nbsp;医院状态
+								<span class="panel-icon pull-right">
+									<a href="#" title="刷新医院状态"><i class="fa fa-refresh fa-fw"></i></a>
+								</span>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-hospital-o fa-5x"></i>
+											<div class="caption status-remark">
+												<p>XXXX医院</p>
+												<p>安徽省合肥市XXX路YY号</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-hospital-o fa-5x"></i>
+											<div class="caption status-remark">
+												<p>XXXX医院</p>
+												<p>安徽省合肥市XXX路YY号</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-hospital-o fa-5x"></i>
+											<div class="caption status-remark">
+												<p>XXXX医院</p>
+												<p>安徽省合肥市XXX路YY号</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon error">
+											<i class="fa fa-hospital-o fa-5x"></i>
+											<div class="caption status-remark">
+												<p>XXXX医院</p>
+												<p>安徽省合肥市XXX路YY号</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon warning">
+											<i class="fa fa-hospital-o fa-5x"></i>
+											<div class="caption status-remark">
+												<p>XXXX医院</p>
+												<p>安徽省合肥市XXX路YY号</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon error">
+											<i class="fa fa-hospital-o fa-5x"></i>
+											<div class="caption status-remark">
+												<p>XXXX医院</p>
+												<p>安徽省合肥市XXX路YY号</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon warning">
+											<i class="fa fa-hospital-o fa-5x"></i>
+											<div class="caption status-remark">
+												<p>XXXX医院</p>
+												<p>安徽省合肥市XXX路YY号</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-hospital-o fa-5x"></i>
+											<div class="caption status-remark">
+												<p>XXXX医院</p>
+												<p>安徽省合肥市XXX路YY号</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-hospital-o fa-5x"></i>
+											<div class="caption status-remark">
+												<p>XXXX医院</p>
+												<p>安徽省合肥市XXX路YY号</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-hospital-o fa-5x"></i>
+											<div class="caption status-remark">
+												<p>XXXX医院</p>
+												<p>安徽省合肥市XXX路YY号</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="panel panel-default" id="department">
+							<div class="panel-heading">
+								<i class="fa fa-medkit fa-fw"></i>&nbsp;科室状态
+								<span class="panel-icon pull-right">
+									<a href="#" title="刷新科室状态"><i class="fa fa-refresh fa-fw"></i></a>
+								</span>
+								
+								<span class="panel-icon pull-right">
+									<a href="#" title="返回医院状态" id="backHospital"><i class="fa fa-arrow-up fa-fw"></i></a>
+								</span>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>口腔科</p>
+												<p>病房大楼3层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon error">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon warning">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon error">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon warning">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-medkit fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科</p>
+												<p>病房大楼4层</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="panel panel-default" id="ward">
+							<div class="panel-heading">
+								<i class="fa fa-stethoscope fa-fw"></i>&nbsp;病房状态
+								<span class="panel-icon pull-right">
+									<a href="#" title="刷新病房状态"><i class="fa fa-refresh fa-fw"></i></a>
+								</span>
+								
+								<span class="panel-icon pull-right">
+									<a href="#" title="返回科室状态" id="backMedkit"><i class="fa fa-arrow-up fa-fw"></i></a>
+								</span>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>口腔科病房306</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房412</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房414</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon error">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房416</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon warning">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房417</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon error">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房418</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon warning">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房419</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房420</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房421</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房422</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房423</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房424</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房425</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房426</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房427</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4 col-md-3 col-lg-3">
+										<div class="thumbnail status-icon normal">
+											<i class="fa fa-stethoscope fa-5x"></i>
+											<div class="caption status-remark">
+												<p>普通外科病房428</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="col-lg-4">
-						<div class="panel panel-default">
-                            <div class="panel-heading">
-                                <i class="fa fa-pie-chart fa-fw"></i>分析
-                            </div>
-                            <div class="panel-body">
-                                <div id="intensity-pie-chart" style="width:100%;height:300px;"></div>
-                            </div>
-                        </div>
-					</div>
 				</div>
-            </div>-->
-            
-            <!-- /#page-wrapper -->
+			</div><!-- /#page-wrapper -->
 
         </div>
         <!-- /#wrapper -->
@@ -226,19 +525,42 @@
 
         <!-- Metis Menu Plugin JavaScript -->
         <script src="../js/metisMenu.min.js"></script>
-		
-		<!-- Flot Charts JavaScript -->
-        <script src="../js/flot/excanvas.min.js"></script>
-        <script src="../js/flot/jquery.flot.js"></script>
-        <script src="../js/flot/jquery.flot.pie.js"></script>
-        <script src="../js/flot/jquery.flot.resize.js"></script>
-        <script src="../js/flot/jquery.flot.tooltip.min.js"></script>
-		
-		<!-- dashboard charts -->
-		<script src="../scripts/dashboard.js"></script>
 
         <!-- Custom Theme JavaScript -->
         <script src="../js/startmin.js"></script>
 		
+		<script>
+			$(function() {
+				$('.panel-icon > a').tooltip();
+				$('#department').hide();
+				$('#ward').hide();
+				
+				$('#hospital .status-icon').click(function() {
+					$('#department').show();
+					$('#hospital').hide();
+					$('#ward').hide();
+				});
+				$('#department .status-icon').click(function() {
+					$('#department').hide();
+					$('#hospital').hide();
+					$('#ward').show();
+				});
+				$('#ward .status-icon').click(function() {
+					window.location.href = './charts.html'
+				});
+				$('#backHospital').click(function(e) {
+					e.preventDefault();
+					$('#ward').hide();
+					$('#department').hide();
+					$('#hospital').show();
+				});
+				$('#backMedkit').click(function(e) {
+					e.preventDefault();
+					$('#ward').hide();
+					$('#department').show();
+					$('#hospital').hide();
+				});
+			});
+		</script>
     </body>
 </html>

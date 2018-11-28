@@ -672,33 +672,33 @@ table.dataTable thead .sorting:after {
 }
 
 /*------------- Dashboard ST -------------*/
-.hospital-icon {
+.status-icon {
 	background-color: #f7fff9;
     text-align: center;
 	padding: 12px;
 	box-shadow:3px 3px 3px #aaaaaa;
 }
 
-.hospital-icon > i {
+.status-icon > i {
 	font-size: 7em;
 }
-.hospital-icon:hover {
+.status-icon:hover {
     background-color: #AFD9EE;
 	color: #0075B0;
 	cursor: pointer;
 }
-.hospital-icon .hospital-remark {
+.status-icon .status-remark {
 	text-align: left;
 }
-.hospital-icon.normal {
+.status-icon.normal {
 	border: 5px solid #d6e9c6;
 	color: green;
 }
-.hospital-icon.error {
+.status-icon.error {
 	border: 5px solid #a00000;
 	color: red;
 }
-.hospital-icon.warning {
+.status-icon.warning {
 	border: 5px solid yellow;
 	color: #F5E79E;
 }
