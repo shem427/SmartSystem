@@ -1,20 +1,15 @@
 package cn.com.nex.monitor.webapp.user.controller;
 
 import cn.com.nex.monitor.webapp.common.*;
+import cn.com.nex.monitor.webapp.common.bean.NumericBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import cn.com.nex.monitor.webapp.user.service.UserService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -40,7 +35,7 @@ public class UserController {
                 model.addAttribute("name", userBean.getName());
                 model.addAttribute("mail", userBean.getMailAddress());
             } else {
-                // TODO.
+                throw new UsernameNotFoundException(userId + " do not exist!");
             }
         } else {
             model.addAttribute("id", "");
@@ -65,5 +60,20 @@ public class UserController {
         }
 
         return tableData;
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/deleteUsers")
+    public NumericBean deleteUsers(@RequestBody List<String> userIds) {
+        NumericBean bean = new NumericBean();
+        try {
+            int count = userService.deleteUser(userIds);
+            bean.setNumber(count);
+        } catch (Exception e) {
+            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
+            bean.setStatus(CommonBean.Status.ERROR);
+            bean.setMessage(message);
+        }
+        return bean;
     }
 }

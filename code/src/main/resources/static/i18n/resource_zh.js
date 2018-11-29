@@ -11,6 +11,17 @@ $(function() {
         YES: '是',
         NO: '否',
 
-        LOG_OUT_CONFIRM: '请确认是否注销？'
+        LOGOUT_CONFIRM: '请确认是否注销？',
+        LOGIN_ERROR: '用户登陆发生错误，请确认用户名与密码。如果再次发生错误，请联系管理员。',
+
+        // TABLE
+        // TABLE_NO_SELECTED: '请在表格中选择数据',
+        // TABLE_ONLY_ONE_SELECT: '请在表格中只选择一条数据',
+        // TABLE_DATA_NUMER: '数据处理成功，处理件数='
+
+        USER_NO_SELETION: '请选择人员。',
+        USER_DELETE_CONFIRM: '确定要删除人员？<br/>&nbsp;&nbsp;&nbsp;&nbsp;删除件数=',
+        USER_DELETE_SUCCESS: '删除成功。删除件数=',
+        USER_EDIT_MULTI_SELECT: '编辑时，请只选择一名人员'
     };
 });

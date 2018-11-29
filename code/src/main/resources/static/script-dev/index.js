@@ -48,7 +48,7 @@ $(function() {
 
             $logoutLink.click(function(e) {
                 e.preventDefault();
-                $.mr.messageBox.confirm($.mr.resource.LOG_OUT_CONFIRM, '', {
+                $.mr.messageBox.confirm($.mr.resource.LOGOUT_CONFIRM, '', {
                     yes: function() {
                         $('#logoutForm').submit();
                     }

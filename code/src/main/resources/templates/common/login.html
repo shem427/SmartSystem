@@ -99,5 +99,13 @@
 
         <script th:src="@{/script/common.js}"></script>
         <script th:src="@{/i18n/resource_zh.js}"></script>
+        <script>
+            $(function() {
+                var queryString = window.location.search;
+                if (queryString === '?error') {
+                    $.mr.messageBox.alert($.mr.resource.LOGIN_ERROR);
+                }
+            });
+        </script>
     </body>
 </html>

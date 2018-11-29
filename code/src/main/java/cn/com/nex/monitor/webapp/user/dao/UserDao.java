@@ -89,6 +89,11 @@ public class UserDao extends CommonDao<UserBean> {
         });
     }
 
+    public int deleteUser(String userId) {
+        String sql = "UPDATE `USER` SET `ACTIVE`=false WHERE USER_ID=?";
+        return jdbcTemplate.update(sql, userId);
+    }
+
     private String getWhereForSearch(String policeNoLike, String nameLike, List<String> argList) {
         StringBuilder sbSqlWhere = new StringBuilder();
         sbSqlWhere.append(DBConstant.IS_ACTIVE).append("=true");

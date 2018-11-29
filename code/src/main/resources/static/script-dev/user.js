@@ -16,10 +16,13 @@ $(function() {
                 }, {
                     field: 'name',
                     title: '姓名'
+                }, {
+                    field: 'mailAddress',
+                    title: '邮件'
                 }],
                 queryParams: function(params) {
-                    var userIdLike = $('#userId').val();
-                    var nameLike = $('#userName').val();
+                    var userIdLike = $('#userIdLike').val();
+                    var nameLike = $('#userNameLike').val();
                     return {
                         limit: params.limit,
                         offset: params.offset,
@@ -42,18 +45,13 @@ $(function() {
             });
         },
         showUserModal: function(userId) {
-            var url = 'user/userModal';
+            var data;
             if (userId) {
-                url += ('?userId=' + userId);
+                data = {userId: userId};
             }
-            $.mr.ajax({
-                url: url,
-                type: 'get',
-                dataType: 'html',
-                success: function(html) {
-                    $('body').append(html);
-                    $('#userModal').modal({show: true});
-                }
+            $.mr.modal.create({
+                url: 'user/userModal',
+                data: data
             });
         },
         init: function() {
@@ -62,6 +60,50 @@ $(function() {
 
             $('#createUserBtn').click(function() {
                 _self.showUserModal();
+            });
+            $('#updateUserBtn').click(function() {
+                var selections = $.mr.table.getSelections('#userTable');
+                var userId;
+                if (selections.length === 0) {
+                    $.mr.messageBox.alert($.mr.resource.USER_NO_SELETION);
+                } else if (selections.length > 1) {
+                    $.mr.messageBox.alert($.mr.resource.USER_EDIT_MULTI_SELECT);
+                } else {
+                    userId = selections[0].userId;
+                    if (userId) {
+                        _self.showUserModal(userId);
+                    }
+                }
+            });
+            $('#deleteUserBtn').click(function() {
+                var selections = $.mr.table.getSelections('#userTable');
+                var userIdArray = [];
+                if (selections.length === 0) {
+                    $.mr.messageBox.alert($.mr.resource.USER_NO_SELETION);
+                    return;
+                }
+                $.each(selections, function(idx, item) {
+                    userIdArray.push(item.userId);
+                });
+                $.mr.messageBox.confirm($.mr.resource.USER_DELETE_CONFIRM + userIdArray.length, '', {
+                    yes: function() {
+                        $.mr.ajax({
+                            url: 'user/deleteUsers',
+                            type: 'post',
+                            data: JSON.stringify(userIdArray),
+                            contentType: 'application/json',
+                            success: function (data) {
+                                $.mr.table.refresh({
+                                    selector: '#userTable',
+                                    params: {
+                                        silent: true
+                                    }
+                                });
+                                $.mr.messageBox.info($.mr.resource.USER_DELETE_SUCCESS + data.number);
+                            }
+                        });
+                    }
+                });
             });
         }
     };

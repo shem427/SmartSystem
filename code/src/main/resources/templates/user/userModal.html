@@ -5,8 +5,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    用户信息
+                <h4 class="modal-title" id="userModalLabel" th:if="${id == ''}">
+                    添加人员
+                </h4>
+                <h4 class="modal-title" id="userModalLabel" th:if="${id != ''}">
+                    编辑人员
                 </h4>
             </div>
             <div class="modal-body">
@@ -19,9 +22,13 @@
                         <label for="userName">用户名</label>
                         <input type="text" class="form-control" id="userName" placeholder="请输入用户名" th:value="${name}" />
                     </div>
+                    <div class="form-group" th:if="${id == ''}">
+                        <label for="userPassword">用户密码</label>
+                        <input type="password" class="form-control" id="userPassword" placeholder="请输入密码" />
+                    </div>
                     <div class="form-group">
-                        <label for="eMail">e-Mail</label>
-                        <input type="text" class="form-control" id="eMail" placeholder="请输入e-Mail" th:value="${mail}" />
+                        <label for="eMail">邮件</label>
+                        <input type="text" class="form-control" id="eMail" placeholder="请输入邮件地址" th:value="${mail}" />
                     </div>
                 </form>
             </div>
