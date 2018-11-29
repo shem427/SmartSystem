@@ -1,8 +1,9 @@
 $(function() {
     $.mr.user.modal = {
-        unshwoUserModel: function() {
-            $('#userModal').modal('hide');
-            $('#userModal').remove();
+        unshowUserModel: function() {
+            $.mr.modal.destroy({
+                selector: '#userModal'
+            })
         },
         init: function() {
             $('#saveUserBtn').click(function() {
@@ -13,18 +14,24 @@ $(function() {
                     data: {
                         userId: $('#userID').val(),
                         name: $('#userName').val(),
+                        password: $('#userPassword').val(),
                         mailAddress: $('#eMail').val(),
                         isCreate: $('#isCreate').val()
                     },
                     success: function(data) {
-                        $.mr.user.modal.unshwoUserModel();
-                        $.mr.user.getUserData();
+                        $.mr.user.modal.unshowUserModel();
+                        $.mr.table.refresh({
+                            selector: '#userTable',
+                            params: {
+                                silent: true
+                            }
+                        });
                     }
                 });
             });
 
             $('#closeUserBtn').click(function() {
-                $.mr.user.modal.unshwoUserModel();
+                $.mr.user.modal.unshowUserModel();
             });
         }
     };

@@ -9,7 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -34,6 +37,7 @@ public class UserController {
                 model.addAttribute("id", userBean.getUserId());
                 model.addAttribute("name", userBean.getName());
                 model.addAttribute("mail", userBean.getMailAddress());
+                model.addAttribute("roles", getUserRoleList(userBean.getUserRoles()));
             } else {
                 throw new UsernameNotFoundException(userId + " do not exist!");
             }
@@ -41,10 +45,11 @@ public class UserController {
             model.addAttribute("id", "");
             model.addAttribute("name", "");
             model.addAttribute("mail", "");
+            model.addAttribute("roles", new ArrayList<String>());
             model.addAttribute("isCreate", true);
         }
 
-        return "user/userModal";
+        return "user/userUpdateModal";
     }
 
     @ResponseBody
@@ -75,5 +80,31 @@ public class UserController {
             bean.setMessage(message);
         }
         return bean;
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/saveUser")
+    public CommonBean saveUser(UserBean user, boolean isCreate) {
+        CommonBean bean = new CommonBean();
+        try {
+            if (isCreate) {
+                userService.addUser(user);
+            } else {
+                userService.updateUser(user);
+            }
+        } catch (Exception e) {
+            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
+            bean.setStatus(CommonBean.Status.ERROR);
+            bean.setMessage(message);
+        }
+        return bean;
+    }
+
+    private List<String> getUserRoleList(String roleStr) {
+        if (StringUtils.isEmpty(roleStr)) {
+            return new ArrayList<>();
+        } else {
+            return Arrays.asList(roleStr.split(MonitorConstant.ROLE_SEPERATOR));
+        }
     }
 }

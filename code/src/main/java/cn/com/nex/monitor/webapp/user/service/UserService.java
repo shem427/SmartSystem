@@ -46,4 +46,12 @@ public class UserService {
         }
         return count;
     }
+
+    public int addUser(UserBean user) {
+        return userDao.addUser(user);
+    }
+
+    public int updateUser(UserBean user) {
+        return userDao.updateUser(user);
+    }
 }

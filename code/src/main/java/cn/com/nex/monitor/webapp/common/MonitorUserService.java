@@ -19,10 +19,6 @@ import java.util.List;
  */
 @Service
 public class MonitorUserService implements UserDetailsService {
-    /**
-     * DB中ROLE的分隔符
-     */
-    private static final String ROLE_SEPERATOR = ",";
 
     @Autowired
     protected UserDao userDao;
@@ -48,7 +44,7 @@ public class MonitorUserService implements UserDetailsService {
         if (StringUtils.isEmpty(userRoles)) {
             return grantedAuthorities;
         }
-        String[] roles = userRoles.split(ROLE_SEPERATOR);
+        String[] roles = userRoles.split(MonitorConstant.ROLE_SEPERATOR);
         for (String role : roles) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role));
         }

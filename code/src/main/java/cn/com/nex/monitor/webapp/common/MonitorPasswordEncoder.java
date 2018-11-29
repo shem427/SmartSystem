@@ -1,10 +1,12 @@
 package cn.com.nex.monitor.webapp.common;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 /**
  * 密码加密类
  */
+@Component
 public class MonitorPasswordEncoder implements PasswordEncoder {
 
     /**

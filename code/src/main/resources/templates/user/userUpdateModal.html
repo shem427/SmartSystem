@@ -30,6 +30,14 @@
                         <label for="eMail">邮件</label>
                         <input type="text" class="form-control" id="eMail" placeholder="请输入邮件地址" th:value="${mail}" />
                     </div>
+                    <div class="form-group">
+                        <label for="roles">权限</label>
+                        <select class="form-control" id="roles" multiple="multiple">
+                            <th:block th:each="role : ${roles}">
+                                <option th:value="${role}" th:text="${role}"></option>
+                            </th:block>
+                        </select>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -40,7 +48,7 @@
     </div><!-- /.modal -->
     <input type="hidden" th:value="${isCreate}" id="isCreate" />
 
-    <script th:src="@{/script/userModal.js}"></script>
+    <script th:src="@{/script/userUpdateModal.js}"></script>
     <script>
         $(function() {$.mr.user.modal.init();});
     </script>

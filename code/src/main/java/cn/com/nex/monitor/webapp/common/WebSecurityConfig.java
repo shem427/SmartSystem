@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MonitorUserService urlUserService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private MonitorPasswordEncoder passwordEncoder;
 
     @Bean
     @Override
@@ -68,11 +68,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SessionRegistry getSessionRegistry(){
         SessionRegistry sessionRegistry = new SessionRegistryImpl();
         return sessionRegistry;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new MonitorPasswordEncoder();
     }
 
     @Override

@@ -2,8 +2,10 @@ package cn.com.nex.monitor.webapp.user.dao;
 
 import cn.com.nex.monitor.webapp.common.CommonDao;
 import cn.com.nex.monitor.webapp.common.DBConstant;
+import cn.com.nex.monitor.webapp.common.MonitorPasswordEncoder;
 import cn.com.nex.monitor.webapp.common.SearchParam;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
@@ -20,6 +22,9 @@ public class UserDao extends CommonDao<UserBean> {
     private static final String MAIL_ADDRESS = "MAIL_ADDRESS";
     private static final String USER_ROLE = "USER_ROLES";
     private static final String PASSWORD = "USER_PASSWORD";
+
+    @Autowired
+    private MonitorPasswordEncoder passwordEncoder;
 
     @Override
     protected UserBean convertBean(ResultSet rs) throws SQLException {
@@ -92,6 +97,18 @@ public class UserDao extends CommonDao<UserBean> {
     public int deleteUser(String userId) {
         String sql = "UPDATE `USER` SET `ACTIVE`=false WHERE USER_ID=?";
         return jdbcTemplate.update(sql, userId);
+    }
+
+    public int addUser(UserBean user) {
+        String sql = "INSERT INTO USER(`USER_ID`,`USER_NAME`,`MAIL_ADDRESS`,`USER_PASSWORD`,`USER_ROLES`) VALUES (?,?,?,?,?)";
+        return jdbcTemplate.update(sql, user.getUserId(), user.getName(),
+                user.getMailAddress(), passwordEncoder.encode(user.getPassword()),
+                user.getUserRoles());
+    }
+
+    public int updateUser(UserBean user) {
+        String sql = "UPDATE USER SET `USER_NAME`=?, `MAIL_ADDRESS`=?, `USER_ROLES`=? WHERE `USER_ID`=?";
+        return jdbcTemplate.update(sql, user.getName(), user.getMailAddress(), user.getUserRoles(), user.getUserId());
     }
 
     private String getWhereForSearch(String policeNoLike, String nameLike, List<String> argList) {
