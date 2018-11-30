@@ -20,6 +20,7 @@ public class UserDao extends CommonDao<UserBean> {
     private static final String USER_ID = "USER_ID";
     private static final String USER_NAME = "USER_NAME";
     private static final String MAIL_ADDRESS = "MAIL_ADDRESS";
+    private static final String PHONE_NUMBER = "PHONE_NUMBER";
     private static final String USER_ROLE = "USER_ROLES";
     private static final String PASSWORD = "USER_PASSWORD";
 
@@ -33,6 +34,7 @@ public class UserDao extends CommonDao<UserBean> {
         bean.setName(rs.getString(USER_NAME));
         bean.setMailAddress(rs.getString(MAIL_ADDRESS));
         bean.setUserRoles(rs.getString(USER_ROLE));
+        bean.setPhoneNumber(rs.getString(PHONE_NUMBER));
         bean.setPassword(rs.getString(PASSWORD));
 
         return bean;
@@ -100,15 +102,16 @@ public class UserDao extends CommonDao<UserBean> {
     }
 
     public int addUser(UserBean user) {
-        String sql = "INSERT INTO USER(`USER_ID`,`USER_NAME`,`MAIL_ADDRESS`,`USER_PASSWORD`,`USER_ROLES`) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO USER(`USER_ID`,`USER_NAME`,`MAIL_ADDRESS`,`PHONE_NUMBER`,`USER_PASSWORD`,`USER_ROLES`, `ACTIVE`) VALUES (?,?,?,?,?,?, true)";
         return jdbcTemplate.update(sql, user.getUserId(), user.getName(),
-                user.getMailAddress(), passwordEncoder.encode(user.getPassword()),
+                user.getMailAddress(), user.getPhoneNumber(),
+                passwordEncoder.encode(user.getPassword()),
                 user.getUserRoles());
     }
 
     public int updateUser(UserBean user) {
-        String sql = "UPDATE USER SET `USER_NAME`=?, `MAIL_ADDRESS`=?, `USER_ROLES`=? WHERE `USER_ID`=?";
-        return jdbcTemplate.update(sql, user.getName(), user.getMailAddress(), user.getUserRoles(), user.getUserId());
+        String sql = "UPDATE USER SET `USER_NAME`=?, `MAIL_ADDRESS`=?, `USER_ROLES`=?, `PHONE_NUMBER`=? WHERE `USER_ID`=?";
+        return jdbcTemplate.update(sql, user.getName(), user.getMailAddress(), user.getUserRoles(), user.getPhoneNumber(), user.getUserId());
     }
 
     private String getWhereForSearch(String policeNoLike, String nameLike, List<String> argList) {

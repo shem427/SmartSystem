@@ -4,12 +4,13 @@ import cn.com.nex.monitor.webapp.common.*;
 import cn.com.nex.monitor.webapp.common.bean.NumericBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import cn.com.nex.monitor.webapp.user.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +24,9 @@ public class UserController {
     @Autowired
     private MessageService messageService;
 
+    @Value("${cn.com.nex.monitor.roles}")
+    private String allRoles;
+
     @GetMapping(value = "/index")
     public String page() {
         return "user/page";
@@ -30,14 +34,17 @@ public class UserController {
 
     @GetMapping(value = "/userModal")
     public String userModal(Model model, String userId) {
+        model.addAttribute("allRoles", getUserRoleList(allRoles));
         if (userId != null) {
             model.addAttribute("isCreate", false);
+            model.addAttribute("isSelf", MonitorUtil.getUserFromSecurity().getUserId().equals(userId));
             UserBean userBean = userService.getUserById(userId);
             if (userBean != null) {
                 model.addAttribute("id", userBean.getUserId());
                 model.addAttribute("name", userBean.getName());
                 model.addAttribute("mail", userBean.getMailAddress());
-                model.addAttribute("roles", getUserRoleList(userBean.getUserRoles()));
+                model.addAttribute("phone", userBean.getPhoneNumber());
+                model.addAttribute("userRoles", getUserRoleList(userBean.getUserRoles()));
             } else {
                 throw new UsernameNotFoundException(userId + " do not exist!");
             }
@@ -45,7 +52,8 @@ public class UserController {
             model.addAttribute("id", "");
             model.addAttribute("name", "");
             model.addAttribute("mail", "");
-            model.addAttribute("roles", new ArrayList<String>());
+            model.addAttribute("phone", "");
+            model.addAttribute("userRoles", new ArrayList<String>());
             model.addAttribute("isCreate", true);
         }
 

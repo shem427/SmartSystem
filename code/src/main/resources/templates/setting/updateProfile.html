@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="page-header">修改个人资料</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <form role="form" data-toggle="validator" id="updateProfileForm">
+            <div class="form-group">
+                <label for="userId">用戶ID</label>
+                <input type="text" class="form-control" id="userId" name="policeNumber"
+                       th:value="${user.userId}" maxlength="8" readonly="readonly" />
+            </div>
+            <div class="form-group">
+                <label for="userName">姓名</label>
+                <input type="text" class="form-control" id="userName" name="userName"
+                       placeholder="请输入用户名" th:value="${user.name}" maxlength="8" />
+            </div>
+            <div class="form-group">
+                <label for="phone">电话号码</label>
+                <input type="text" class="form-control" id="phone" name="phone"
+                       placeholder="请输入电话号码" th:value="${user.phoneNumber}" maxlength="16" />
+            </div>
+            <div class="form-group">
+                <label for="mail">邮件</label>
+                <input type="text" class="form-control" id="mail"
+                       placeholder="请输入邮件地址" th:value="${user.mailAddress}" maxlength="50" />
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-default" id="btnReset">重置</button>
+                <button type="button" class="btn btn-primary" id="btnUpdateProfile">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script th:src="@{/script/setting.js}"></script>
+<script>
+    $(function() {
+        $.mr.setting.updateProfile.init();
+    });
+</script>

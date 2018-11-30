@@ -22,6 +22,16 @@ $(function() {
         USER_NO_SELETION: '请选择人员。',
         USER_DELETE_CONFIRM: '确定要删除人员？<br/>&nbsp;&nbsp;&nbsp;&nbsp;删除件数=',
         USER_DELETE_SUCCESS: '删除成功。删除件数=',
-        USER_EDIT_MULTI_SELECT: '编辑时，请只选择一名人员'
+        USER_EDIT_MULTI_SELECT: '编辑时，请只选择一名人员',
+
+        NEW_PASSWORD_NOT_MATCH: '两次输入的新密码不一致，请重新输入',
+        OLD_NEW_PASSWORD_SAME: '新密码与旧密码相同，请输入与旧密码不同的新密码',
+        CHANGE_PASSWORD_SUCCESS: '密码修改成功',
+
+        UPDATE_PROFILE_SUCCESS: '账号信息更新成功',
+
+        VALIDATION_MSG_NOT_EMPTY: '不能为空！',
+        VALIDATION_MSG_NUMERIC: '只能输入数字！',
+
     };
 });

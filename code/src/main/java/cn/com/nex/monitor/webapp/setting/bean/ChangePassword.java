@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ChangePasswordBean extends CommonBean {
+public class ChangePassword extends CommonBean {
     private String oldPassword;
     private String newPassword;
 }

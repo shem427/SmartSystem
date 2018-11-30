@@ -18,6 +18,7 @@ public class UserBean extends CommonBean implements UserDetails {
     private String name;
     private String mailAddress;
     private String userRoles;
+    private String phoneNumber;
 
     private List<? extends GrantedAuthority> authorities;
     @JsonIgnore

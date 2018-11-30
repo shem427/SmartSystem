@@ -25,6 +25,12 @@ $(function() {
                 $changePasswordSettingLink.addClass('active');
                 _self.getWrapperPage('setting/changePassword');
             };
+            var updateProfile = function(e) {
+                e.preventDefault();
+                menuItems.removeClass('active');
+                $updateProfileSettingLink.addClass('active');
+                _self.getWrapperPage('setting/updateProfile');
+            };
 
             // dashboard link
             $dashboardLink.click(function(e) {
@@ -41,6 +47,10 @@ $(function() {
                 $userLink.addClass('active');
                 _self.getWrapperPage('user/index');
             });
+
+            // update profile
+            $updateProfileLink.click(updateProfile);
+            $updateProfileSettingLink.click(updateProfile);
 
             // change password
             $changePasswordLink.click(changePassword);

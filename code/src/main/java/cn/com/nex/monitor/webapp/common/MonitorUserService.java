@@ -46,7 +46,7 @@ public class MonitorUserService implements UserDetailsService {
         }
         String[] roles = userRoles.split(MonitorConstant.ROLE_SEPERATOR);
         for (String role : roles) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role));
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
         }
 
         return grantedAuthorities;
