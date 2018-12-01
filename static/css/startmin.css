@@ -671,6 +671,14 @@ table.dataTable thead .sorting:after {
     margin-top: -0.25em;
 }
 
+.logo {
+	float: left;
+	min-width: 120px;
+	padding-left: 120px;
+	margin-left: 10px;
+	background: url(../img/logo.png) no-repeat left;
+}
+
 /*------------- Dashboard ST -------------*/
 .status-icon {
 	background-color: #f7fff9;
