@@ -3,6 +3,63 @@ $(function() {
     $.mr.setting = {
         changePassword: {
             init: function() {
+                var form = $('#changePasswordForm');
+                // Validation
+                form.bootstrapValidator({
+                    message: 'value is not valid',
+                    live: 'disabled',
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        oldPassword: {
+                            validators: {
+                                notEmpty: {
+                                    message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                                },
+                                stringLength: {
+                                    message: $.mr.resource.PASSWORD_LENGTH_NOT_VALID,
+                                    min: 6,
+                                    max: 32
+                                }
+                            }
+                        },
+                        newPassword: {
+                            validators: {
+                                notEmpty: {
+                                    message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                                },
+                                different: {
+                                    field: 'oldPassword',
+                                    message: $.mr.resource.OLD_NEW_PASSWORD_SAME
+                                },
+                                stringLength: {
+                                    message: $.mr.resource.PASSWORD_LENGTH_NOT_VALID,
+                                    min: 6,
+                                    max: 32
+                                }
+                            }
+                        },
+                        newPasswordConfirm: {
+                            validators: {
+                                notEmpty: {
+                                    message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                                },
+                                identical: {
+                                    field: 'newPassword',
+                                    message: $.mr.resource.NEW_PASSWORD_NOT_MATCH
+                                },
+                                stringLength: {
+                                    message: $.mr.resource.PASSWORD_LENGTH_NOT_VALID,
+                                    min: 6,
+                                    max: 32
+                                }
+                            }
+                        }
+                    }
+                });
                 $('#savePasswordBtn').click(_self.changePassword._changePassword);
             },
             _changePassword: function() {
@@ -10,7 +67,7 @@ $(function() {
                 var newPassword = $('#newPassword');
                 var newPasswordConfirm = $('#newPasswordConfirm');
 
-                if (_self.changePassword._validatePassword(oldPassword, newPassword, newPasswordConfirm)) {
+                if (_self.changePassword._validatePassword()) {
                     $.mr.ajax({
                         url: 'setting/changePassword',
                         type: 'post',
@@ -28,22 +85,10 @@ $(function() {
                     });
                 }
             },
-            _validatePassword: function(oldPassword, newPassword, newPasswordConfirm) {
-                if (newPassword.val() !== newPasswordConfirm.val()) {
-                    // 新密码与新密码确认必须一致。
-                    $.mr.messageBox.alert($.mr.resource.NEW_PASSWORD_NOT_MATCH, '', function() {
-                        oldPassword.val('');
-                        newPassword.val('');
-                        newPasswordConfirm.val('');
-                    });
-                    return false;
-                } else if (oldPassword.val() === newPassword.val()) {
-                    // 新密码与旧密码必须不一致。
-                    $.mr.messageBox.alert($.mr.resource.OLD_NEW_PASSWORD_SAME, '', function() {
-                        oldPassword.val('');
-                        newPassword.val('');
-                        newPasswordConfirm.val('');
-                    });
+            _validatePassword: function() {
+                var form = $("#changePasswordForm");
+                form.bootstrapValidator('validate');
+                if (!form.data('bootstrapValidator').isValid()) {
                     return false;
                 }
                 return true;

@@ -18,4 +18,6 @@ public class MonitorConstant {
     public static final String LOG_ERROR = "mr.server.error";
 
     public static final String CONFIG_DEFAULT_PASSWORD = "mr.default.password";
+
+    public static final String CAN_NOT_DELETE_SELF = "mr.cannot.delete.self";
 }

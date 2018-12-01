@@ -82,18 +82,18 @@ public class SettingController {
     @ResponseBody
     public CommonBean updateProfile(UserBean profile) {
         CommonBean bean = new CommonBean();
-//        try {
-//            settingService.updateProfile(profile);
-//            UserBean user = MonitorUtil.getUserFromSecurity();
-//            user.setName(profile.getName());
-//            user.setPoliceNumber(profile.getPoliceNumber());
-//            user.setPhoneNumber(profile.getPhoneNumber());
-//        } catch (Exception e) {
-//            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
-//            LOG.error(message, e);
-//            bean.setStatus(CommonBean.Status.ERROR);
-//            bean.setMessage(message);
-//        }
+        try {
+            settingService.updateProfile(profile);
+            UserBean user = MonitorUtil.getUserFromSecurity();
+            user.setMailAddress(profile.getMailAddress());
+            user.setName(profile.getName());
+            user.setPhoneNumber(profile.getPhoneNumber());
+        } catch (Exception e) {
+            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
+            LOG.error(message, e);
+            bean.setStatus(CommonBean.Status.ERROR);
+            bean.setMessage(message);
+        }
 
         return bean;
     }

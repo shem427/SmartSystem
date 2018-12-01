@@ -5,6 +5,8 @@ import cn.com.nex.monitor.webapp.common.bean.NumericBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import cn.com.nex.monitor.webapp.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,13 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
+    /**
+     * LOG
+     */
+    private static Logger LOG = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
     @Autowired
@@ -34,7 +38,7 @@ public class UserController {
 
     @GetMapping(value = "/userModal")
     public String userModal(Model model, String userId) {
-        model.addAttribute("allRoles", getUserRoleList(allRoles));
+        model.addAttribute("allRoles", getUserRoleMap());
         if (userId != null) {
             model.addAttribute("isCreate", false);
             model.addAttribute("isSelf", MonitorUtil.getUserFromSecurity().getUserId().equals(userId));
@@ -70,6 +74,7 @@ public class UserController {
             String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
             tableData.setStatus(CommonBean.Status.ERROR);
             tableData.setMessage(message);
+            LOG.error(message, e);
         }
 
         return tableData;
@@ -79,6 +84,15 @@ public class UserController {
     @PostMapping(value = "/deleteUsers")
     public NumericBean deleteUsers(@RequestBody List<String> userIds) {
         NumericBean bean = new NumericBean();
+        UserBean self = MonitorUtil.getUserFromSecurity();
+        if (userIds.contains(self.getUserId())) {
+            String message = messageService.getMessage(MonitorConstant.CAN_NOT_DELETE_SELF);
+            bean.setStatus(CommonBean.Status.WARNING);
+            bean.setMessage(message);
+            LOG.warn(message);
+            return bean;
+        }
+
         try {
             int count = userService.deleteUser(userIds);
             bean.setNumber(count);
@@ -86,6 +100,7 @@ public class UserController {
             String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
             bean.setStatus(CommonBean.Status.ERROR);
             bean.setMessage(message);
+            LOG.error(message, e);
         }
         return bean;
     }
@@ -99,11 +114,19 @@ public class UserController {
                 userService.addUser(user);
             } else {
                 userService.updateUser(user);
+                UserBean self = MonitorUtil.getUserFromSecurity();
+                if (user.getUserId().equals(self.getUserId())) {
+                    self.setMailAddress(user.getMailAddress());
+                    self.setPhoneNumber(user.getPhoneNumber());
+                    self.setName(user.getName());
+                    self.setUserRoles(user.getUserRoles());
+                }
             }
         } catch (Exception e) {
             String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
             bean.setStatus(CommonBean.Status.ERROR);
             bean.setMessage(message);
+            LOG.error(message, e);
         }
         return bean;
     }
@@ -114,5 +137,17 @@ public class UserController {
         } else {
             return Arrays.asList(roleStr.split(MonitorConstant.ROLE_SEPERATOR));
         }
+    }
+
+    private Map<String, String> getUserRoleMap() {
+        String[] allRoleIdArray = allRoles.split(MonitorConstant.ROLE_SEPERATOR);
+        Map<String, String> roleMap = new HashMap<>();
+
+        for (String role : allRoleIdArray) {
+            String code = "mr.role." + role;
+            roleMap.put(role, messageService.getMessage(code));
+        }
+
+        return roleMap;
     }
 }

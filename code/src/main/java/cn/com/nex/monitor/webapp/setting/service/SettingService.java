@@ -2,6 +2,7 @@ package cn.com.nex.monitor.webapp.setting.service;
 
 import cn.com.nex.monitor.webapp.common.MonitorPasswordEncoder;
 import cn.com.nex.monitor.webapp.setting.dao.SettingDao;
+import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,9 @@ public class SettingService {
         settingDao.changePassword(userId, encryptPassword);
 
         return encryptPassword;
+    }
+
+    public int updateProfile(UserBean user) {
+        return settingDao.updateProfile(user);
     }
 }

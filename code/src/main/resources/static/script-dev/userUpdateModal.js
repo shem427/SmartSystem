@@ -7,9 +7,80 @@ $(function() {
             })
         },
         init: function() {
+            var form = $('#userModalForm');
+            // Validation
+            form.bootstrapValidator({
+                message: 'value is not valid',
+                live: 'disabled',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    userID: {
+                        validators: {
+                            regexp: {
+                                regexp: /^[0-9a-zA-Z]+$/i,
+                                message: $.mr.resource.USER_ID_VALID
+                            },
+                            callback: {
+                                message: $.mr.resource.USER_ID_LENGTH,
+                                callback: function(value) {
+                                    return value.length === 6;
+                                }
+                            }
+                        }
+                    },
+                    userName: {
+                        validators: {
+                            notEmpty: {
+                                message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                            }
+                        }
+                    },
+                    userPassword: {
+                        validators: {
+                            notEmpty: {
+                                message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                            },
+                            stringLength: {
+                                message: $.mr.resource.PASSWORD_LENGTH_NOT_VALID,
+                                min: 6,
+                                max: 32
+                            }
+                        }
+                    },
+                    phoneNumber: {
+                        validators: {
+                            notEmpty: {
+                                message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                            },
+                            digits: {
+                                message: $.mr.resource.VALIDATION_MSG_DIGIT
+                            }
+                        }
+                    },
+                    mailAddress: {
+                        validators: {
+                            notEmpty: {
+                                message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                            },
+                            emailAddress: {
+                                message: $.mr.resource.VALIDATION_MSG_MAIL_ADDRESS
+                            }
+                        }
+                    }
+                }
+            });
             $('#saveUserBtn').click(function() {
                 var selectedRoles = $('#roles').find('option:selected');
                 var roleArray = [];
+                var form = $('#userModalForm');
+                form.bootstrapValidator('validate');
+                if (!form.data('bootstrapValidator').isValid()) {
+                    return;
+                }
                 selectedRoles.each(function(idx, item) {
                     roleArray.push($(item).val());
                 });

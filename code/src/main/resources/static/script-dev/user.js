@@ -17,6 +17,9 @@ $(function() {
                     field: 'name',
                     title: '姓名'
                 }, {
+                    field: 'phoneNumber',
+                    title: '电话号码'
+                }, {
                     field: 'mailAddress',
                     title: '邮件'
                 }],

@@ -4,6 +4,7 @@ html {
 }
 body {
     background-color: #f8f8f8;
+    font-family: "Î¢ÈíÑÅºÚ";
 }
 
 #wrapper {
@@ -736,4 +737,12 @@ div.fixed-table-toolbar{
 
 div.flot-area {
     height: 200px;
+}
+
+.logo {
+	float: left;
+	min-width: 120px;
+	padding-left: 120px;
+	margin-left: 10px;
+	background: url(../img/logo.png) no-repeat left;
 }

@@ -1,11 +1,9 @@
 package cn.com.nex.monitor.webapp.setting.dao;
 
 import cn.com.nex.monitor.webapp.common.DBConstant;
-import cn.com.nex.monitor.webapp.common.MonitorPasswordEncoder;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,12 +30,11 @@ public class SettingDao {
     }
 
     public int updateProfile(UserBean profile) {
-        String sql = "UPDATE `USER` SET `POLICE_NUMBER`=?,`USER_NAME`=?,`PHONE_NUMBER`=? WHERE `USER_ID`=?";
-//        return jdbcTemplate.update(sql,
-//                profile.getPoliceNumber(),
-//                profile.getName(),
-//                profile.getPhoneNumber(),
-//                profile.getUserId());
-        return 0;
+        String sql = "UPDATE `USER` SET `USER_NAME`=?,`MAIL_ADDRESS`=?,`PHONE_NUMBER`=? WHERE `USER_ID`=?";
+        return jdbcTemplate.update(sql,
+                profile.getName(),
+                profile.getMailAddress(),
+                profile.getPhoneNumber(),
+                profile.getUserId());
     }
 }
