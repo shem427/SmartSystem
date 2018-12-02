@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
- * Web MVCµƒ≈‰÷√¿‡°£
+ * Web MVC
  */
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
