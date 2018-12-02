@@ -126,7 +126,7 @@ public class UnitController {
 
     @GetMapping(value = "getManagers")
     @ResponseBody
-    public List<UserBean> getDeptManagers(String unitId) {
+    public List<UserBean> getUnitManagers(String unitId) {
         List<UserBean> managerList = unitService.getUnitManagers(unitId);
         return managerList;
     }

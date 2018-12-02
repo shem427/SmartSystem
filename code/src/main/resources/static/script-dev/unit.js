@@ -1,7 +1,7 @@
 $(function() {
     var self;
     $.mr.unit = {
-        deptTree: null,
+        unitTree: null,
         // ------------------------------------- 组织管理页面 开始-------------------------------------------------
         /**
          * 组织页面的初始化
@@ -17,8 +17,8 @@ $(function() {
          * @private
          */
         _initTree: function() {
-            self.deptTree = $.mr.tree.create({
-                selector: '#deptTree',
+            self.unitTree = $.mr.tree.create({
+                selector: '#unitTree',
                 url: 'unit/subUnit',
                 checkEnabled: false,
                 editEnabled: false,
@@ -26,26 +26,26 @@ $(function() {
                 callback: {
                     onNodeCreated: function(event, treeId, treeNode) {
                         if (treeNode.id === 1) {
-                            self.deptTree.expandNode(treeNode, true, false, true, true);
+                            self.unitTree.expandNode(treeNode, true, false, true, true);
                         }
                     },
                     beforeClick: function(treeId, treeNode, clickFlag) {
-                        var selectedDeptId = $('#selectedDeptId');
-                        var selectedDeptName = $('#selectedDeptName');
-                        var selectedDeptRemark = $('#selectedDeptRemark');
-                        var selectedDeptManagers = $('#selectedDeptManagers');
+                        var selectedUnitId = $('#selectedUnitId');
+                        var selectedUnitName = $('#selectedUnitName');
+                        var selectedUnitRemark = $('#selectedUnitRemark');
+                        var selectedUnitManagers = $('#selectedUnitManagers');
                         if (clickFlag === 0) {
                             // cancel select.
-                            selectedDeptId.val('');
-                            selectedDeptName.val('');
-                            selectedDeptRemark.text('');
-                            selectedDeptManagers.empty();
+                            selectedUnitId.val('');
+                            selectedUnitName.val('');
+                            selectedUnitRemark.text('');
+                            selectedUnitManagers.empty();
                             return false;
                         }
-                        selectedDeptId.val(treeNode.id);
-                        selectedDeptName.val(treeNode.name);
-                        selectedDeptRemark.text(treeNode.deptRemark);
-                        self._getDeptManagers(treeNode.id, selectedDeptManagers);
+                        selectedUnitId.val(treeNode.id);
+                        selectedUnitName.val(treeNode.name);
+                        selectedUnitRemark.text(treeNode.unitRemark);
+                        self._getUnitManagers(treeNode.id, selectedUnitManagers);
 
                         return true;
                     }
@@ -57,12 +57,12 @@ $(function() {
          * @private
          */
         _initButtonEvt: function() {
-            var addDeptBtn = $('#addDept');
-            var editDeptBtn = $('#editDept');
-            var deleteDeptBtn = $('#deleteDept');
+            var addUnitBtn = $('#addUnit');
+            var editUnitBtn = $('#editUnit');
+            var deleteUnitBtn = $('#deleteUnit');
 
-            addDeptBtn.click(function() {
-                var selectedNodes = $.mr.tree.getSelectedNode(self.deptTree);
+            addUnitBtn.click(function() {
+                var selectedNodes = $.mr.tree.getSelectedNode(self.unitTree);
                 var selectedNode;
                 if (selectedNodes && selectedNodes.length > 0) {
                     selectedNode = selectedNodes[0];
@@ -74,21 +74,21 @@ $(function() {
                         }
                     });
                 } else {
-                    $.mr.messageBox.alert($.mr.resource.DEPT_NO_SELECTION);
+                    $.mr.messageBox.alert($.mr.resource.UNIT_NO_SELECTION);
                 }
             });
-            editDeptBtn.click(function() {
-                var selectedNodes = $.mr.tree.getSelectedNode(self.deptTree);
+            editUnitBtn.click(function() {
+                var selectedNodes = $.mr.tree.getSelectedNode(self.unitTree);
                 var selectedNode;
                 var parentNode;
                 var data;
                 if (selectedNodes && selectedNodes.length > 0) {
                     selectedNode = selectedNodes[0];
-                    parentNode = $.mr.tree.getNodeByTId(self.deptTree, selectedNode.parentTId);
+                    parentNode = $.mr.tree.getNodeByTId(self.unitTree, selectedNode.parentTId);
                     data = {
-                        deptId: selectedNode.id,
-                        deptName: selectedNode.name,
-                        deptRemark: selectedNode.deptRemark
+                        unitId: selectedNode.id,
+                        unitName: selectedNode.name,
+                        unitRemark: selectedNode.unitRemark
                     };
                     if (parentNode) {
                         data.parentId = parentNode.id;
@@ -102,14 +102,14 @@ $(function() {
                         data: data
                     });
                 } else {
-                    $.mr.messageBox.alert($.mr.resource.DEPT_NO_SELECTION);
+                    $.mr.messageBox.alert($.mr.resource.UNIT_NO_SELECTION);
                 }
             });
-            deleteDeptBtn.click(function() {
-                var selectedNodes = $.mr.tree.getSelectedNode(self.deptTree);
+            deleteUnitBtn.click(function() {
+                var selectedNodes = $.mr.tree.getSelectedNode(self.unitTree);
                 var msg;
                 if (selectedNodes && selectedNodes.length > 0) {
-                    msg = $.mr.resource.DEPT_DELETE_CONFIRM + selectedNodes[0].name;
+                    msg = $.mr.resource.UNIT_DELETE_CONFIRM + selectedNodes[0].name;
                     $.mr.messageBox.confirm(msg, $.mr.resource.CONFIRM, {
                         yes: function() {
                             $.mr.ajax({
@@ -117,37 +117,37 @@ $(function() {
                                 type: 'post',
                                 dataType: 'json',
                                 data: {
-                                    deptId: selectedNodes[0].id
+                                    unitId: selectedNodes[0].id
                                 },
                                 success: function() {
-                                    var parentNode = $.mr.tree.getNodeByTId(self.deptTree, selectedNodes[0].parentTId);
-                                    $.mr.tree.refreshNode(self.deptTree, parentNode);
+                                    var parentNode = $.mr.tree.getNodeByTId(self.unitTree, selectedNodes[0].parentTId);
+                                    $.mr.tree.refreshNode(self.unitTree, parentNode);
                                     self._clearDetail();
                                 }
                             });
                         }
                     });
                 } else {
-                    $.mr.messageBox.alert($.mr.resource.DEPT_NO_SELECTION);
+                    $.mr.messageBox.alert($.mr.resource.UNIT_NO_SELECTION);
                 }
             });
         },
         /**
          * 从DB中获取组织的管理者，设置到页面的List组件中
-         * @param deptId 组织ID
-         * @param selectedDeptManagers 页面显示管理者的List组件对象
+         * @param unitId 组织ID
+         * @param selectedUnitManagers 页面显示管理者的List组件对象
          * @private
          */
-        _getDeptManagers: function(deptId, selectedDeptManagers) {
+        _getUnitManagers: function(unitId, selectedUnitManagers) {
             $.mr.ajax({
                 url: 'unit/getManagers',
                 type: 'get',
                 dataType: 'json',
-                data: {deptId: deptId},
+                data: {unitId: unitId},
                 success: function(data) {
                     var option;
                     var user;
-                    selectedDeptManagers.empty();
+                    selectedUnitManagers.empty();
                     if (!data || data.length === 0) {
                         return;
                     }
@@ -156,16 +156,16 @@ $(function() {
                         option = $('<option></option>');
                         option.val(user.userId);
                         option.text(user.name + "(" + user.policeNumber + ")");
-                        option.appendTo(selectedDeptManagers);
+                        option.appendTo(selectedUnitManagers);
                     }
                 }
             });
         },
         _clearDetail: function() {
-            $('#selectedDeptId').val('');
-            $('#selectedDeptName').val('');
-            $('#selectedDeptRemark').val('');
-            $('#selectedDeptManagers').empty();
+            $('#selectedUnitId').val('');
+            $('#selectedUnitName').val('');
+            $('#selectedUnitRemark').val('');
+            $('#selectedUnitManagers').empty();
         }
         // ------------------------------------- 组织管理页面 结束-------------------------------------------------
     };

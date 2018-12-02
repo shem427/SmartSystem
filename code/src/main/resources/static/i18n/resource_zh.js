@@ -38,8 +38,8 @@ $(function() {
         VALIDATION_MSG_MAIL_ADDRESS: '邮件地址格式不正确！',
         VALIDATION_MSG_DIGIT: '只能输入数字！',
 
-        DEPT_NO_SELECTION: '请选择组织节点。',
-        DEPT_DELETE_CONFIRM: '确定要删除组织？<br/>&nbsp;&nbsp;&nbsp;&nbsp;组织名：',
+        UNIT_NO_SELECTION: '请选择组织节点。',
+        UNIT_DELETE_CONFIRM: '确定要删除组织？<br/>&nbsp;&nbsp;&nbsp;&nbsp;组织名：',
         USER_NO_SELECTION: '选择人员为空，请选择人员，然后点击保存。'
     };
 });
