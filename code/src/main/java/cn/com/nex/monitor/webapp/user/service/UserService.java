@@ -1,7 +1,7 @@
 package cn.com.nex.monitor.webapp.user.service;
 
-import cn.com.nex.monitor.webapp.common.SearchParam;
-import cn.com.nex.monitor.webapp.common.TableData;
+import cn.com.nex.monitor.webapp.common.bean.SearchParam;
+import cn.com.nex.monitor.webapp.common.bean.TableData;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import cn.com.nex.monitor.webapp.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;

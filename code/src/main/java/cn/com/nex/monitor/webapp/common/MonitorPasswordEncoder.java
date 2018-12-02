@@ -1,5 +1,6 @@
 package cn.com.nex.monitor.webapp.common;
 
+import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

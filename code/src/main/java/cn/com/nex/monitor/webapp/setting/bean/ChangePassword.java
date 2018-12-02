@@ -1,6 +1,6 @@
 package cn.com.nex.monitor.webapp.setting.bean;
 
-import cn.com.nex.monitor.webapp.common.CommonBean;
+import cn.com.nex.monitor.webapp.common.bean.CommonBean;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

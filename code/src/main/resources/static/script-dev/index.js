@@ -16,6 +16,7 @@ $(function() {
             var $sensorDetail4Link = $('#sensorDetail4Link');
             var $sensorDetail5Link = $('#sensorDetail5Link');
             var $userLink = $('#userLink');
+            var $unitLink = $('#unitLink');
 
             var menuItems = $('.menuItem');
 
@@ -46,6 +47,14 @@ $(function() {
                 menuItems.removeClass('active');
                 $userLink.addClass('active');
                 _self.getWrapperPage('user/index');
+            });
+
+            // unit link
+            $unitLink.click(function(e) {
+                e.preventDefault();
+                menuItems.removeClass('active');
+                $unitLink.addClass('active');
+                _self.getWrapperPage('unit/index');
             });
 
             // update profile

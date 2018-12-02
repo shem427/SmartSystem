@@ -1,4 +1,4 @@
-package cn.com.nex.monitor.webapp.common;
+package cn.com.nex.monitor.webapp.common.constant;
 
 public final class DBConstant {
     private DBConstant() {

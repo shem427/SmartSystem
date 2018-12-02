@@ -1,5 +1,6 @@
-package cn.com.nex.monitor.webapp.common;
+package cn.com.nex.monitor.webapp.common.dao;
 
+import cn.com.nex.monitor.webapp.common.bean.CommonBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;

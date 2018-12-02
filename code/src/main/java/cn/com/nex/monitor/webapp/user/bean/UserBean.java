@@ -1,14 +1,12 @@
 package cn.com.nex.monitor.webapp.user.bean;
 
-import cn.com.nex.monitor.webapp.common.CommonBean;
+import cn.com.nex.monitor.webapp.common.bean.CommonBean;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.List;
 
 @Data

@@ -1,9 +1,9 @@
 package cn.com.nex.monitor.webapp.setting.controller;
 
-import cn.com.nex.monitor.webapp.common.CommonBean;
+import cn.com.nex.monitor.webapp.common.bean.CommonBean;
 import cn.com.nex.monitor.webapp.common.MessageService;
-import cn.com.nex.monitor.webapp.common.MonitorConstant;
-import cn.com.nex.monitor.webapp.common.MonitorUtil;
+import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
+import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.setting.bean.ChangePassword;
 import cn.com.nex.monitor.webapp.setting.service.SettingService;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;

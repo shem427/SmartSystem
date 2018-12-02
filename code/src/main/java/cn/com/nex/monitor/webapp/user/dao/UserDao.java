@@ -1,9 +1,9 @@
 package cn.com.nex.monitor.webapp.user.dao;
 
-import cn.com.nex.monitor.webapp.common.CommonDao;
-import cn.com.nex.monitor.webapp.common.DBConstant;
+import cn.com.nex.monitor.webapp.common.dao.CommonDao;
+import cn.com.nex.monitor.webapp.common.constant.DBConstant;
 import cn.com.nex.monitor.webapp.common.MonitorPasswordEncoder;
-import cn.com.nex.monitor.webapp.common.SearchParam;
+import cn.com.nex.monitor.webapp.common.bean.SearchParam;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

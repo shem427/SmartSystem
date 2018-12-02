@@ -1,6 +1,6 @@
 package cn.com.nex.monitor.webapp.setting.dao;
 
-import cn.com.nex.monitor.webapp.common.DBConstant;
+import cn.com.nex.monitor.webapp.common.constant.DBConstant;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

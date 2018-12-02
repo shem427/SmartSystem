@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="page-header">组织管理</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-building fa-fw"></i>组织树
+            </div>
+            <div class="panel-body">
+                <div class="table-toolbar">
+                    <button type="button" id="addDept" class="btn btn-default">添加</button>
+                    <button type="button" id="editDept" class="btn btn-default">编辑</button>
+                    <button type="button" id="deleteDept" class="btn btn-default">删除</button>
+                </div>
+                <ul id="deptTree" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-building fa-fw"></i>详细信息
+            </div>
+            <div class="panel-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label>组织名</label>
+                        <input type="hidden" id="selectedDeptId" />
+                        <input type="text" class="form-control" id="selectedDeptName" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label>备注</label>
+                        <textarea class="form-control" id="selectedDeptRemark" readonly="readonly" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>管理者</label>
+                        <select class="form-control" id="selectedDeptManagers" multiple="multiple" readonly="readonly">
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/script/unit.js}"></script>
+<script>
+    $(function() {
+        $.mr.unit.init();
+    });
+</script>

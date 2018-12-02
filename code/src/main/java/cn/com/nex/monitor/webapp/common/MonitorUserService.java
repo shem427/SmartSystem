@@ -1,5 +1,6 @@
 package cn.com.nex.monitor.webapp.common;
 
+import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import cn.com.nex.monitor.webapp.user.dao.UserDao;
 import org.apache.commons.lang.StringUtils;

@@ -1,4 +1,4 @@
-package cn.com.nex.monitor.webapp.common;
+package cn.com.nex.monitor.webapp.common.util;
 
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.springframework.security.core.Authentication;

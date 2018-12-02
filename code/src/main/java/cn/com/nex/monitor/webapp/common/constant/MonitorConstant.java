@@ -1,4 +1,4 @@
-package cn.com.nex.monitor.webapp.common;
+package cn.com.nex.monitor.webapp.common.constant;
 
 /**
  * 常量定义类

@@ -1,5 +1,6 @@
 package cn.com.nex.monitor.webapp.common;
 
+import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;

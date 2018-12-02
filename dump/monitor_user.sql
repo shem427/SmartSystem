@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: localhost    Database: monitor
+-- Host: 127.0.0.1    Database: monitor
 -- ------------------------------------------------------
 -- Server version	8.0.12
 
@@ -23,12 +23,12 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `user` (
-  `USER_ID` char(6) COLLATE utf8_bin NOT NULL,
-  `USER_NAME` varchar(64) COLLATE utf8_bin NOT NULL,
-  `MAIL_ADDRESS` varchar(64) COLLATE utf8_bin NOT NULL,
-  `USER_ROLES` varchar(128) COLLATE utf8_bin DEFAULT NULL,
-  `USER_PASSWORD` varchar(64) COLLATE utf8_bin NOT NULL,
-  `PHONE_NUMBER` varchar(20) COLLATE utf8_bin NOT NULL,
+  `USER_ID` char(6) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `USER_NAME` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `MAIL_ADDRESS` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `USER_ROLES` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `USER_PASSWORD` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `PHONE_NUMBER` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `ACTIVE` tinyint(1) NOT NULL,
   PRIMARY KEY (`USER_ID`),
   KEY `USERNAME` (`USER_NAME`) /*!80000 INVISIBLE */,
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-02  0:40:29
+-- Dump completed on 2018-12-03  1:06:44

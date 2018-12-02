@@ -1,4 +1,4 @@
-package cn.com.nex.monitor.webapp.common;
+package cn.com.nex.monitor.webapp.common.bean;
 
 import lombok.Data;
 
