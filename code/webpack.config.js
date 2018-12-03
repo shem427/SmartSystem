@@ -1,6 +1,5 @@
 const glob = require('glob');
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const buildEntryConfig = () => {
     const rootPath = './src/main/resources/static';
@@ -17,8 +16,5 @@ module.exports = {
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'target/classes/static/script'),
-    },
-    plugins: [
-        new UglifyJsPlugin()
-    ]
+    }
 };
