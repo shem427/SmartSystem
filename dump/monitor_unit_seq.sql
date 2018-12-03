@@ -16,35 +16,26 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `unit`
+-- Table structure for table `unit_seq`
 --
 
-DROP TABLE IF EXISTS `unit`;
+DROP TABLE IF EXISTS `unit_seq`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `unit` (
-  `UNIT_ID` char(16) NOT NULL DEFAULT 'UT00000000000000',
-  `UNIT_NAME` varchar(128) NOT NULL,
-  `PARENT_ID` char(16) DEFAULT NULL,
-  `REMARK` varchar(256) DEFAULT NULL,
-  `ACTIVE` tinyint(1) NOT NULL DEFAULT '1',
-  `LEAF` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`UNIT_ID`),
-  KEY `PARENT_ID_INX` (`PARENT_ID`) /*!80000 INVISIBLE */,
-  KEY `UNIT_NAME_IDX` (`UNIT_NAME`),
-  KEY `ACTIVE_IDX` (`ACTIVE`) /*!80000 INVISIBLE */,
-  KEY `LEAF_IDX` (`LEAF`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `unit_seq` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `unit`
+-- Dumping data for table `unit_seq`
 --
 
-LOCK TABLES `unit` WRITE;
-/*!40000 ALTER TABLE `unit` DISABLE KEYS */;
-INSERT INTO `unit` VALUES ('UT00000000000001','/',NULL,'系统根节点',1,0),('UT00000000000002','XXXXXXXXXXXXXXXX医院','UT00000000000001','安徽省合肥市XXX路YY号',1,0),('UT00000000000003','YYYYYYYYYYY科室','UT00000000000002','XXXXXXXXXXYYYYYYYYYYYYYYYY',1,0),('UT00000000000004','rererererer','UT00000000000003','rerererererrerererererrerererererrerererererrerererererrererererer',1,0),('UT00000000000005','谢谢谢谢谢谢','UT00000000000001','xxxxxxxxxxxxxxxxxx嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻',1,0),('UT00000000000006','涛涛日日日仍然','UT00000000000005','xxxxxxxxxxxx',1,1);
-/*!40000 ALTER TABLE `unit` ENABLE KEYS */;
+LOCK TABLES `unit_seq` WRITE;
+/*!40000 ALTER TABLE `unit_seq` DISABLE KEYS */;
+INSERT INTO `unit_seq` VALUES (1),(2),(3),(4),(5),(6);
+/*!40000 ALTER TABLE `unit_seq` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

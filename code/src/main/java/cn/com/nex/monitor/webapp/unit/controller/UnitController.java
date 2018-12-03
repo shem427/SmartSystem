@@ -54,7 +54,7 @@ public class UnitController {
         model.put("parentId", parentId);
         model.put("parentName", parentName);
 
-        return new ModelAndView("unit/modalPage", model);
+        return new ModelAndView("unit/unitUpdateModal", model);
     }
 
     @GetMapping(value = "/editPage")
@@ -73,7 +73,7 @@ public class UnitController {
         model.put("unitRemark", unitRemark);
         model.put("managers", managers);
 
-        return new ModelAndView("unit/modalPage", model);
+        return new ModelAndView("unit/unitUpdateModal", model);
     }
 
     @PostMapping(value = "/saveUnit")

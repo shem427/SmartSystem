@@ -69,6 +69,11 @@ public class UserController {
         return "user/userUpdateModal";
     }
 
+    @GetMapping(value = "/userSelectModal")
+    public String userSelectModal() {
+        return "user/userSelectModal";
+    }
+
     @ResponseBody
     @GetMapping(value = "/getUsers")
     public TableData<UserBean> getUsers(SearchParam param, String userIdLike, String nameLike) {

@@ -66,6 +66,10 @@ $(function() {
                 var selectedNode;
                 if (selectedNodes && selectedNodes.length > 0) {
                     selectedNode = selectedNodes[0];
+                    if (!selectedNode.isParent) {
+                        $.mr.messageBox.alert($.mr.resource.UNIT_NOT_ADD_UNDER_LEAF);
+                        return;
+                    }
                     $.mr.modal.create({
                         url: 'unit/addPage',
                         data: {
@@ -155,7 +159,7 @@ $(function() {
                         user = data[i];
                         option = $('<option></option>');
                         option.val(user.userId);
-                        option.text(user.name + "(" + user.policeNumber + ")");
+                        option.text(user.name + "(" + user.userId + ")");
                         option.appendTo(selectedUnitManagers);
                     }
                 }
@@ -166,8 +170,138 @@ $(function() {
             $('#selectedUnitName').val('');
             $('#selectedUnitRemark').val('');
             $('#selectedUnitManagers').empty();
-        }
+        },
         // ------------------------------------- 组织管理页面 结束-------------------------------------------------
+
+        // ------------------------------------- 组织添加/编辑Modal 开始-------------------------------------------
+        /**
+         * 组织添加/编辑的Modal对话框的初始化，以及各个控件的事件定义
+         */
+        initModal: function() {
+            // 保存按钮事件
+            $('#saveUnit').click(function() {
+                var unitId = $('#unitId').val();
+                var unitName = $('#unitName').val();
+                var unitRemark = $('#unitRemark').val();
+                var parentId = $('#parentId').val();
+                var isEdit = false;
+                var data = {
+                    name: unitName,
+                    unitRemark: unitRemark
+                };
+                if (unitId) {
+                    data.id = unitId;
+                    isEdit = true;
+                } else {
+                    data.pId = parentId;
+                    data.isParent = $('#unitLeaf').is(':checked') === false;
+                }
+                data.managerIdList = self._setUnitManagers(false);
+                $.mr.ajax({
+                    url: 'unit/saveUnit',
+                    type: 'post',
+                    dataType: 'json',
+                    data: data,
+                    success: function() {
+                        var selectedNodes = $.mr.tree.getSelectedNode(self.unitTree);
+                        var parentNode;
+                        var tobeSelectNode;
+                        $.mr.modal.destroy({
+                            selector: '#unitModal'
+                        });
+                        if (isEdit) {
+                            parentNode = $.mr.tree.getNodeByTId(self.unitTree, selectedNodes[0].parentTId);
+                            $.mr.tree.refreshNode(self.unitTree, parentNode, function() {
+                                tobeSelectNode = $.mr.tree.getNodeByParam(self.unitTree, 'id',
+                                    unitId, parentNode);
+                                if (tobeSelectNode) {
+                                    $('#' + tobeSelectNode.tId + ' > a').trigger('click');
+                                }
+                            });
+                        } else {
+                            $.mr.tree.refreshNode(self.unitTree, selectedNodes[0], function() {
+                                tobeSelectNode = $.mr.tree.getNodeByParam(self.unitTree, 'id',
+                                    unitId, selectedNodes[0]);
+                                if (tobeSelectNode) {
+                                    $('#' + tobeSelectNode.tId + ' > a').trigger('click');
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+            // 管理者list控件。
+            var unitManagers = $('#unitManagers');
+            // 添加管理者事件
+            $('#addManager').click(function() {
+                var managers = self._setUnitManagers(true);
+                // 弹出用户选择对话框
+                $.mr.modal.create({
+                    url: 'user/userSelectModal',
+                    afterDisplaying: function(dialog) {
+                        // 初始化已选择人员列表
+                        var selectedUsers = $('#selectedUsers', dialog);
+                        var selectUsersBtn = $('#selectUsers', dialog);
+                        selectedUsers.empty();
+                        $.each(managers, function(indx, item) {
+                            var option = $('<option></option>');
+                            option.val(item.userId);
+                            option.text(item.name);
+                            option.appendTo(selectedUsers);
+                        });
+
+                        // 设置保存按钮事件
+                        selectUsersBtn.click(function() {
+                            var option;
+                            var userOption;
+                            var selectedUserOptions = selectedUsers.find('option');
+                            unitManagers.empty();
+                            if (!selectedUserOptions || selectedUserOptions.length === 0) {
+                                $.mr.messageBox.alert($.mr.resource.USER_NO_SELECTION);
+                                return;
+                            }
+                            for (var i = 0; i < selectedUserOptions.length; i++) {
+                                userOption = $(selectedUserOptions[i]);
+                                option = $('<option></option>');
+                                option.val(userOption.val());
+                                option.text(userOption.text());
+                                option.appendTo(unitManagers);
+                            }
+
+                            $.mr.modal.destroy({
+                                selector: '#userSelectModal'
+                            });
+                        });
+                    }
+                });
+            });
+            // 删除管理者事件
+            $('#deleteManager').click(function() {
+                var selected = unitManagers.find('option:selected');
+                selected.remove();
+            });
+        },
+        /**
+         * 获取页面设置的组织管理者
+         * @returns {Array} 页面设置的组织管理者
+         * @private
+         */
+        _setUnitManagers: function(includeName) {
+            var selectedUnitManagers = $('#unitManagers > option');
+            var userList = [];
+            selectedUnitManagers.each(function(indx, item) {
+                if (includeName) {
+                    userList.push({
+                        userId: $(item).val(),
+                        name: $(item).text()
+                    });
+                } else {
+                    userList.push($(item).val());
+                }
+            });
+            return userList;
+        }
+        // ------------------------------------- 组织添加/编辑Modal 结束--------------------------------------------
     };
     self = $.mr.unit;
 });

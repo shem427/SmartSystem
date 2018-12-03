@@ -17,6 +17,7 @@ public class UnitDao extends CommonDao<UnitBean> {
     private static final String UNIT_NAME = "UNIT_NAME";
     private static final String PARENT_ID = "PARENT_ID";
     private static final String REMARK = "REMARK";
+    private static final String LEAF = "LEAF";
 
     /**
      * 从ResultSet中抽取Bean对象。
@@ -32,6 +33,7 @@ public class UnitDao extends CommonDao<UnitBean> {
         bean.setName(rs.getString(UNIT_NAME));
         bean.setPId(rs.getString(PARENT_ID));
         bean.setUnitRemark(rs.getString(REMARK));
+        bean.setIsParent(!rs.getBoolean(LEAF));
 
         return bean;
     }
@@ -57,7 +59,7 @@ public class UnitDao extends CommonDao<UnitBean> {
     }
 
     public List<UnitBean> getUnitByParentId(String pId) {
-        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, `REMARK`, `PARENT_ID` FROM `UNIT` WHERE `ACTIVE`=true AND ";
+        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, `REMARK`, `PARENT_ID`, `LEAF` FROM `UNIT` WHERE `ACTIVE`=true AND ";
         if (pId == null) {
             sql += "`PARENT_ID` IS NULL";
             List<UnitBean> subList = jdbcTemplate.query(sql,
@@ -112,9 +114,9 @@ public class UnitDao extends CommonDao<UnitBean> {
         }
     }
 
-    public int add(UnitBean unit) {
-        String sql = "INSERT INTO `UNIT` (`UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`) VALUES (?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, unit.getId(), unit.getName(), unit.getPId(), unit.getUnitRemark());
+    public synchronized int add(UnitBean unit) {
+        String sql = "INSERT INTO `UNIT` (`UNIT_NAME`, `PARENT_ID`, `REMARK`, `LEAF`) VALUES (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, unit.getName(), unit.getPId(), unit.getUnitRemark(), !unit.getIsParent());
     }
 
     public int edit(UnitBean unit) {

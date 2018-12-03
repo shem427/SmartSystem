@@ -15,8 +15,8 @@ public class SettingService {
     @Autowired
     MonitorPasswordEncoder passwordEncoder;
 
-    public boolean checkOldPassword(String policeNo, String oldPassword) {
-        String old = settingDao.getOldPassword(policeNo);
+    public boolean checkOldPassword(String userId, String oldPassword) {
+        String old = settingDao.getOldPassword(userId);
         return oldPassword.equals(old) || passwordEncoder.encode(oldPassword).equals(old);
     }
 

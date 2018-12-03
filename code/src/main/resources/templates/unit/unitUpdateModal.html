@@ -1,0 +1,61 @@
+<div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="fa fa-times"></span>
+                </button>
+                <h4 class="modal-title" id="unitModalLabel" th:if="${unitId == null}">
+                    添加组织
+                </h4>
+                <h4 class="modal-title" id="unitModalLabel" th:if="${unitId != null}">
+                    编辑组织
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="parentName">父组织</label>
+                        <input type="hidden" id="parentId" th:value="${parentId}" />
+                        <input type="text" class="form-control" id="parentName" th:value="${parentName}" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label for="unitName">组织名</label>
+                        <input type="hidden" id="unitId" th:value="${unitId}" />
+                        <input type="text" class="form-control" id="unitName" placeholder="请输入组织名" th:value="${unitName}" />
+                    </div>
+                    <div class="form-group">
+                        <label for="unitRemark">备注</label>
+                        <textarea class="form-control" id="unitRemark" placeholder="请输入备注" th:text="${unitRemark}" rows="4"></textarea>
+                    </div>
+                    <div class="checkbox" th:if="${unitId == null}">
+                        <label>
+                            <input type="checkbox" id="unitLeaf" />是否叶节点
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="unitManagers">负责人</label>
+                        <select id="unitManagers" class="form-control" multiple="multiple">
+                            <th:block th:each="user : ${managers}">
+                                <option th:value="${user.userId}" th:text="${user.name + '(' + user.userId + ')'}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" id="addManager">添加负责人</button>
+                        <button type="button" class="btn btn-default" id="deleteManager">删除负责人</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveUnit">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $.mr.unit.initModal();
+    });
+</script>

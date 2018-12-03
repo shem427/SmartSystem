@@ -56,8 +56,8 @@ $(function() {
                             notEmpty: {
                                 message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
                             },
-                            digits: {
-                                message: $.mr.resource.VALIDATION_MSG_DIGIT
+                            numeric: {
+                                message: $.mr.resource.VALIDATION_MSG_NUMERIC
                             }
                         }
                     },

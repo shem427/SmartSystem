@@ -128,13 +128,6 @@ $(function() {
                         validating: 'glyphicon glyphicon-refresh'
                     },
                     fields: {
-                        policeNumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
-                                }
-                            }
-                        },
                         userName: {
                             validators: {
                                 notEmpty: {
@@ -149,6 +142,16 @@ $(function() {
                                 },
                                 notEmpty: {
                                     message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                                }
+                            }
+                        },
+                        mail: {
+                            validators: {
+                                notEmpty: {
+                                    message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                                },
+                                emailAddress: {
+                                    message: $.mr.resource.VALIDATION_MSG_MAIL_ADDRESS
                                 }
                             }
                         }

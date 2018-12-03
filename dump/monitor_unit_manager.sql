@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `unit_manager`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `unit_manager` (
-  `UNIT_ID` char(6) NOT NULL,
+  `UNIT_ID` char(16) NOT NULL,
   `USER_ID` char(6) NOT NULL,
   PRIMARY KEY (`UNIT_ID`,`USER_ID`),
   KEY `UNIT_ID_IDX` (`UNIT_ID`) /*!80000 INVISIBLE */,
@@ -37,6 +37,7 @@ CREATE TABLE `unit_manager` (
 
 LOCK TABLES `unit_manager` WRITE;
 /*!40000 ALTER TABLE `unit_manager` DISABLE KEYS */;
+INSERT INTO `unit_manager` VALUES ('UT00000000000005','000002');
 /*!40000 ALTER TABLE `unit_manager` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-03  1:06:44
+-- Dump completed on 2018-12-04  1:25:01

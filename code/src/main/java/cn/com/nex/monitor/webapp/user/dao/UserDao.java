@@ -114,11 +114,11 @@ public class UserDao extends CommonDao<UserBean> {
         return jdbcTemplate.update(sql, user.getName(), user.getMailAddress(), user.getUserRoles(), user.getPhoneNumber(), user.getUserId());
     }
 
-    private String getWhereForSearch(String policeNoLike, String nameLike, List<String> argList) {
+    private String getWhereForSearch(String userIdLike, String nameLike, List<String> argList) {
         StringBuilder sbSqlWhere = new StringBuilder();
         sbSqlWhere.append(DBConstant.IS_ACTIVE).append("=true");
-        if (!StringUtils.isEmpty(policeNoLike)) {
-            argList.add("%" + policeNoLike + "%");
+        if (!StringUtils.isEmpty(userIdLike)) {
+            argList.add("%" + userIdLike + "%");
             sbSqlWhere.append(" AND ").append(DBConstant.USER_ID).append(" LIKE ?");
         }
         if (!StringUtils.isEmpty(nameLike)) {
