@@ -14,11 +14,6 @@ $(function() {
         LOGOUT_CONFIRM: '请确认是否注销？',
         LOGIN_ERROR: '用户登陆发生错误，请确认用户名与密码。如果再次发生错误，请联系管理员。',
 
-        // TABLE
-        // TABLE_NO_SELECTED: '请在表格中选择数据',
-        // TABLE_ONLY_ONE_SELECT: '请在表格中只选择一条数据',
-        // TABLE_DATA_NUMER: '数据处理成功，处理件数='
-
         USER_NO_SELETION: '请选择人员。',
         USER_DELETE_CONFIRM: '确定要删除人员？<br/>&nbsp;&nbsp;&nbsp;&nbsp;删除件数=',
         USER_DELETE_SUCCESS: '删除成功。删除件数=',
@@ -32,7 +27,9 @@ $(function() {
         CHANGE_PASSWORD_SUCCESS: '密码修改成功。',
 
         UPDATE_PROFILE_SUCCESS: '账号信息更新成功。',
+        UPDATE_THRESHOLD_SUCCESS: '阈值信息更新成功',
 
+        VALIDATION_THRESHOLD_NOMAL_WARN: '警告辐射阈值必须小于正常辐射阈值',
         VALIDATION_MSG_NOT_EMPTY: '不能为空！',
         VALIDATION_MSG_NUMERIC: '只能输入数字！',
         VALIDATION_MSG_MAIL_ADDRESS: '邮件地址格式不正确！',

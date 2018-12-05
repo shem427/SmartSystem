@@ -7,6 +7,7 @@ $(function() {
             var $updateProfileSettingLink = $('#updateProfileSettingLink');
             var $changePasswordLink = $('#changePasswordLink');
             var $changePasswordSettingLink = $('#changePasswordSettingLink');
+            var $updateThresholdSettingLink = $('#updateThresholdSettingLink');
             var $logoutLink = $('#logoutLink');
 
             var $dashboardLink = $('#dashboardLink');
@@ -64,6 +65,13 @@ $(function() {
             // change password
             $changePasswordLink.click(changePassword);
             $changePasswordSettingLink.click(changePassword);
+
+            $updateThresholdSettingLink.click(function(e) {
+                e.preventDefault();
+                menuItems.removeClass('active');
+                $updateThresholdSettingLink.addClass('active');
+                _self.getWrapperPage('setting/threshold');
+            });
 
             $logoutLink.click(function(e) {
                 e.preventDefault();

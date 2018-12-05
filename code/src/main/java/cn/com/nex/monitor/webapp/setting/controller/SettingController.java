@@ -5,6 +5,7 @@ import cn.com.nex.monitor.webapp.common.MessageService;
 import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.setting.bean.ChangePassword;
+import cn.com.nex.monitor.webapp.setting.bean.ThresholdBean;
 import cn.com.nex.monitor.webapp.setting.service.SettingService;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.slf4j.Logger;
@@ -30,7 +31,11 @@ public class SettingController {
     /**
      * LOG
      */
-    private static Logger LOG = LoggerFactory.getLogger(SettingController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SettingController.class);
+
+    private static final String RADIATION_THRESHOLD = "RADIATION";
+    private static final int RADIATION_DEFAULT_NORMAL = 70;
+    private static final int RADIATION_DEFAULT_WARNING = 50;
 
     @Autowired
     private SettingService settingService;
@@ -95,6 +100,35 @@ public class SettingController {
             bean.setMessage(message);
         }
 
+        return bean;
+    }
+
+    @GetMapping(value = "/threshold")
+    public ModelAndView thresholdSetting() {
+        Map<String, Object> model = new HashMap<>();
+        ThresholdBean bean = settingService.getThreshold(RADIATION_THRESHOLD);
+        if (bean == null) {
+            bean = new ThresholdBean();
+            bean.setNormal(RADIATION_DEFAULT_NORMAL);
+            bean.setWarning(RADIATION_DEFAULT_WARNING);
+        }
+        model.put("threshold", bean);
+
+        return new ModelAndView("setting/thresholdSetting", model);
+    }
+
+    @PostMapping(value = "/updateThreshold")
+    @ResponseBody
+    public CommonBean updateThreshold(ThresholdBean threshold) {
+        CommonBean bean = new CommonBean();
+        try {
+            settingService.updateThreshold(threshold);
+        } catch (Exception e) {
+            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
+            LOG.error(message, e);
+            bean.setStatus(CommonBean.Status.ERROR);
+            bean.setMessage(message);
+        }
         return bean;
     }
 }

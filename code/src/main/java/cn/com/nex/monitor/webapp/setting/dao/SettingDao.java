@@ -1,10 +1,14 @@
 package cn.com.nex.monitor.webapp.setting.dao;
 
 import cn.com.nex.monitor.webapp.common.constant.DBConstant;
+import cn.com.nex.monitor.webapp.setting.bean.ThresholdBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class SettingDao {
@@ -36,5 +40,29 @@ public class SettingDao {
                 profile.getMailAddress(),
                 profile.getPhoneNumber(),
                 profile.getUserId());
+    }
+
+    public ThresholdBean getThreshold(String type) {
+        String sql = "SELECT `TYPE`, `NORMAL`, `WARNING` FROM `THRESHOLD` WHERE TYPE=?";
+        return jdbcTemplate.query(sql, new String[] {type}, rs -> {
+            if (rs.next()) {
+                ThresholdBean bean = new ThresholdBean();
+                bean.setNormal(rs.getInt("NORMAL"));
+                bean.setWarning(rs.getInt("WARNING"));
+                return bean;
+            } else {
+                return null;
+            }
+        });
+    }
+
+    public void updateThreshold(ThresholdBean threshold) {
+        String sql = "UPDATE `THRESHOLD` SET `NORMAL`=?,`WARNING`=? WHERE `TYPE`=?";
+        int count = jdbcTemplate.update(sql, threshold.getNormal(), threshold.getWarning(), threshold.getType());
+
+        if (count == 0) {
+            sql = "INSERT INTO `THRESHOLD` VALUES (?,?,?)";
+            jdbcTemplate.update(sql, threshold.getType(), threshold.getNormal(), threshold.getWarning());
+        }
     }
 }

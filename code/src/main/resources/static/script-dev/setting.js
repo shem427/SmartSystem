@@ -171,6 +171,83 @@ $(function() {
                 }
                 return null;
             }
+        },
+        thresholdSetting: {
+            init: function() {
+                var form = $("#thresholdSettingForm");
+                $('#btnReset').click(function() {
+                    form.trigger("reset");
+                    form.data("bootstrapValidator").resetForm();
+                });
+                // 保存按钮事件
+                $('#btnUpdateThreshold').click(function() {
+                    var data = _self.thresholdSetting._validate();
+                    if (!data) {
+                        return;
+                    }
+                    $.mr.ajax({
+                        url: 'setting/updateThreshold',
+                        type: 'post',
+                        dataType: 'json',
+                        data: data,
+                        success: function() {
+                            $.mr.messageBox.info($.mr.resource.UPDATE_THRESHOLD_SUCCESS);
+                        }
+                    });
+                });
+                // Validation
+                form.bootstrapValidator({
+                    message: 'value is not valid',
+                    live: 'disabled',
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        normalThreshold: {
+                            validators: {
+                                numeric: {
+                                    message: $.mr.resource.VALIDATION_MSG_NUMERIC
+                                },
+                                notEmpty: {
+                                    message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                                }
+                            }
+                        },
+                        warningThreshold: {
+                            validators: {
+                                numeric: {
+                                    message: $.mr.resource.VALIDATION_MSG_NUMERIC
+                                },
+                                notEmpty: {
+                                    message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                                },
+                                callback: {
+                                    message: $.mr.resource.VALIDATION_THRESHOLD_NOMAL_WARN,
+                                    callback: function(value) {
+                                        var normal = $('#normalThreshold').val();
+                                        return normal > value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+            _validate: function() {
+                var form = $("#thresholdSettingForm");
+                form.data("bootstrapValidator").resetForm();
+                form.bootstrapValidator('validate');
+                if (form.data('bootstrapValidator').isValid()) {
+                    return {
+                        type: 'RADIATION',
+                        normal: $('#normalThreshold').val(),
+                        warning: $('#warningThreshold').val()
+                    };
+                }
+                return null;
+            }
         }
     };
     _self = $.mr.setting;
