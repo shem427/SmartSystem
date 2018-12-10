@@ -109,7 +109,7 @@ public class UnitController {
             boolean hasChildren = unitService.hasChildren(unitId);
             if (hasChildren) {
                 // 有下位组织，不能删除
-                String message = messageService.getMessage("poa.delete.unit.hasChildren");
+                String message = messageService.getMessage("mr.delete.unit.hasChildren");
                 retBean.setStatus(CommonBean.Status.WARNING);
                 retBean.setMessage(message);
             } else {

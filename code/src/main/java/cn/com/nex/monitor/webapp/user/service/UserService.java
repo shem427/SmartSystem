@@ -1,5 +1,6 @@
 package cn.com.nex.monitor.webapp.user.service;
 
+import cn.com.nex.monitor.webapp.common.MonitorPasswordEncoder;
 import cn.com.nex.monitor.webapp.common.bean.SearchParam;
 import cn.com.nex.monitor.webapp.common.bean.TableData;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
@@ -13,6 +14,9 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    MonitorPasswordEncoder passwordEncoder;
 
     public UserBean getUserById(String userId) {
         return userDao.get(userId);
@@ -53,5 +57,17 @@ public class UserService {
 
     public int updateUser(UserBean user) {
         return userDao.updateUser(user);
+    }
+
+    public int resetPassword(List<String> userIds, String defaultPassword) {
+        int count = 0;
+        if (userIds == null) {
+            return 0;
+        }
+        String pwd = passwordEncoder.encode(defaultPassword);
+        for (String userId : userIds) {
+            count += userDao.resetPassword(userId, pwd);
+        }
+        return count;
     }
 }

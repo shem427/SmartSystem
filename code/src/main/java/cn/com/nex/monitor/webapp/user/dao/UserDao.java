@@ -114,6 +114,11 @@ public class UserDao extends CommonDao<UserBean> {
         return jdbcTemplate.update(sql, user.getName(), user.getMailAddress(), user.getUserRoles(), user.getPhoneNumber(), user.getUserId());
     }
 
+    public int resetPassword(String userId, String defaultPwd) {
+        String sql = "UPDATE USER SET `USER_PASSWORD`=? WHERE `USER_ID`=?";
+        return jdbcTemplate.update(sql, defaultPwd, userId);
+    }
+
     private String getWhereForSearch(String userIdLike, String nameLike, List<String> argList) {
         StringBuilder sbSqlWhere = new StringBuilder();
         sbSqlWhere.append(DBConstant.IS_ACTIVE).append("=true");

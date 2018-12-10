@@ -108,6 +108,36 @@ $(function() {
                     }
                 });
             });
+            $('#resetPassword').click(function() {
+                var selections = $.mr.table.getSelections('#userTable');
+                var userIdArray = [];
+                if (selections.length === 0) {
+                    $.mr.messageBox.alert($.mr.resource.USER_NO_SELETION);
+                    return;
+                }
+                $.each(selections, function(idx, item) {
+                    userIdArray.push(item.userId);
+                });
+                $.mr.messageBox.confirm($.mr.resource.USER_RESET_PASSWORD_CONFIRM + userIdArray.length, '', {
+                    yes: function() {
+                        $.mr.ajax({
+                            url: 'user/deleteUsers',
+                            type: 'post',
+                            data: JSON.stringify(userIdArray),
+                            contentType: 'application/json',
+                            success: function (data) {
+                                $.mr.table.refresh({
+                                    selector: '#userTable',
+                                    params: {
+                                        silent: true
+                                    }
+                                });
+                                $.mr.messageBox.info($.mr.resource.USER_DELETE_SUCCESS + data.number);
+                            }
+                        });
+                    }
+                });
+            });
         },
 
         // ------------------------------------- 人员选择Modal 开始-----------------------------------------------

@@ -20,6 +20,7 @@ $(function() {
         USER_EDIT_MULTI_SELECT: '编辑时，请只选择一名人员。',
         USER_ID_LENGTH: '请输入6位用户ID。',
         USER_ID_VALID: '用户ID只能输入半角字母字符和数字。',
+        USER_RESET_PASSWORD_CONFIRM: '确定重置密码为默认密码？<br/>&nbsp;&nbsp;&nbsp;&nbsp;重置件数=',
 
         NEW_PASSWORD_NOT_MATCH: '两次输入的新密码不一致，请重新输入。',
         OLD_NEW_PASSWORD_SAME: '新密码与旧密码相同，请输入与旧密码不同的新密码。',

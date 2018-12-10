@@ -77,7 +77,7 @@ $(function() {
                 $.mr.messageBox._message("info", message, newTitle, callback);
             },
             _message: function(type, message, title, callback) {
-                var dialog = $("#poaMsgModal");
+                var dialog = $("#mrMsgModal");
                 var modalType = type.toLowerCase();
                 var dialogHtml;
                 var dialogHeader;
@@ -89,12 +89,12 @@ $(function() {
                     dialog.empty().remove();
                 }
 
-                dialogHtml = "<div class='modal fade' id='poaMsgModal' tabindex='-1' role='dialog'"
-                    + " aria-labelledby='poaMsgModalLabel' aria-hidden='true'>"
+                dialogHtml = "<div class='modal fade' id='mrMsgModal' tabindex='-1' role='dialog'"
+                    + " aria-labelledby='mrMsgModalLabel' aria-hidden='true'>"
                     + "    <div class='modal-dialog'>"
                     + "        <div class='modal-content'>"
                     + "            <div class='modal-header'>"
-                    + "                <h4 class='modal-title' id='poaMsgModalLabel'></h4>"
+                    + "                <h4 class='modal-title' id='mrMsgModalLabel'></h4>"
                     + "            </div>"
                     + "            <div class='modal-body'></div>"
                     + "            <div class='modal-footer'></div>"

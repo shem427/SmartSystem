@@ -36,6 +36,9 @@ public class UserController {
     @Value("${cn.com.nex.monitor.roles}")
     private String allRoles;
 
+    @Value("${cn.com.nex.monitor.default.password}")
+    private String defaultPassword;
+
     @GetMapping(value = "/index")
     public String page() {
         return "user/page";
@@ -105,6 +108,22 @@ public class UserController {
 
         try {
             int count = userService.deleteUser(userIds);
+            bean.setNumber(count);
+        } catch (Exception e) {
+            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
+            bean.setStatus(CommonBean.Status.ERROR);
+            bean.setMessage(message);
+            LOG.error(message, e);
+        }
+        return bean;
+    }
+
+    @ResponseBody
+    @PostMapping(value = "resetPassword")
+    public NumericBean resetPassword(@RequestBody List<String> userIds) {
+        NumericBean bean = new NumericBean();
+        try {
+            int count = userService.resetPassword(userIds, defaultPassword);
             bean.setNumber(count);
         } catch (Exception e) {
             String message = messageService.getMessage(MonitorConstant.LOG_ERROR);

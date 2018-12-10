@@ -125,7 +125,7 @@ public class UnitDao extends CommonDao<UnitBean> {
     }
 
     public int delete(String unitId) {
-        String sql = "UPDATE `UNIT` SET ACTIVE=false";
+        String sql = "UPDATE `UNIT` SET `ACTIVE`=false WHERE `UNIT_ID`=?";
         return jdbcTemplate.update(sql, unitId);
     }
 
