@@ -30,10 +30,10 @@
                     </div>
                     <div class="checkbox" th:if="${unitId == null}">
                         <label>
-                            <input type="checkbox" id="unitLeaf" />是否叶节点
+                            <input type="checkbox" id="unitLeaf" />紫外线灯节点
                         </label>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" th:if="${unitId == null || !isParent}" id="managersDiv">
                         <label for="unitManagers">负责人</label>
                         <select id="unitManagers" class="form-control" multiple="multiple">
                             <th:block th:each="user : ${managers}">

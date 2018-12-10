@@ -62,7 +62,8 @@ public class UnitController {
                                     String parentName,
                                     String unitId,
                                     String unitName,
-                                    String unitRemark) {
+                                    String unitRemark,
+                                    boolean isParent) {
         Map<String, Object> model = new HashMap<>();
         List<UserBean> managers = unitService.getUnitManagers(unitId);
 
@@ -72,6 +73,7 @@ public class UnitController {
         model.put("unitName", unitName);
         model.put("unitRemark", unitRemark);
         model.put("managers", managers);
+        model.put("isParent", isParent);
 
         return new ModelAndView("unit/unitUpdateModal", model);
     }

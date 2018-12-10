@@ -45,7 +45,12 @@ $(function() {
                         selectedUnitId.val(treeNode.id);
                         selectedUnitName.val(treeNode.name);
                         selectedUnitRemark.text(treeNode.unitRemark);
-                        self._getUnitManagers(treeNode.id, selectedUnitManagers);
+                        if (treeNode.isParent === false) {
+                            self._getUnitManagers(treeNode.id, selectedUnitManagers);
+                            selectedUnitManagers.parent().show();
+                        } else {
+                            selectedUnitManagers.parent().hide();
+                        }
 
                         return true;
                     }
@@ -92,7 +97,8 @@ $(function() {
                     data = {
                         unitId: selectedNode.id,
                         unitName: selectedNode.name,
-                        unitRemark: selectedNode.unitRemark
+                        unitRemark: selectedNode.unitRemark,
+                        isParent: selectedNode.isParent
                     };
                     if (parentNode) {
                         data.parentId = parentNode.id;

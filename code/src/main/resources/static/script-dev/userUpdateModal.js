@@ -8,7 +8,10 @@ $(function() {
         },
         init: function() {
             var form = $('#userModalForm');
-            // Validation
+            var unitManagerDiv = $('#managersDiv');
+            var unitLeaf = $('#unitLeaf');
+
+            // validation
             form.bootstrapValidator({
                 message: 'value is not valid',
                 live: 'disabled',
@@ -73,6 +76,19 @@ $(function() {
                     }
                 }
             });
+
+            if (unitLeaf.length !== 0) {
+                unitManagerDiv.hide();
+                unitLeaf.change(function() {
+                    var isLeaf = $(this).is(':checked');
+                    if (isLeaf) {
+                        unitManagerDiv.show();
+                    } else {
+                        unitManagerDiv.hide();
+                    }
+                });
+            }
+
             $('#saveUserBtn').click(function() {
                 var selectedRoles = $('#roles').find('option:selected');
                 var roleArray = [];
