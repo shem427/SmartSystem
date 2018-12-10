@@ -1,0 +1,1 @@
+java -jar monitor.jar --spring.datasource.username=shen --spring.datasource.password=0944
