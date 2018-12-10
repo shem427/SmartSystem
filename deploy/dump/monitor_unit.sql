@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: monitor
+-- Host: localhost    Database: monitor
 -- ------------------------------------------------------
 -- Server version	8.0.12
 
@@ -43,7 +43,7 @@ CREATE TABLE `unit` (
 
 LOCK TABLES `unit` WRITE;
 /*!40000 ALTER TABLE `unit` DISABLE KEYS */;
-INSERT INTO `unit` VALUES ('UT00000000000001','/',NULL,'组织根',1,0);
+INSERT INTO `unit` VALUES ('UT00000000000001','/',NULL,'系统根节点',1,0),('UT00000000000002','XXXXXXXXXXXXXXXX医院','UT00000000000001','安徽省合肥市XXX路YY号',1,0),('UT00000000000003','YYYYYYYYYYY科室','UT00000000000002','XXXXXXXXXXYYYYYYYYYYYYYYYY',1,0),('UT00000000000004','rererererer','UT00000000000003','rerererererrerererererrerererererrerererererrerererererrererererer',0,0),('UT00000000000005','谢谢谢谢谢谢','UT00000000000001','xxxxxxxxxxxxxxxxxx嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻',1,0),('UT00000000000006','涛涛日日日仍然','UT00000000000005','xxxxxxxxxxxx',1,1);
 /*!40000 ALTER TABLE `unit` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -55,7 +55,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`shen`@`%`*/ /*!50003 TRIGGER `unit_BEFORE_INSERT` BEFORE INSERT ON `unit` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 DEFINER=`shen`@`localhost`*/ /*!50003 TRIGGER `unit_BEFORE_INSERT` BEFORE INSERT ON `unit` FOR EACH ROW BEGIN
 	INSERT INTO unit_seq VALUES (NULL);
     SET NEW.UNIT_ID = CONCAT('UT', LPAD(LAST_INSERT_ID(), 14, '0'));
 END */;;
@@ -74,4 +74,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-06 10:54:58
+-- Dump completed on 2018-12-11  1:48:42

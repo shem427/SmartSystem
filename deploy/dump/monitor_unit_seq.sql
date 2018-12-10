@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: monitor
+-- Host: localhost    Database: monitor
 -- ------------------------------------------------------
 -- Server version	8.0.12
 
@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `unit_seq`;
 CREATE TABLE `unit_seq` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -34,7 +34,7 @@ CREATE TABLE `unit_seq` (
 
 LOCK TABLES `unit_seq` WRITE;
 /*!40000 ALTER TABLE `unit_seq` DISABLE KEYS */;
-INSERT INTO `unit_seq` VALUES (1);
+INSERT INTO `unit_seq` VALUES (1),(2),(3),(4),(5),(6);
 /*!40000 ALTER TABLE `unit_seq` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -47,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-06 10:54:57
+-- Dump completed on 2018-12-11  1:48:41

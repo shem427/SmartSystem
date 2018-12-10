@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: monitor
+-- Host: localhost    Database: monitor
 -- ------------------------------------------------------
 -- Server version	8.0.12
 
@@ -37,6 +37,7 @@ CREATE TABLE `unit_manager` (
 
 LOCK TABLES `unit_manager` WRITE;
 /*!40000 ALTER TABLE `unit_manager` DISABLE KEYS */;
+INSERT INTO `unit_manager` VALUES ('UT00000000000005','000002');
 /*!40000 ALTER TABLE `unit_manager` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-06 10:54:57
+-- Dump completed on 2018-12-11  1:48:41
