@@ -85,9 +85,36 @@ DROP TRIGGER IF EXISTS `sensor_BEFORE_INSERT`;
 DELIMITER $$
 CREATE TRIGGER `sensor_BEFORE_INSERT` BEFORE INSERT ON `sensor` FOR EACH ROW
 BEGIN
-	INSERT INTO sensor_seq VALUES (NULL);
+    INSERT INTO sensor_seq VALUES (NULL);
     SET NEW.SENSOR_ID = CONCAT('UT', LPAD(LAST_INSERT_ID(), 14, '0'));
 END$$
 DELIMITER ;
 
 INSERT INTO `unit` VALUES ('UT00000000000001','/',NULL,'系统根节点',1,0);
+INSERT INTO `user` VALUES ('000001','张三','zhs@test.org','','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92','1234567890', 1);
+
+DROP FUNCTION IF EXISTS `getUnitPath`;
+DELIMITER $$
+CREATE FUNCTION `getUnitPath`(id char(16)) RETURNS varchar(2048) CHARSET utf8mb4
+    READS SQL DATA
+    DETERMINISTIC
+BEGIN
+	DECLARE currentPId char(16);  
+	DECLARE fullPath varchar(2048);
+	DECLARE tempName varchar(2048);
+    SET tempName='';
+
+	SELECT `UNIT_NAME`, `PARENT_ID` INTO fullPath, currentPId FROM `unit` WHERE `UNIT_ID` = id AND ACTIVE=true;
+
+	WHILE currentPId IS NOT NULL DO
+		SELECT `UNIT_NAME`, `PARENT_ID` INTO tempName, currentPId FROM `unit` WHERE `UNIT_ID` = currentPId AND ACTIVE=true;
+        IF tempName <> '/' THEN
+			SET fullPath = CONCAT(tempName, '/', fullPath);
+        ELSE
+			SET fullPath = CONCAT(tempName, fullPath);
+		END IF;
+	END WHILE;
+
+	RETURN fullPath;
+END$$
+DELIMITER ;
