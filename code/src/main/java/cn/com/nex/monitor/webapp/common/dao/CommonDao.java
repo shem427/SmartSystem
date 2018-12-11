@@ -1,6 +1,7 @@
 package cn.com.nex.monitor.webapp.common.dao;
 
 import cn.com.nex.monitor.webapp.common.bean.CommonBean;
+import cn.com.nex.monitor.webapp.common.constant.DBConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -104,5 +105,15 @@ public abstract class CommonDao<T extends CommonBean> {
             }
             return id;
         });
+    }
+
+    protected ResultSetExtractor<Integer> getTotalExtractor() {
+        return rs -> {
+            int total = 0;
+            while(rs.next()) {
+                total = rs.getInt(DBConstant.TOTAL);
+            }
+            return total;
+        };
     }
 }

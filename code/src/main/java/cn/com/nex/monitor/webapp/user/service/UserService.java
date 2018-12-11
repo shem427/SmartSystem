@@ -7,6 +7,7 @@ import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import cn.com.nex.monitor.webapp.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class UserService {
         return usersData;
     }
 
+    @Transactional
     public int deleteUser(List<String> userIds) {
         int count = 0;
         if (userIds == null || userIds.isEmpty()) {
@@ -51,14 +53,17 @@ public class UserService {
         return count;
     }
 
+    @Transactional
     public int addUser(UserBean user) {
         return userDao.addUser(user);
     }
 
+    @Transactional
     public int updateUser(UserBean user) {
         return userDao.updateUser(user);
     }
 
+    @Transactional
     public int resetPassword(List<String> userIds, String defaultPassword) {
         int count = 0;
         if (userIds == null) {

@@ -14,7 +14,7 @@ $(function() {
         LOGOUT_CONFIRM: '请确认是否注销？',
         LOGIN_ERROR: '用户登陆发生错误，请确认用户名与密码。如果再次发生错误，请联系管理员。',
 
-        USER_NO_SELETION: '请选择人员。',
+        USER_NO_SELECTION: '请选择人员。',
         USER_DELETE_CONFIRM: '确定要删除人员？<br/>&nbsp;&nbsp;&nbsp;&nbsp;删除件数=',
         USER_DELETE_SUCCESS: '删除成功。删除件数=',
         USER_EDIT_MULTI_SELECT: '编辑时，请只选择一名人员。',
@@ -39,6 +39,11 @@ $(function() {
         UNIT_NO_SELECTION: '请选择组织节点。',
         UNIT_DELETE_CONFIRM: '确定要删除组织？<br/>&nbsp;&nbsp;&nbsp;&nbsp;组织名：',
         UNIT_NOT_ADD_UNDER_LEAF: '叶节点组织无法添加子组织。',
-        USER_NO_SELECTION: '选择人员为空，请选择人员，然后点击保存。'
+        MANAGER_NO_SELECTION: '选择人员为空，请选择人员，然后点击保存。',
+
+        SENSOR_NO_SELECTION: '请选择传感器',
+        SENSOR_EDIT_MULTI_SELECT: '编辑时，请只选择一件传感器。',
+        SENSOR_DELETE_CONFIRM: '确定要删除传感器？<br/>&nbsp;&nbsp;&nbsp;&nbsp;删除件数=',
+        SENSOR_DELETE_SUCCESS: '删除成功。删除件数=',
     };
 });

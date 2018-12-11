@@ -263,7 +263,7 @@ $(function() {
                             var selectedUserOptions = selectedUsers.find('option');
                             unitManagers.empty();
                             if (!selectedUserOptions || selectedUserOptions.length === 0) {
-                                $.mr.messageBox.alert($.mr.resource.USER_NO_SELECTION);
+                                $.mr.messageBox.alert($.mr.resource.MANAGER_NO_SELECTION);
                                 return;
                             }
                             for (var i = 0; i < selectedUserOptions.length; i++) {

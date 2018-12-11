@@ -68,7 +68,7 @@ $(function() {
                 var selections = $.mr.table.getSelections('#userTable');
                 var userId;
                 if (selections.length === 0) {
-                    $.mr.messageBox.alert($.mr.resource.USER_NO_SELETION);
+                    $.mr.messageBox.alert($.mr.resource.USER_NO_SELECTION);
                 } else if (selections.length > 1) {
                     $.mr.messageBox.alert($.mr.resource.USER_EDIT_MULTI_SELECT);
                 } else {
@@ -82,7 +82,7 @@ $(function() {
                 var selections = $.mr.table.getSelections('#userTable');
                 var userIdArray = [];
                 if (selections.length === 0) {
-                    $.mr.messageBox.alert($.mr.resource.USER_NO_SELETION);
+                    $.mr.messageBox.alert($.mr.resource.USER_NO_SELECTION);
                     return;
                 }
                 $.each(selections, function(idx, item) {
@@ -112,7 +112,7 @@ $(function() {
                 var selections = $.mr.table.getSelections('#userTable');
                 var userIdArray = [];
                 if (selections.length === 0) {
-                    $.mr.messageBox.alert($.mr.resource.USER_NO_SELETION);
+                    $.mr.messageBox.alert($.mr.resource.USER_NO_SELECTION);
                     return;
                 }
                 $.each(selections, function(idx, item) {
