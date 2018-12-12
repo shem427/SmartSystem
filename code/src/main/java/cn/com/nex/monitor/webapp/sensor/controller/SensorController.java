@@ -90,4 +90,23 @@ public class SensorController {
         }
         return bean;
     }
+
+    @ResponseBody
+    @PostMapping(value = "/saveSensor")
+    public CommonBean saveSensor(SensorBean sensor, boolean isCreate) {
+        CommonBean bean = new CommonBean();
+        try {
+            if (isCreate) {
+                sensorService.addSensor(sensor);
+            } else {
+                sensorService.updateSensor(sensor);
+            }
+        } catch (Exception e) {
+            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
+            bean.setStatus(CommonBean.Status.ERROR);
+            bean.setMessage(message);
+            LOG.error(message, e);
+        }
+        return bean;
+    }
 }

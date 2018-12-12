@@ -2,6 +2,7 @@ package cn.com.nex.monitor.webapp.unit.controller;
 
 import cn.com.nex.monitor.webapp.common.MessageService;
 import cn.com.nex.monitor.webapp.common.bean.CommonBean;
+import cn.com.nex.monitor.webapp.common.bean.StringValueBean;
 import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.unit.service.UnitService;
@@ -105,7 +106,6 @@ public class UnitController {
     @PostMapping(value = "deleteUnit")
     @ResponseBody
     public CommonBean deleteUnit(String unitId) {
-
         CommonBean retBean = new CommonBean();
         try {
             boolean hasChildren = unitService.hasChildren(unitId);
@@ -131,5 +131,26 @@ public class UnitController {
     public List<UserBean> getUnitManagers(String unitId) {
         List<UserBean> managerList = unitService.getUnitManagers(unitId);
         return managerList;
+    }
+
+    @GetMapping(value = "getUnitFullPath")
+    @ResponseBody
+    public StringValueBean getUnitFullPath(String unitId) {
+        StringValueBean retBean = new StringValueBean();
+        try {
+            String fullPath = unitService.getUnitFullPath(unitId);
+            retBean.setValue(fullPath);
+        } catch (Exception e) {
+            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
+            LOG.error(message, e);
+            retBean.setStatus(CommonBean.Status.ERROR);
+            retBean.setMessage(message);
+        }
+        return retBean;
+    }
+
+    @GetMapping(value = "unitSelectModal")
+    public String unitSelectModal() {
+        return "unit/unitSelectModal";
     }
 }

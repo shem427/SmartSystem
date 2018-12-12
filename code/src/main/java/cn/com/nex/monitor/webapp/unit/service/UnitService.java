@@ -59,6 +59,10 @@ public class UnitService {
         return subList != null && !subList.isEmpty();
     }
 
+    public String getUnitFullPath(String unitId) {
+        return unitDao.getUnitFullPath(unitId);
+    }
+
     private void saveUnitManagers(String unitId, List<String> userIdList) {
         unitDao.deleteManagers(unitId);
         unitDao.saveManagers(unitId, userIdList);

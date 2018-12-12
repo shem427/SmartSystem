@@ -1,0 +1,59 @@
+<div class="modal fade" id="sensorModal" tabindex="-1" role="dialog" aria-labelledby="sensorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="fa fa-times"></span>
+                </button>
+                <h4 class="modal-title" id="sensorModalLabel" th:if="${sensorId == null}">
+                    添加传感器
+                </h4>
+                <h4 class="modal-title" id="sensorModalLabel" th:if="${sensorId != null}">
+                    编辑传感器
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="sensorForm">
+                    <div class="form-group">
+                        <label for="sensorName">传感器名称</label>
+                        <input type="hidden" id="sensorId" th:value="${sensorId}" />
+                        <input type="text" class="form-control" id="sensorName" name="sensorName" placeholder="请输入传感器名称" th:value="${sensorName}" maxlength="64" />
+                    </div>
+                    <div class="form-group">
+                        <label for="sensorName">传感器型号</label>
+                        <input type="text" class="form-control" id="sensorModel" name="sensorModel" placeholder="请输入传感器型号" th:value="${sensorModel}" maxlength="32" />
+                    </div>
+                    <div class="form-group">
+                        <label for="sensorSn">传感器序列号</label>
+                        <input type="text" class="form-control" id="sensorSn" name="sensorSn" placeholder="请输入传感器序列号" th:value="${sensorSn}" maxlength="64" />
+                    </div>
+                    <div class="form-group">
+                        <label for="sensorRemark">备注</label>
+                        <textarea class="form-control" id="sensorRemark" name="sensorRemark" placeholder="请输入备注" th:text="${sensorRemark}" rows="4"  maxlength="512"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="unitFullPathModal">所属紫外线灯</label>
+                        <input type="hidden" th:value="${unitId}" id="unitIdModal" />
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="unitFullPathModal" name="unitFullPathModal" th:value="${unitFullPath}" readonly="readonly" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-date" type="button" id="selectSensor" th:disabled="${sensorId != null}">
+                                    <span class="fa fa-building"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveSensor">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $.mr.sensor.initModal();
+    });
+</script>

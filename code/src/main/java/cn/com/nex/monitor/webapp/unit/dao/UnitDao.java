@@ -1,5 +1,6 @@
 package cn.com.nex.monitor.webapp.unit.dao;
 
+import cn.com.nex.monitor.webapp.common.constant.DBConstant;
 import cn.com.nex.monitor.webapp.common.dao.CommonDao;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
@@ -127,6 +128,17 @@ public class UnitDao extends CommonDao<UnitBean> {
     public int delete(String unitId) {
         String sql = "UPDATE `UNIT` SET `ACTIVE`=false WHERE `UNIT_ID`=?";
         return jdbcTemplate.update(sql, unitId);
+    }
+
+    public String getUnitFullPath(String unitId) {
+        String sql = "SELECT getUnitPath(?) AS UNIT_FULL_PATH FROM DUAL";
+        return jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
+            String path = null;
+            while(rs.next()) {
+                path = rs.getString(DBConstant.UNIT_FULL_PATH);
+            }
+            return path;
+        });
     }
 
     private UserBean getMananger(ResultSet rs) throws SQLException {

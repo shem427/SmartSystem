@@ -1,6 +1,7 @@
 $(function() {
     var _self;
     $.mr.sensor = {
+        // ------------------------------------- 传感器页面 开始-------------------------------------------------
         _initSensorTable: function() {
             $.mr.table.create({
                 selector: '#sensorTable',
@@ -113,7 +114,163 @@ $(function() {
             _self._initSensorTable();
             _self._initSearchEvt();
             _self._initToolbarEvt();
+        },
+        // ------------------------------------- 传感器页面 结束-------------------------------------------------
+
+        // ------------------------------------- 传感器添加/编辑Modal 开始---------------------------------------
+        _unshowUserModal: function() {
+            $.mr.modal.destroy({
+                selector: '#sensorModal'
+            })
+        },
+        initModal: function() {
+            _self._validateSensorModal();
+
+            $('#saveSensor').click(function() {
+                var sensorId = $('#sensorId').val();
+                var sensorName = $('#sensorName').val();
+                var sensorModel = $('#sensorModel').val();
+                var sensorSn = $('#sensorSn').val();
+                var sensorRemark = $('#sensorRemark').val();
+                var unitId = $('#unitIdModal').val();
+
+                var form = $('#sensorForm');
+
+                form.bootstrapValidator('validate');
+                if (!form.data('bootstrapValidator').isValid()) {
+                    return;
+                }
+
+                var data = {
+                    sensorName: sensorName,
+                    sensorModel: sensorModel,
+                    sensorSn: sensorSn,
+                    sensorRemark: sensorRemark,
+                    unitId: unitId,
+                    isCreate: $('#isCreate').val()
+                };
+                if (sensorId) {
+                    data.sensorId = sensorId;
+                }
+
+                $.mr.ajax({
+                    url: 'sensor/saveSensor',
+                    type: 'post',
+                    dataType: 'json',
+                    data: data,
+                    success: function(data) {
+                        _self._unshowUserModal();
+                        $.mr.table.refresh({
+                            selector: '#sensorTable',
+                            params: {
+                                silent: true
+                            }
+                        });
+                    }
+                });
+            });
+
+            $('#selectSensor').click(function() {
+                    $.mr.modal.create({
+                        url: 'unit/unitSelectModal',
+                        afterDisplaying: function(dialog) {
+                            var selectUnitBtn = $('#selectUnit', dialog);
+
+                            _self._initUnitModalTree('#unitModalTree', selectUnitBtn);
+
+                            selectUnitBtn.prop('disabled', true);
+                            selectUnitBtn.click(function() {
+                                var selectedUnitId = $('#selectedUnitId').val();
+                                $.mr.ajax({
+                                    url: 'unit/getUnitFullPath',
+                                    type: 'get',
+                                    dataType: 'json',
+                                    data: {unitId: selectedUnitId},
+                                    async: false,
+                                    success: function(data) {
+                                        $('#unitIdModal').val(selectedUnitId);
+                                        $('#unitFullPathModal').val(data.value);
+                                        $.mr.modal.destroy({
+                                            selector: '#unitSelectModal'
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    });
+            });
+        },
+        _initUnitModalTree: function(treeSelector, selectBtn) {
+            _self._unitModalTree = $.mr.tree.create({
+                selector: treeSelector,
+                url: 'unit/subUnit',
+                checkEnabled: false,
+                editEnabled: false,
+                selectedMulti: false,
+                callback: {
+                    onNodeCreated: function(event, treeId, treeNode) {
+                        if (treeNode.id === 'UT00000000000001') {
+                            _self._unitModalTree.expandNode(treeNode, true, false, true, true);
+                        }
+                    },
+                    beforeClick: function(treeId, treeNode, clickFlag) {
+                        var selectedUnitId = $('#selectedUnitId');
+                        if (clickFlag === 0) {
+                            // cancel select.
+                            selectBtn.prop('disabled', true);
+                            selectedUnitId.val('');
+                            return false;
+                        } else {
+                            selectedUnitId.val(treeNode.id);
+                            selectBtn.prop('disabled', false);
+                        }
+                    }
+                }
+            });
+        },
+        _validateSensorModal: function() {
+            var form = $('#sensorForm');
+            form.bootstrapValidator({
+                message: 'value is not valid',
+                live: 'disabled',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    sensorName: {
+                        validators: {
+                            notEmpty: {
+                                message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                            }
+                        }
+                    },
+                    sensorModel: {
+                        validators: {
+                            notEmpty: {
+                                message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                            }
+                        }
+                    },
+                    sensorSn: {
+                        validators: {
+                            notEmpty: {
+                                message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                            }
+                        }
+                    },
+                    unitFullPathModal: {
+                        validators: {
+                            notEmpty: {
+                                message: $.mr.resource.VALIDATION_MSG_NOT_EMPTY
+                            }
+                        }
+                    }
+                }
+            });
         }
+        // ------------------------------------- 传感器添加/编辑Modal 结束---------------------------------------
     };
     _self = $.mr.sensor;
 });
