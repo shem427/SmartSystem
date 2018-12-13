@@ -109,7 +109,7 @@ public class SettingController {
         ThresholdBean bean = settingService.getThreshold(RADIATION_THRESHOLD);
         if (bean == null) {
             bean = new ThresholdBean();
-            bean.setNormal(RADIATION_DEFAULT_NORMAL);
+            bean.setNorml(RADIATION_DEFAULT_NORMAL);
             bean.setWarning(RADIATION_DEFAULT_WARNING);
         }
         model.put("threshold", bean);

@@ -8,6 +8,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class ThresholdBean extends CommonBean {
     private String type;
-    private int normal;
+    private int norml;
     private int warning;
 }
