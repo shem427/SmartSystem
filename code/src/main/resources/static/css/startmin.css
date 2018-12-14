@@ -746,3 +746,36 @@ div.flot-area {
 	margin-left: 10px;
 	background: url(../img/logo.png) no-repeat left;
 }
+
+/*------------- Dashboard ST -------------*/
+.status-icon {
+	background-color: #f7fff9;
+    text-align: center;
+	padding: 12px;
+	box-shadow:3px 3px 3px #aaaaaa;
+}
+
+.status-icon > i {
+	font-size: 7em;
+}
+.status-icon:hover {
+    background-color: #AFD9EE;
+	color: #0075B0;
+	cursor: pointer;
+}
+.status-icon .status-remark {
+	text-align: left;
+}
+.status-icon.normal {
+	border: 5px solid #d6e9c6;
+	color: green;
+}
+.status-icon.error {
+	border: 5px solid #a00000;
+	color: red;
+}
+.status-icon.warning {
+	border: 5px solid yellow;
+	color: #F5E79E;
+}
+/*------------- Dashboard ED -------------*/

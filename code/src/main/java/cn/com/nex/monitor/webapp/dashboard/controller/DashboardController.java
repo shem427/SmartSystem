@@ -1,21 +1,34 @@
 package cn.com.nex.monitor.webapp.dashboard.controller;
 
-import cn.com.nex.monitor.webapp.dashboard.bean.DashboardBean;
+import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
+import cn.com.nex.monitor.webapp.dashboard.service.DashboardService;
+import cn.com.nex.monitor.webapp.user.bean.UserBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/dashboard")
 public class DashboardController {
+    @Autowired
+    private DashboardService dashboardService;
 
     @GetMapping(value = "/index")
-    public String page() {
-        return "dashboard/page";
+    public ModelAndView page(String parentId) {
+        Map<String, Object> model = new HashMap<>();
+        UserBean user = MonitorUtil.getUserFromSecurity();
+
+        // TODO:
+
+        return new ModelAndView("dashboard/page", model);
     }
 
-    @ResponseBody
+    /*@ResponseBody
     @GetMapping(value = "/getData")
     public DashboardBean getDashboardData() {
         DashboardBean bean = new DashboardBean();
@@ -45,5 +58,5 @@ public class DashboardController {
         bean.getPm25Datas().add(37.5d);
 
         return bean;
-    }
+    }*/
 }

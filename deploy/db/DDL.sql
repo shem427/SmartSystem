@@ -207,3 +207,46 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+DROP procedure IF EXISTS `getUnitUntilParentId`;
+
+DELIMITER $$
+CREATE PROCEDURE `getUnitUntilParentId` (IN unitId CHAR, IN unitParentId CHAR)
+BEGIN
+    DECLARE pId CHAR(16);
+    SELECT `PARENT_ID` INTO pId FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
+    IF unitParentId IS NULL AND pId IS NULL THEN
+        SELECT `UNIT_ID`, `UNIT_NAME`, `UNIT_ID`, `REMARK` FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
+    ELSEIF unitParentId=pId THEN
+        SELECT `UNIT_ID`, `UNIT_NAME`, `UNIT_ID`, `REMARK` FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
+    ELSE
+        CALL getUnitUntilParentId(pId, unitParentId);
+    END IF;
+END$$
+
+DELIMITER ;
+
+DROP procedure IF EXISTS `getUnitByManagerParentId`;
+
+DELIMITER $$
+CREATE PROCEDURE `getUnitByManagerParentId` (IN userId CHAR, IN unitParentId CHAR)
+BEGIN
+    DECLARE done BOOL DEFAULT false;
+    DECLARE unitId CHAR(16);
+
+    DECLARE curl CURSOR FOR SELECT U.`UNIT_ID` FROM `unit` U, `unit_manager` M WHERE  U.`UNIT_ID`=M.`UNIT_ID` AND U.`ACTIVE`=true AND U.`LEAF`=true AND M.`USER_ID`=userId;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = true;
+
+    OPEN curl;
+    uLoop: LOOP
+        FETCH curl INTO unitId;
+        IF done THEN
+            LEAVE uLoop;
+        ELSE
+            CALL getUnitUntilParentId(unitId, unitParentId);
+        END IF;
+    END LOOP uLoop;
+    CLOSE curl;
+END$$
+
+DELIMITER ;

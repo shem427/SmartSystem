@@ -1,11 +1,6 @@
 $(function() {
     $.mr.dashboard = {
-        /**
-         * convert detail data to plot data.
-         * @param data - detail data
-         * @returns {{radiation: Array, temperature: Array, humidity: Array, pm25: Array}}
-         */
-        convertDisplayData: function(data) {
+        /*convertDisplayData: function(data) {
             var count = data.radiationDatas.length;
             var chartsData = {
                 radiation: [],
@@ -23,10 +18,6 @@ $(function() {
 
             return chartsData;
         },
-        /**
-         * display charts function.
-         * @param data
-         */
         displayCharts: function(data) {
             var chartsData = $.mr.dashboard.convertDisplayData(data);
             var plotGrid = {
@@ -86,6 +77,11 @@ $(function() {
                 success: function(data) {
                     $.mr.dashboard.displayCharts(data);
                 }
+            });
+        }*/
+        init: function() {
+            $('.status-icon').click(function() {
+
             });
         }
     };
