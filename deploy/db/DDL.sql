@@ -2,10 +2,10 @@ use `monitor`;
 
 DROP TABLE IF EXISTS `threshold`;
 CREATE TABLE `threshold` (
-  `TYPE` varchar(32) NOT NULL,
-  `NORMAL` int(11) NOT NULL,
-  `WARNING` int(11) NOT NULL,
-  PRIMARY KEY (`TYPE`)
+  `DATA_ID` varchar(32) NOT NULL,
+  `NORML` int(11) NOT NULL,
+  `WARN` int(11) NOT NULL,
+  PRIMARY KEY (`DATA_ID`)
 );
 
 DROP TABLE IF EXISTS `unit_seq`;
@@ -136,37 +136,27 @@ DELIMITER ;
 
 DROP procedure IF EXISTS `getRadiationUnitStatus`;
 DELIMITER $$
-CREATE PROCEDURE `getRadiationUnitStatus`(IN unitId CHAR(16), IN warn INT, IN err INT, OUT stats INT)
+CREATE PROCEDURE `getRadiationUnitStatus`(IN unitId CHAR(16), IN norml INT, IN warn INT, OUT stats INT)
 BEGIN
-    DECLARE done BOOL DEFAULT false;
-    DECLARE radValue INT;
     DECLARE ret INT DEFAULT 0;
+    DECLARE countTotal INT DEFAULT 0;
     DECLARE countWarn INT DEFAULT 0;
     DECLARE countError INT DEFAULT 0;
+
+    SELECT COUNT(1) INTO countTotal FROM `radiation` WHERE `UNIT_ID`=unitId ORDER BY RAD_ID DESC  LIMIT 0, 10;
+    SELECT COUNT(1) INTO countError FROM `radiation` WHERE `UNIT_ID`=unitId AND `RAD_VALUE` <= warn ORDER BY RAD_ID DESC LIMIT 0, 10;
+    SELECT COUNT(1) INTO countWarn FROM `radiation` WHERE `UNIT_ID`=unitId AND `RAD_VALUE` <= norml ORDER BY RAD_ID DESC LIMIT 0, 10;
     
-    DECLARE curl CURSOR FOR SELECT `RAD_VALUE` FROM `RADIATION` WHERE `UNIT_ID`=unitId ORDER BY RAD_ID DESC LIMIT 0, 10;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = true;
-    
-    OPEN curl;
-    radLoop: LOOP
-        FETCH curl INTO radValue;
-        IF done THEN
-            SET ret = -1;
-            LEAVE radLoop;
-        ELSEIF radValue <= err THEN
-            SET countError = countError + 1;
-        ELSEIF radValue > err AND radValue <= warn THEN
-            SET countWarn = countWarn + 1;
-        END IF;
-    END LOOP radLoop;
-    CLOSE curl;
-    
-    IF countError >= 4 THEN
+    IF countTotal = 0 THEN
+        SET ret = -1;
+    ELSEIF countTotal < 10 THEN
+        SET ret = 0;
+    ELSEIF countError >= 4 THEN
         SET ret = 2;
     ELSEIF countWarn >= 4 THEN
-        SET ret = 2;
+        SET ret = 1;
     END IF;
-    
+
     SELECT ret INTO stats;
 END$$
 
@@ -175,22 +165,27 @@ DELIMITER ;
 
 DROP procedure IF EXISTS `getUnitStatus`;
 DELIMITER $$
-CREATE PROCEDURE `getUnitStatus`(IN unitId CHAR(16), IN normal INT, IN warn INT, OUT stats INT)
+CREATE PROCEDURE `getUnitStatus`(IN unitId CHAR(16), OUT stats INT)
 BEGIN
     DECLARE done BOOL DEFAULT false;
     DECLARE parentUnitId INT;
+    DECLARE norml INT;
+    DECLARE warn INT;
+    DECLARE thresholdId varchar(64);
     
     DECLARE curl CURSOR FOR SELECT `UNIT_ID` FROM `UNIT` WHERE `PARENT_ID`=unitId;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = true;
+
+    SELECT * INTO thresholdId, norml, warn FROM `threshold` WHERE `DATA_ID`='RADIATION';
     
     OPEN curl;
     radLoop: LOOP
         FETCH curl INTO parentUnitId;
         IF done THEN
-            CALL getRadiationUnitStatus(unitId, normal, warn, stats);
+            CALL getRadiationUnitStatus(unitId, norml, warn, stats);
             LEAVE radLoop;
         ELSE
-            CALL getUnitStatus(unitId, normal, warn, stats);
+            CALL getUnitStatus(unitId, norml, warn, stats);
         END IF;
     END LOOP radLoop;
     CLOSE curl;
@@ -206,12 +201,8 @@ CREATE FUNCTION `getUnitStatus` (id CHAR(16)) RETURNS INT
     DETERMINISTIC
 BEGIN
     DECLARE stats INT;
-    DECLARE normal INT;
-    DECLARE warn INT;
-    
-    SELECT `NORMAL`, `WARNING` INTO normal, warn FROM `THRESHOLD` WHERE `TYPE`='RADIATION';
 
-    CALL getUnitStatus(id, normal, warn, stats);
+    CALL getUnitStatus(id, stats);
     RETURN stats;
 END$$
 

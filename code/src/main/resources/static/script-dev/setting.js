@@ -241,9 +241,9 @@ $(function() {
                 form.bootstrapValidator('validate');
                 if (form.data('bootstrapValidator').isValid()) {
                     return {
-                        type: 'RADIATION',
-                        normal: $('#normalThreshold').val(),
-                        warning: $('#warningThreshold').val()
+                        dataId: 'RADIATION',
+                        norml: $('#normalThreshold').val(),
+                        warn: $('#warningThreshold').val()
                     };
                 }
                 return null;

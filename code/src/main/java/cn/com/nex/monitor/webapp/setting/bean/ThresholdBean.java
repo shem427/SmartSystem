@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ThresholdBean extends CommonBean {
-    private String type;
+    private String dataId;
     private int norml;
-    private int warning;
+    private int warn;
 }

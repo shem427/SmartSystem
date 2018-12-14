@@ -43,12 +43,12 @@ public class SettingDao {
     }
 
     public ThresholdBean getThreshold(String type) {
-        String sql = "SELECT `TYPE`, `NORML`, `WARNING` FROM `THRESHOLD` WHERE TYPE=?";
+        String sql = "SELECT `DATA_ID`, `NORML`, `WARN` FROM `THRESHOLD` WHERE `DATA_ID`=?";
         return jdbcTemplate.query(sql, new String[] {type}, rs -> {
             if (rs.next()) {
                 ThresholdBean bean = new ThresholdBean();
                 bean.setNorml(rs.getInt("NORML"));
-                bean.setWarning(rs.getInt("WARNING"));
+                bean.setWarn(rs.getInt("WARN"));
                 return bean;
             } else {
                 return null;
@@ -57,12 +57,12 @@ public class SettingDao {
     }
 
     public void updateThreshold(ThresholdBean threshold) {
-        String sql = "UPDATE `THRESHOLD` SET `NORML`=?,`WARNING`=? WHERE `TYPE`=?";
-        int count = jdbcTemplate.update(sql, threshold.getNorml(), threshold.getWarning(), threshold.getType());
+        String sql = "UPDATE `THRESHOLD` SET `NORML`=?,`WARN`=? WHERE `DATA_ID`=?";
+        int count = jdbcTemplate.update(sql, threshold.getNorml(), threshold.getWarn(), threshold.getDataId());
 
         if (count == 0) {
             sql = "INSERT INTO `THRESHOLD` VALUES (?,?,?)";
-            jdbcTemplate.update(sql, threshold.getType(), threshold.getNorml(), threshold.getWarning());
+            jdbcTemplate.update(sql, threshold.getDataId(), threshold.getNorml(), threshold.getWarn());
         }
     }
 }
