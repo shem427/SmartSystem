@@ -43,14 +43,14 @@ CREATE TABLE `radiation` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-DROP TRIGGER IF EXISTS `unit_BEFORE_INSERT`;
-DELIMITER $$
-CREATE TRIGGER `unit_BEFORE_INSERT` BEFORE INSERT ON `unit` FOR EACH ROW
-BEGIN
-    INSERT INTO unit_seq VALUES (NULL);
-    SET NEW.UNIT_ID = CONCAT('UT', LPAD(LAST_INSERT_ID(), 14, '0'));
-END$$
-DELIMITER ;
+-- DROP TRIGGER IF EXISTS `unit_BEFORE_INSERT`;
+-- DELIMITER $$
+-- CREATE TRIGGER `unit_BEFORE_INSERT` BEFORE INSERT ON `unit` FOR EACH ROW
+-- BEGIN
+--     INSERT INTO unit_seq VALUES (NULL);
+--     SET NEW.UNIT_ID = CONCAT('UT', LPAD(LAST_INSERT_ID(), 14, '0'));
+-- END$$
+-- DELIMITER ;
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -103,7 +103,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-INSERT INTO `unit` VALUES ('UT00000000000001','/',NULL,'系统根节点',1,0);
+INSERT INTO `unit` VALUES ('UT00000000000000','/',NULL,'系统根节点',1,0);
 INSERT INTO `user` VALUES ('000001','张三','zhs@test.org','','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92','1234567890', 1);
 INSERT INTO threshold values ('RADIATION', 70, 50);
 
@@ -168,24 +168,26 @@ DELIMITER $$
 CREATE PROCEDURE `getUnitStatus`(IN unitId CHAR(16), OUT stats INT)
 BEGIN
     DECLARE done BOOL DEFAULT false;
-    DECLARE parentUnitId INT;
+    DECLARE subUnitId CHAR(16);
     DECLARE norml INT;
     DECLARE warn INT;
     DECLARE thresholdId varchar(64);
     
     DECLARE curl CURSOR FOR SELECT `UNIT_ID` FROM `UNIT` WHERE `PARENT_ID`=unitId;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = true;
+	
+	SET @@max_sp_recursion_depth = 10;
 
     SELECT * INTO thresholdId, norml, warn FROM `threshold` WHERE `DATA_ID`='RADIATION';
     
     OPEN curl;
     radLoop: LOOP
-        FETCH curl INTO parentUnitId;
+        FETCH curl INTO subUnitId;
         IF done THEN
             CALL getRadiationUnitStatus(unitId, norml, warn, stats);
             LEAVE radLoop;
         ELSE
-            CALL getUnitStatus(unitId, norml, warn, stats);
+            CALL getUnitStatus(subUnitId, stats);
         END IF;
     END LOOP radLoop;
     CLOSE curl;
@@ -211,14 +213,15 @@ DELIMITER ;
 DROP procedure IF EXISTS `getUnitUntilParentId`;
 
 DELIMITER $$
-CREATE PROCEDURE `getUnitUntilParentId` (IN unitId CHAR, IN unitParentId CHAR)
+CREATE PROCEDURE `getUnitUntilParentId` (IN unitId CHAR(16), IN unitParentId CHAR(16))
 BEGIN
     DECLARE pId CHAR(16);
+	SET @@max_sp_recursion_depth = 10;
     SELECT `PARENT_ID` INTO pId FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
     IF unitParentId IS NULL AND pId IS NULL THEN
-        SELECT `UNIT_ID`, `UNIT_NAME`, `UNIT_ID`, `REMARK` FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
+        SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, getUnitStatus(`UNIT_ID`) AS UNIT_STATUS FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
     ELSEIF unitParentId=pId THEN
-        SELECT `UNIT_ID`, `UNIT_NAME`, `UNIT_ID`, `REMARK` FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
+        SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, getUnitStatus(`UNIT_ID`) AS UNIT_STATUS FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
     ELSE
         CALL getUnitUntilParentId(pId, unitParentId);
     END IF;
@@ -229,7 +232,7 @@ DELIMITER ;
 DROP procedure IF EXISTS `getUnitByManagerParentId`;
 
 DELIMITER $$
-CREATE PROCEDURE `getUnitByManagerParentId` (IN userId CHAR, IN unitParentId CHAR)
+CREATE PROCEDURE `getUnitByManagerParentId` (IN userId CHAR(6), IN unitParentId CHAR(16))
 BEGIN
     DECLARE done BOOL DEFAULT false;
     DECLARE unitId CHAR(16);
