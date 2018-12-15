@@ -4,6 +4,7 @@ import cn.com.nex.monitor.webapp.common.constant.DBConstant;
 import cn.com.nex.monitor.webapp.common.dao.CommonDao;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
@@ -115,9 +116,17 @@ public class UnitDao extends CommonDao<UnitBean> {
         }
     }
 
-    public synchronized int add(UnitBean unit) {
-        String sql = "INSERT INTO `UNIT` (`UNIT_NAME`, `PARENT_ID`, `REMARK`, `LEAF`) VALUES (?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, unit.getName(), unit.getPId(), unit.getUnitRemark(), !unit.getIsParent());
+    public synchronized String add(UnitBean unit) {
+        String getIdSql = "INSERT INTO `UNIT_SEQ` VALUES (null);";
+        jdbcTemplate.update(getIdSql);
+        int id = getLastInsertId();
+        String unitId = "UT"+ StringUtils.leftPad(String.valueOf(id), 14, '0');
+
+        String sql = "INSERT INTO `UNIT`(`UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `LEAF`) VALUES (?, ?, ?, ?, ?)";
+
+        jdbcTemplate.update(sql, unitId, unit.getName(), unit.getPId(), unit.getUnitRemark(), !unit.getIsParent());
+
+        return unitId;
     }
 
     public int edit(UnitBean unit) {

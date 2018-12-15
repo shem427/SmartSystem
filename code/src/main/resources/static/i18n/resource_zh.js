@@ -45,5 +45,18 @@ $(function() {
         SENSOR_EDIT_MULTI_SELECT: '编辑时，请只选择一件传感器。',
         SENSOR_DELETE_CONFIRM: '确定要删除传感器？<br/>&nbsp;&nbsp;&nbsp;&nbsp;删除件数=',
         SENSOR_DELETE_SUCCESS: '删除成功。删除件数=',
+        UNIT_LEVEL: [{
+            title: '医院状态',
+            iconCls: 'hospital-o'
+        }, {
+            title: '科室状态',
+            iconCls: 'medkit'
+        }, {
+            title: '病房状态',
+            iconCls: 'stethoscope'
+        }, {
+            title: '紫外线灯状态',
+            iconCls: 'lightbulb-o'
+        }]
     };
 });

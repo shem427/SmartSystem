@@ -184,6 +184,21 @@ $(function() {
          * 组织添加/编辑的Modal对话框的初始化，以及各个控件的事件定义
          */
         initModal: function() {
+            var leaf = $('#unitLeaf');
+            var unitId = $('#unitId').val();
+            var managersDiv = $('#managersDiv');
+            var initManagerArea = function() {
+                var isLeaf = leaf.is(':checked');
+                if (isLeaf) {
+                    managersDiv.show();
+                } else {
+                    managersDiv.hide();
+                }
+            };
+            if (!unitId) {
+                initManagerArea();
+            }
+            leaf.change(initManagerArea);
             // 保存按钮事件
             $('#saveUnit').click(function() {
                 var unitId = $('#unitId').val();

@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +23,13 @@ public class DashboardDao {
                 .withProcedureName("getUnitByManagerParentId");
         Map<String, Object> inParamMap = new HashMap<String, Object>();
         inParamMap.put("userId", userId);
-        inParamMap.put("unitParentId", "parentId");
+        inParamMap.put("unitParentId", parentId);
         SqlParameterSource in = new MapSqlParameterSource(inParamMap);
 
         Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
-        return null;
+
+        List<DashboardUnitBean> beanList = new ArrayList<>();
+
+        return beanList;
     }
 }

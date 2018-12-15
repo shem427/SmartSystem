@@ -3,6 +3,7 @@ package cn.com.nex.monitor.webapp.unit.service;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.unit.dao.UnitDao;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,13 +28,11 @@ public class UnitService {
     }
 
     @Transactional
-    public int add(UnitBean unit) {
+    public void add(UnitBean unit) {
         // insert unit and return unit id.
-        int count = unitDao.add(unit);
+        String unitId = unitDao.add(unit);
         // save unit_manager.
-        saveUnitManagers(unit.getId(), unit.getManagerIdList());
-
-        return count;
+        saveUnitManagers(unitId, unit.getManagerIdList());
     }
 
     @Transactional

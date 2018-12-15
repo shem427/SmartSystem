@@ -80,6 +80,16 @@ $(function() {
             });
         }*/
         init: function() {
+            var level = parseInt($('#unitLevel').val());
+            var titleIcon = $('#titleIcon');
+            var titleText = $('#titleText');
+            var iconCls = $('.iconCls');
+
+            var levelInfo = $.mr.resource.UNIT_LEVEL[level];
+            titleIcon.addClass('fa fa-' + levelInfo.iconCls + ' fa-fw');
+            titleText.text(levelInfo.title);
+            iconCls.addClass('fa fa-' + levelInfo.iconCls + ' fa-5x');
+
             $('.status-icon').click(function() {
 
             });

@@ -12,6 +12,4 @@ public class DashboardUnitBean extends CommonBean {
     private String remark;
     private String parentId;
     private String statusCls;
-    private String iconCls;
-    private boolean leaf;
 }

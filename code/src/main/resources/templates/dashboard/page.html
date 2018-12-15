@@ -7,14 +7,16 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-hospital-o fa-fw"></i>&nbsp;<span th:text="${title}"></span>
+                <i id="titleIcon"></i>&nbsp;<span id="titleText"></span>
                 <span class="panel-icon pull-right"><a href="#" title="刷新"><i class="fa fa-refresh fa-fw"></i></a></span>
+                <span class="panel-icon pull-right" th:if="${level != 0}"><a href="#" title="返回" id="backLevel"><i class="fa fa-arrow-up fa-fw"></i></a></span>
+                <input type="hidden" id="unitLevel" th:value="${level}" />
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-4 col-md-3" th:each="unit : ${units}">
                         <div th:class="${unit.statusCls}" th:id="${unit.unitId}">
-                            <i th:class="${unit.iconCls}"></i>
+                            <i class="iconCls"></i>
                             <div class="caption status-remark" th:title="${unit.remark}" th:id="${unit.unitId}">
                                 <p th:text="${unit.unitName}"></p>
                             </div>

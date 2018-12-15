@@ -1,29 +1,48 @@
 package cn.com.nex.monitor.webapp.dashboard.controller;
 
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
+import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
 import cn.com.nex.monitor.webapp.dashboard.service.DashboardService;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/dashboard")
 public class DashboardController {
+    @Value("${cn.com.nex.monitor.top.unit}")
+    private String topUnitId;
+
     @Autowired
     private DashboardService dashboardService;
 
     @GetMapping(value = "/index")
-    public ModelAndView page(String parentId) {
+    public ModelAndView page(String parentId, Integer level) {
+        String pId;
+        if (parentId == null) {
+            pId = topUnitId;
+        } else {
+            pId = parentId;
+        }
+
+        if (level == null) {
+            level = 0;
+        }
         Map<String, Object> model = new HashMap<>();
         UserBean user = MonitorUtil.getUserFromSecurity();
 
-        // TODO:
+        List<DashboardUnitBean> dashboardUnitList =  dashboardService
+                .getUnitListByManagerAndParent(user.getUserId(), pId);
+        model.put("units", dashboardUnitList);
+        model.put("level", level);
 
         return new ModelAndView("dashboard/page", model);
     }
