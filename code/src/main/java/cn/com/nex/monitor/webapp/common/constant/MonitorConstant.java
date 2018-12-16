@@ -17,7 +17,8 @@ public class MonitorConstant {
     public static final String LOG_EXIT_CODE = "mr.server.log.end";
     public static final String LOG_ERROR = "mr.server.error";
 
-    public static final String CONFIG_DEFAULT_PASSWORD = "mr.default.password";
-
     public static final String CAN_NOT_DELETE_SELF = "mr.cannot.delete.self";
+
+    public static final String UNIT_STATUS_JOB_START = "mr.unit.status.job.start";
+    public static final String UNIT_STATUS_JOB_END = "mr.unit.status.job.end";
 }

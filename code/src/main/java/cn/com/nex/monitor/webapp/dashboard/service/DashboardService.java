@@ -15,4 +15,8 @@ public class DashboardService {
     public List<DashboardUnitBean> getUnitListByManagerAndParent(String userId, String parentId) {
         return dashboardDao.getUnitListByManagerAndParent(userId, parentId);
     }
+
+    public void updateUnitStatus() {
+        dashboardDao.updateUnitStatus();
+    }
 }

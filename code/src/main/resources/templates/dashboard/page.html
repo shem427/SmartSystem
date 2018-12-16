@@ -17,7 +17,7 @@
                     <div class="col-xs-4 col-md-3" th:each="unit : ${units}">
                         <div th:class="${unit.statusCls}" th:id="${unit.unitId}">
                             <i class="iconCls"></i>
-                            <div class="caption status-remark" th:title="${unit.remark}" th:id="${unit.unitId}">
+                            <div class="caption status-remark" th:title="${unit.remark}">
                                 <p th:text="${unit.unitName}"></p>
                             </div>
                         </div>

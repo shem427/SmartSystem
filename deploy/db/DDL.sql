@@ -159,78 +159,74 @@ BEGIN
 
     SELECT ret INTO stats;
 END$$
-
 DELIMITER ;
 
-
-DROP procedure IF EXISTS `getUnitStatus`;
+DROP procedure IF EXISTS `updateParentStatus`;
 DELIMITER $$
-CREATE PROCEDURE `getUnitStatus`(IN unitId CHAR(16), OUT stats INT)
+CREATE PROCEDURE `updateParentStatus`(IN unitId CHAR(16), IN stats INT)
+BEGIN
+    DECLARE pId CHAR(16);
+    DECLARE pStatus INT;
+
+    SELECT `PARENT_ID` INTO pId FROM `UNIT` WHERE `ACTIVE`=true AND `UNIT_ID`=unitId;
+    WHILE pId != 'UT00000000000000' DO
+        SELECT `UNIT_STATUS` INTO pStatus FROM `UNIT` WHERE `ACTIVE`=true AND `UNIT_ID`=pId;    
+        IF pStatus < stats THEN
+            UPDATE `UNIT` SET `UNIT_STATUS`=stats WHERE `UNIT_ID`=pId;
+		ELSE
+            SET stats=pStatus;
+        END IF;
+        SELECT `PARENT_ID` INTO pId FROM `UNIT` WHERE `ACTIVE`=true AND `UNIT_ID`=pId;
+	END WHILE;
+END$$
+DELIMITER ;
+
+DROP procedure IF EXISTS `updateUnitStatus`;
+DELIMITER $$
+CREATE PROCEDURE `updateUnitStatus`()
 BEGIN
     DECLARE done BOOL DEFAULT false;
-    DECLARE subUnitId CHAR(16);
-    DECLARE norml INT;
+	DECLARE norml INT;
     DECLARE warn INT;
     DECLARE thresholdId varchar(64);
-    
-    DECLARE curl CURSOR FOR SELECT `UNIT_ID` FROM `UNIT` WHERE `PARENT_ID`=unitId;
+    DECLARE leafUnitId CHAR(16);
+    DECLARE curl CURSOR FOR SELECT `UNIT_ID` FROM `UNIT` WHERE `ACTIVE`=true AND `LEAF`=true;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = true;
-	
-	SET @@max_sp_recursion_depth = 10;
 
     SELECT * INTO thresholdId, norml, warn FROM `threshold` WHERE `DATA_ID`='RADIATION';
-    
+    SET @@max_sp_recursion_depth = 100;
+
     OPEN curl;
-    radLoop: LOOP
-        FETCH curl INTO subUnitId;
+    uLoop: LOOP
+        FETCH curl INTO leafUnitId;
         IF done THEN
-            CALL getRadiationUnitStatus(unitId, norml, warn, stats);
-            LEAVE radLoop;
+            LEAVE uLoop;
         ELSE
-            CALL getUnitStatus(subUnitId, stats);
+            CALL getRadiationUnitStatus(leafUnitId, norml, warn, stats);
+            UPDATE `UNIT` SET `UNIT_STATUS`=stats WHERE `UNIT_ID`=leafUnitId;
+            CALL updateParentStatus(leafUnitId, stats);
         END IF;
-    END LOOP radLoop;
-    CLOSE curl;
+    END LOOP uLoop;
+    CLOSE curl;    
 END$$
-
-DELIMITER ;
-
-
-DROP function IF EXISTS `getUnitStatus`;
-DELIMITER $$
-CREATE FUNCTION `getUnitStatus` (id CHAR(16)) RETURNS INT
-    READS SQL DATA
-    DETERMINISTIC
-BEGIN
-    DECLARE stats INT;
-
-    CALL getUnitStatus(id, stats);
-    RETURN stats;
-END$$
-
 DELIMITER ;
 
 DROP procedure IF EXISTS `getUnitUntilParentId`;
-
 DELIMITER $$
 CREATE PROCEDURE `getUnitUntilParentId` (IN unitId CHAR(16), IN unitParentId CHAR(16))
 BEGIN
     DECLARE pId CHAR(16);
-	SET @@max_sp_recursion_depth = 10;
+	SET @@max_sp_recursion_depth = 100;
     SELECT `PARENT_ID` INTO pId FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
-    IF unitParentId IS NULL AND pId IS NULL THEN
-        SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, getUnitStatus(`UNIT_ID`) AS UNIT_STATUS FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
-    ELSEIF unitParentId=pId THEN
-        SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, getUnitStatus(`UNIT_ID`) AS UNIT_STATUS FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
+    IF unitParentId=pId THEN
+        SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `UNIT_STATUS` FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
     ELSE
         CALL getUnitUntilParentId(pId, unitParentId);
     END IF;
 END$$
-
 DELIMITER ;
 
 DROP procedure IF EXISTS `getUnitByManagerParentId`;
-
 DELIMITER $$
 CREATE PROCEDURE `getUnitByManagerParentId` (IN userId CHAR(6), IN unitParentId CHAR(16))
 BEGIN
@@ -251,5 +247,4 @@ BEGIN
     END LOOP uLoop;
     CLOSE curl;
 END$$
-
 DELIMITER ;

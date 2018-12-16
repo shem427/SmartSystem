@@ -91,7 +91,19 @@ $(function() {
             iconCls.addClass('fa fa-' + levelInfo.iconCls + ' fa-5x');
 
             $('.status-icon').click(function() {
-
+                var unitId = $(this).prop('id');
+                $.mr.ajax({
+                    url: 'dashboard/index',
+                    type: 'get',
+                    data: {
+                        parentId: unitId,
+                        level: level ? (level + 1) : 1
+                    },
+                    dataType: 'html',
+                    success: function(data) {
+                        $('#page-wrapper').empty().append(data);
+                    }
+                });
             });
         }
     };

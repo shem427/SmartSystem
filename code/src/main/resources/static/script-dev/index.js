@@ -11,11 +11,6 @@ $(function() {
             var $logoutLink = $('#logoutLink');
 
             var $dashboardLink = $('#dashboardLink');
-            var $sensorDetail1Link = $('#sensorDetail1Link');
-            var $sensorDetail2Link = $('#sensorDetail2Link');
-            var $sensorDetail3Link = $('#sensorDetail3Link');
-            var $sensorDetail4Link = $('#sensorDetail4Link');
-            var $sensorDetail5Link = $('#sensorDetail5Link');
             var $userLink = $('#userLink');
             var $unitLink = $('#unitLink');
             var $sensorLink = $('#sensorLink');

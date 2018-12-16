@@ -18,6 +18,12 @@ public class DashboardDao {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
+    public void updateUnitStatus() {
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
+                .withProcedureName("updateUnitStatus");
+        simpleJdbcCall.execute();
+    }
+
     public List<DashboardUnitBean> getUnitListByManagerAndParent(String userId, String parentId) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withProcedureName("getUnitByManagerParentId");
