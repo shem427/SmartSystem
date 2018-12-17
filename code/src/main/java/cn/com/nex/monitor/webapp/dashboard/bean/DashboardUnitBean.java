@@ -11,5 +11,15 @@ public class DashboardUnitBean extends CommonBean {
     private String unitName;
     private String remark;
     private String parentId;
-    private String statusCls;
+    private int unitStatus;
+
+    public String getStatusCls() {
+        if (unitStatus == 1) {
+            return "Warning";
+        } else if (unitStatus == 2) {
+            return "Error";
+        } else {
+            return "Normal";
+        }
+    }
 }

@@ -21,4 +21,5 @@ public class MonitorConstant {
 
     public static final String UNIT_STATUS_JOB_START = "mr.unit.status.job.start";
     public static final String UNIT_STATUS_JOB_END = "mr.unit.status.job.end";
+    public static final String UNIT_STATUS_JOB_ERROR = "mr.unit.status.job.error";
 }
