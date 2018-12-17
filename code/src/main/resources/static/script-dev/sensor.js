@@ -135,6 +135,10 @@ $(function() {
                 var unitId = $('#unitIdModal').val();
 
                 var form = $('#sensorForm');
+                var isCreate = false;
+                if (!sensorId) {
+                    isCreate = true;
+                }
 
                 form.bootstrapValidator('validate');
                 if (!form.data('bootstrapValidator').isValid()) {
@@ -147,7 +151,7 @@ $(function() {
                     sensorSn: sensorSn,
                     sensorRemark: sensorRemark,
                     unitId: unitId,
-                    isCreate: $('#isCreate').val()
+                    isCreate: isCreate
                 };
                 if (sensorId) {
                     data.sensorId = sensorId;

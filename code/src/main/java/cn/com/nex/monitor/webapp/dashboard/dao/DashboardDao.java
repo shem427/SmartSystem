@@ -23,7 +23,7 @@ public class DashboardDao {
         simpleJdbcCall.execute();
     }
 
-    public List<DashboardUnitBean> getUnitListByManagerAndParent(String userId, String parentId) {
+    public Collection<DashboardUnitBean> getUnitListByManagerAndParent(String userId, String parentId) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withProcedureName("getUnitByManagerParentId");
         Map<String, Object> inParamMap = new HashMap<String, Object>();
@@ -33,9 +33,23 @@ public class DashboardDao {
 
         Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
 
-        List<DashboardUnitBean> beanList = new ArrayList<>();
-
-        return beanList;
+        Map<String, DashboardUnitBean> beanMap = new HashMap<>();
+        Iterator<Map.Entry<String, Object>> it = simpleJdbcCallResult.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, Object> entry = it.next();
+            String key = entry.getKey();
+            if (key.startsWith("#result-set")) {
+                List<Map<String, Object>> value = (List<Map<String, Object>>) entry.getValue();
+                if (value == null || value.isEmpty()) {
+                    continue;
+                }
+                for (Map<String, Object> item : value) {
+                    DashboardUnitBean dashUnit = initDashUnitBean(item);
+                    beanMap.put(dashUnit.getUnitId(), dashUnit);
+                }
+            }
+        }
+        return beanMap.values();
     }
 
     public void addUnitWarn(UnitWarnBean bean) {
@@ -56,5 +70,16 @@ public class DashboardDao {
             }
             return beanList;
         });
+    }
+
+    private DashboardUnitBean initDashUnitBean(Map<String, Object> item) {
+        DashboardUnitBean bean = new DashboardUnitBean();
+        bean.setUnitId((String) item.get("UNIT_ID"));
+        bean.setUnitName((String) item.get("UNIT_NAME"));
+        bean.setParentId((String) item.get("PARENT_ID"));
+        bean.setRemark((String) item.get("REMARK"));
+        bean.setUnitStatus((Integer) item.get("UNIT_STATUS"));
+
+        return bean;
     }
 }

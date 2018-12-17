@@ -93,13 +93,13 @@ public class SensorDao extends CommonDao<SensorBean> {
     }
 
     public int addSensor(SensorBean sensor) {
-        String sql = "INSERT INTO USER(`SENSOR_NAME`,`SENSOR_REMARK`,`SENSOR_SN`,`SENSOR_MODEL`,`UNIT_ID`, `ACTIVE`) VALUES (?,?,?,?,?,?, true)";
+        String sql = "INSERT INTO `SENSOR` (`SENSOR_NAME`,`SENSOR_REMARK`,`SENSOR_SN`,`SENSOR_MODEL`,`UNIT_ID`, `ACTIVE`) VALUES (?,?,?,?,?, true)";
         return jdbcTemplate.update(sql, sensor.getSensorName(), sensor.getSensorRemark(),
                 sensor.getSensorSn(), sensor.getSensorModel(), sensor.getUnitId());
     }
 
     public int updateSensor(SensorBean user) {
-        String sql = "UPDATE USER SET `SENSOR_NAME`=?, `SENSOR_REMARK`=?, `SENSOR_SN`=?, `SENSOR_MODEL`=? WHERE `SENSOR_ID`=?";
+        String sql = "UPDATE `SENSOR` SET `SENSOR_NAME`=?, `SENSOR_REMARK`=?, `SENSOR_SN`=?, `SENSOR_MODEL`=? WHERE `SENSOR_ID`=?";
         return jdbcTemplate.update(sql, user.getSensorName(), user.getSensorRemark(), user.getSensorSn(),
                 user.getSensorModel(), user.getSensorId());
     }
