@@ -104,6 +104,16 @@ BEGIN
 END$$
 DELIMITER ;
 
+DROP TABLE IF EXISTS `unit_warn`;
+CREATE TABLE `unit_warn` (
+  `WARN_ID` INT NOT NULL AUTO_INCREMENT,
+  `UNIT_ID` CHAR(16) NOT NULL,
+  `UNIT_STATUS` INT(2) NOT NULL,
+  `NOTIFY_TIME` DATETIME NOT NULL,
+  PRIMARY KEY (`WARN_ID`),
+  KEY `UNIT_ID_WARN_idx` (`UNIT_ID`)
+);
+
 INSERT INTO `unit` VALUES ('UT00000000000000','/',NULL,'系统根节点',1,0,-1);
 INSERT INTO `user` VALUES ('000001','张三','zhs@test.org','','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92','1234567890', 1);
 INSERT INTO threshold values ('RADIATION', 70, 50);
@@ -187,6 +197,7 @@ DELIMITER $$
 CREATE PROCEDURE `updateUnitStatus`()
 BEGIN
     DECLARE done BOOL DEFAULT false;
+	DECLARE stats INT;
 	DECLARE norml INT;
     DECLARE warn INT;
     DECLARE thresholdId varchar(64);
@@ -221,7 +232,7 @@ BEGIN
     SELECT `PARENT_ID` INTO pId FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
     IF unitParentId=pId THEN
         SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `UNIT_STATUS` FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
-    ELSE
+    ELSEIF pId IS NOT NULL THEN
         CALL getUnitUntilParentId(pId, unitParentId);
     END IF;
 END$$

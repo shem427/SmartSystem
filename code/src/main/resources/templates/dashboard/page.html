@@ -8,9 +8,14 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i id="titleIcon"></i>&nbsp;<span id="titleText"></span>
-                <span class="panel-icon pull-right"><a href="#" title="刷新"><i class="fa fa-refresh fa-fw"></i></a></span>
-                <span class="panel-icon pull-right" th:if="${level != 0}"><a href="#" title="返回" id="backLevel"><i class="fa fa-arrow-up fa-fw"></i></a></span>
+                <span class="panel-icon pull-right">
+                    <a href="#" title="刷新" id="btnRefresh"><i class="fa fa-refresh fa-fw"></i></a>
+                </span>
+                <span class="panel-icon pull-right" th:if="${level != 0}">
+                    <a href="#" title="返回" id="btnUpLevel"><i class="fa fa-arrow-up fa-fw"></i></a>
+                </span>
                 <input type="hidden" id="unitLevel" th:value="${level}" />
+                <input type="hidden" id="parentId" th:value="${parentId}" />
             </div>
             <div class="panel-body">
                 <div class="row">

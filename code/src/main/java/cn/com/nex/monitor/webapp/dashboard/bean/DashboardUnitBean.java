@@ -15,6 +15,16 @@ public class DashboardUnitBean extends CommonBean {
 
     public String getStatusCls() {
         if (unitStatus == 1) {
+            return "thumbnail status-icon warning";
+        } else if (unitStatus == 2) {
+            return "thumbnail status-icon error";
+        } else {
+            return "thumbnail status-icon normal";
+        }
+    }
+
+    public String getStatusDisplay() {
+        if (unitStatus == 1) {
             return "Warning";
         } else if (unitStatus == 2) {
             return "Error";

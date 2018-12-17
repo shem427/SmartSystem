@@ -652,6 +652,19 @@ table.dataTable thead .sorting:after {
     color: #fff; /* active text color */
     background-color: #a94442; /* active bg color */
 }
+
+.panel .panel-heading .panel-icon.pull-right {
+    border-left: 1px solid #AAA;
+    border-right: none;
+    box-shadow: inset 1px 0px 1px #fff;
+	text-align: center;
+    padding-left: 1em;
+	/*padding-right: 1em;*/
+	margin-left: 1em;
+    line-height: 2em;
+    margin-top: -0.25em;
+}
+
 .system-title {
     font-size: 18px;
 }

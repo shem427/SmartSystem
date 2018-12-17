@@ -105,6 +105,38 @@ $(function() {
                     }
                 });
             });
+
+            $('#btnRefresh').click(function() {
+                var parentId = $('#parentId').val();
+                $.mr.ajax({
+                    url: 'dashboard/index',
+                    type: 'get',
+                    data: {
+                        parentId: parentId,
+                        level: level
+                    },
+                    dataType: 'html',
+                    success: function(data) {
+                        $('#page-wrapper').empty().append(data);
+                    }
+                });
+            });
+
+            $('#btnUpLevel').click(function() {
+                var parentId = $('#parentId').val();
+                $.mr.ajax({
+                    url: 'dashboard/upIndex',
+                    type: 'get',
+                    data: {
+                        currentId: parentId,
+                        level: level ? (level - 1) : 1
+                    },
+                    dataType: 'html',
+                    success: function(data) {
+                        $('#page-wrapper').empty().append(data);
+                    }
+                });
+            });
         }
     };
 });

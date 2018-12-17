@@ -37,15 +37,36 @@ public class DashboardController {
         if (level == null) {
             level = 0;
         }
-        Map<String, Object> model = new HashMap<>();
-        UserBean user = MonitorUtil.getUserFromSecurity();
+        boolean isParent = dashboardService.isParentUnit(pId);
+        if (isParent) {
+            Map<String, Object> model = new HashMap<>();
+            return showUnitStatus(model, pId, level);
+        } else {
+            return showUnitDetail();
+        }
+    }
 
+    @GetMapping(value = "/upIndex")
+    public ModelAndView upIndexpage(String currentId, Integer level) {
+        String parentId = dashboardService.getParentIdByUnitId(currentId);
+        Map<String, Object> model = new HashMap<>();
+        return showUnitStatus(model, parentId, level);
+    }
+
+    private ModelAndView showUnitStatus(Map<String, Object> model, String parentId, int level) {
+        UserBean user = MonitorUtil.getUserFromSecurity();
         Collection<DashboardUnitBean> dashboardUnitList =  dashboardService
-                .getUnitListByManagerAndParent(user.getUserId(), pId);
+                .getUnitListByManagerAndParent(user.getUserId(), parentId);
         model.put("units", dashboardUnitList);
         model.put("level", level);
+        model.put("parentId", parentId);
 
         return new ModelAndView("dashboard/page", model);
+    }
+
+    private ModelAndView showUnitDetail() {
+        // TODO:
+        return null;
     }
 
     /*@ResponseBody

@@ -99,7 +99,7 @@ public class MailHelper {
         String subjectText = MessageFormat.format(subject, unit.getUnitName());
         message.setSubject(subjectText);
         //邮件的文本内容
-        String bodyText = MessageFormat.format(body, unit.getUnitName(), unit.getStatusCls());
+        String bodyText = MessageFormat.format(body, unit.getUnitName(), unit.getStatusDisplay());
         message.setContent(bodyText, "text/html;charset=UTF-8");
         //返回创建好的邮件对象
         return message;

@@ -29,4 +29,12 @@ public class DashboardService {
     public void addUnitWarn(UnitWarnBean bean) {
         dashboardDao.addUnitWarn(bean);
     }
+
+    public String getParentIdByUnitId(String unitId) {
+        return dashboardDao.getParentIdByUnitId(unitId);
+    }
+
+    public boolean isParentUnit(String unitId) {
+        return dashboardDao.isParentUnit(unitId);
+    }
 }

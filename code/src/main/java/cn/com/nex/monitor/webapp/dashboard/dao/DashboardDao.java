@@ -54,7 +54,7 @@ public class DashboardDao {
 
     public void addUnitWarn(UnitWarnBean bean) {
         String sql = "INSERT INTO `UNIT_WARN` (`UNIT_ID`,`UNIT_STATUS`, `NOTIFY_TIME`) VALUES (?,?,?)";
-        jdbcTemplate.update(sql, bean.getWarnId(), bean.getUnitStatus(), new Date());
+        jdbcTemplate.update(sql, bean.getUnitId(), bean.getUnitStatus(), new Date());
     }
 
     public List<DashboardUnitBean> getNotifyUnitList() {
@@ -70,6 +70,28 @@ public class DashboardDao {
             }
             return beanList;
         });
+    }
+
+    public String getParentIdByUnitId(String unitId) {
+        String sql = "SELECT `PARENT_ID` FROM `UNIT` WHERE `UNIT_ID`=? AND `ACTIVE`=true";
+        return jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
+            if (rs.next()) {
+                String parentId = rs.getString("PARENT_ID");
+                return parentId;
+            }
+            return null;
+        });
+    }
+
+    public boolean isParentUnit(String unitId) {
+        String sql = "SELECT COUNT(1) AS CONT FROM `UNIT` WHERE `PARENT_ID`=?";
+        int count = jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
+            if (rs.next()) {
+                return rs.getInt("CONT");
+            }
+            return 0;
+        });
+        return count > 0;
     }
 
     private DashboardUnitBean initDashUnitBean(Map<String, Object> item) {
