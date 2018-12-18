@@ -1,7 +1,6 @@
 package cn.com.nex.monitor.webapp.dashboard.dao;
 
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
-import cn.com.nex.monitor.webapp.setting.bean.ThresholdBean;
 import cn.com.nex.monitor.webapp.warn.bean.UnitWarnBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,6 +17,7 @@ public class DashboardDao {
     protected JdbcTemplate jdbcTemplate;
 
     public void updateUnitStatus() {
+        resetUnitStatus();
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withProcedureName("updateUnitStatus");
         simpleJdbcCall.execute();
@@ -103,5 +103,10 @@ public class DashboardDao {
         bean.setUnitStatus((Integer) item.get("UNIT_STATUS"));
 
         return bean;
+    }
+
+    private void resetUnitStatus() {
+        String sql = "UPDATE `UNIT` SET UNIT_STATUS=-1 WHERE ACTIVE=true AND LEAF=false";
+        jdbcTemplate.update(sql);
     }
 }

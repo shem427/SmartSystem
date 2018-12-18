@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-xs-12">
+        <h4 class="page-header">组织状态更新中，更新后会自动刷新页面，请稍候...</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-line-chart fa-fw"></i>&nbsp;组织状态更新中，更新后会自动刷新页面，请稍候...
+            </div>
+            <div class="panel-body">
+                <img src="./img/loading.gif" />
+            </div>
+            <input type="hidden" id="parentId" th:value="${parentId}" />
+            <input type="hidden" id="level" th:value="${level}" />
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        setTimeout(function() {
+            $.mr.ajax({
+                url: 'dashboard/index',
+                type: 'get',
+                data: {
+                    parentId: $('#parentId').val(),
+                    level: $('#level').val()
+                },
+                dataType: 'html',
+                success: function(data) {
+                    $('#page-wrapper').empty().append(data);
+                }
+            });
+        }, 5000);
+    });
+</script>

@@ -1,7 +1,6 @@
 package cn.com.nex.monitor.job;
 
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
-import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import com.sun.mail.util.MailSSLSocketFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,12 +9,10 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.security.GeneralSecurityException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 

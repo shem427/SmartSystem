@@ -1,5 +1,6 @@
 package cn.com.nex.monitor.webapp.dashboard.controller;
 
+import cn.com.nex.monitor.job.UnitStatusUpdateTask;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
 import cn.com.nex.monitor.webapp.dashboard.service.DashboardService;
@@ -13,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -38,8 +38,8 @@ public class DashboardController {
             level = 0;
         }
         boolean isParent = dashboardService.isParentUnit(pId);
+        Map<String, Object> model = new HashMap<>();
         if (isParent) {
-            Map<String, Object> model = new HashMap<>();
             return showUnitStatus(model, pId, level);
         } else {
             return showUnitDetail();
@@ -54,19 +54,22 @@ public class DashboardController {
     }
 
     private ModelAndView showUnitStatus(Map<String, Object> model, String parentId, int level) {
-        UserBean user = MonitorUtil.getUserFromSecurity();
-        Collection<DashboardUnitBean> dashboardUnitList =  dashboardService
-                .getUnitListByManagerAndParent(user.getUserId(), parentId);
-        model.put("units", dashboardUnitList);
         model.put("level", level);
         model.put("parentId", parentId);
+        if (UnitStatusUpdateTask.isUpdating) {
+            return new ModelAndView("dashboard/unitStatusUpdating", model);
+        } else {
+            UserBean user = MonitorUtil.getUserFromSecurity();
+            Collection<DashboardUnitBean> dashboardUnitList = dashboardService
+                    .getUnitListByManagerAndParent(user.getUserId(), parentId);
+            model.put("units", dashboardUnitList);
 
-        return new ModelAndView("dashboard/page", model);
+            return new ModelAndView("dashboard/page", model);
+        }
     }
 
     private ModelAndView showUnitDetail() {
-        // TODO:
-        return null;
+        return new ModelAndView("dashboard/unitDataGraphic");
     }
 
     /*@ResponseBody

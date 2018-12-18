@@ -5,6 +5,7 @@ import cn.com.nex.monitor.webapp.dashboard.dao.DashboardDao;
 import cn.com.nex.monitor.webapp.warn.bean.UnitWarnBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,6 +19,7 @@ public class DashboardService {
         return dashboardDao.getUnitListByManagerAndParent(userId, parentId);
     }
 
+    @Transactional
     public void updateUnitStatus() {
         dashboardDao.updateUnitStatus();
     }
@@ -26,6 +28,7 @@ public class DashboardService {
         return dashboardDao.getNotifyUnitList();
     }
 
+    @Transactional
     public void addUnitWarn(UnitWarnBean bean) {
         dashboardDao.addUnitWarn(bean);
     }

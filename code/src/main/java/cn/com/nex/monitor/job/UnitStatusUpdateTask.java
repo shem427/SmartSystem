@@ -32,9 +32,12 @@ public class UnitStatusUpdateTask {
     @Autowired
     private MailHelper mailHelper;
 
+    public static boolean isUpdating = false;
+
     @Scheduled(cron = "${cn.com.nex.monitor.job.cron}")
     public void updateUnitStatus() {
         LOG.info(messageService.getMessage(MonitorConstant.UNIT_STATUS_JOB_START));
+        isUpdating = true;
         try {
             dashboardService.updateUnitStatus();
             List<DashboardUnitBean> unitList = dashboardService.getNotifyUnitList();
@@ -60,6 +63,8 @@ public class UnitStatusUpdateTask {
         } catch (Exception e) {
             LOG.error(messageService.getMessage(MonitorConstant.UNIT_STATUS_JOB_ERROR), e);
             // ignore.
+        } finally {
+            isUpdating = false;
         }
 
         LOG.info(messageService.getMessage(MonitorConstant.UNIT_STATUS_JOB_END));
