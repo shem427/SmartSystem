@@ -1,84 +1,6 @@
 $(function() {
+    var _self;
     $.mr.dashboard = {
-        /*convertDisplayData: function(data) {
-            var count = data.radiationDatas.length;
-            var chartsData = {
-                radiation: [],
-                temperature: [],
-                humidity: [],
-                pm25: []
-            };
-            var i;
-            for (i = 0; i < count; i++) {
-                chartsData.radiation.push([i, data.radiationDatas[i]]);
-                chartsData.temperature.push([i, data.temperatureDatas[i]]);
-                chartsData.humidity.push([i, data.humidityDatas[i]]);
-                chartsData.pm25.push([i, data.pm25Datas[i]]);
-            }
-
-            return chartsData;
-        },
-        displayCharts: function(data) {
-            var chartsData = $.mr.dashboard.convertDisplayData(data);
-            var plotGrid = {
-                borderWidth: 1,
-                backgroundColor: {
-                    colors: ["#fff", "#e4f4f4"]
-                },
-                hoverable: true
-            };
-            var xaxis = {
-                tickFormatter: function() {
-                    return "";
-                }
-            };
-            var plotOpt = {
-                grid: plotGrid,
-                xaxis: xaxis,
-                legend: {
-                    show: true
-                },
-                tooltip: true,
-                tooltipOpts: {
-                    content: '%y%'
-                }
-            };
-            var barOpt = {
-                show: true,
-                barWidth: 0.6,
-                align: "center"
-            };
-            $.plot($('#radiation-chart'), [{
-                data: chartsData.radiation,
-                bars: barOpt
-            }], plotOpt);
-            $.plot($('#temperature-chart'), [{
-                data: chartsData.temperature,
-                bars: barOpt
-            }], plotOpt);
-            $.plot($('#humidity-chart'), [{
-                data: chartsData.humidity,
-                bars: barOpt
-            }], plotOpt);
-            $.plot($('#pm25-chart'), [{
-                data: chartsData.pm25,
-                bars: barOpt
-            }], plotOpt);
-        },
-        init: function() {
-            $("a.menuItem").removeClass('active');
-            $('#dashboardLink').addClass('active');
-
-            // get charts' data.
-            $.mr.ajax({
-                url: 'dashboard/getData',
-                type: 'get',
-                dataType: 'json',
-                success: function(data) {
-                    $.mr.dashboard.displayCharts(data);
-                }
-            });
-        }*/
         init: function() {
             var level = parseInt($('#unitLevel').val());
             var titleIcon = $('#titleIcon');
@@ -137,6 +59,109 @@ $(function() {
                     }
                 });
             });
+        },
+        initGraphic: function() {
+            $.mr.ajax({
+                url: 'dashboard/getUnitDatas',
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    unitId: $('#unitId').val()
+                },
+                success: function(data) {
+                    var radiaitionData = data.unitDatas;
+                    var lineChartData = _self._initLineChartData(radiaitionData);
+                    var pieChartData = _self._initPieChartData(data);
+                    _self._plot(lineChartData, pieChartData);
+                }
+            });
+        },
+        _initLineChartData: function(data) {
+            var ret = [];
+            for (var i = 0; i < data.length; i++) {
+                ret.push([i, data[i]])
+            }
+
+            return ret;
+        },
+        _initPieChartData: function(data) {
+            return [{
+                label: $.mr.resource.STATUS_NORMAL,
+                data: data.normalCount
+            }, {
+                label: $.mr.resource.STATUS_WARNING,
+                data: data.warningCount
+            }, {
+                label: $.mr.resource.STATUS_ERROR,
+                data: data.errorCount
+            }];
+        },
+        _plot: function(lineChartData, pieChartData) {
+            var radiationLineChart = $('#radiationLineChart');
+            var radiationPieChart = $('#radiationPieChart');
+            var series = [{
+                data: radiationLineChart,
+                lines: {
+                    fill: true
+                }
+            }];
+            $.plot(radiationLineChart, series, {
+                grid: {
+                    borderWidth: 1,
+                    minBorderMargin: 20,
+                    labelMargin: 10,
+                    backgroundColor: {
+                        colors: ["#fff", "#e4f4f4"]
+                    },
+                    margin: {
+                        top: 8,
+                        bottom: 20,
+                        left: 20
+                    },
+                    markings: function(axes) {
+                        var markings = [];
+                        var xaxis = axes.xaxis;
+                        for (var x = Math.floor(xaxis.min); x < xaxis.max; x += xaxis.tickSize * 2) {
+                            markings.push({
+                                xaxis: {
+                                    from: x,
+                                    to: x + xaxis.tickSize
+                                },
+                                color: "rgba(232, 232, 255, 0.2)"
+                            });
+                        }
+                        return markings;
+                    }
+                },
+                xaxis: {
+                    tickFormatter: function() {
+                        return "";
+                    }
+                },
+                yaxis: {
+                    min: 0,
+                    max: 110
+                },
+                legend: {
+                    show: true
+                }
+            });
+            $.plot(radiationPieChart, pieChartData, {
+                series: {
+                    pie: {
+                        innerRadius: 0.3,
+                        show: true
+                    }
+                },
+                grid: {
+                    hoverable: true,
+                    clickable: true
+                },
+                legend: {
+                    show: false
+                }
+            });
         }
     };
+    _self = $.mr.dashboard;
 });

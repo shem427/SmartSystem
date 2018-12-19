@@ -57,6 +57,9 @@ $(function() {
         }, {
             title: '紫外线灯状态',
             iconCls: 'lightbulb-o'
-        }]
+        }],
+        STATUS_NORMAL: '合格',
+        STATUS_WARNING: '延长照射时间',
+        STATUS_ERROR: '不合格'
     };
 });

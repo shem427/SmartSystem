@@ -10,6 +10,7 @@ import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,7 @@ public class UnitController {
      * @return 下位组织信息
      */
     @GetMapping(value = "/subUnit")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     public List<UnitBean> getSubUnit(String id) {
         return unitService.getSubUnit(id);
@@ -58,6 +60,7 @@ public class UnitController {
         return new ModelAndView("unit/unitUpdateModal", model);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/editPage")
     public ModelAndView getEditPage(String parentId,
                                     String parentName,
@@ -80,6 +83,7 @@ public class UnitController {
     }
 
     @PostMapping(value = "/saveUnit")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     public CommonBean saveUnit(UnitBean unit) {
 
@@ -104,6 +108,7 @@ public class UnitController {
     }
 
     @PostMapping(value = "deleteUnit")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     public CommonBean deleteUnit(String unitId) {
         CommonBean retBean = new CommonBean();
@@ -127,6 +132,7 @@ public class UnitController {
     }
 
     @GetMapping(value = "getManagers")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     public List<UserBean> getUnitManagers(String unitId) {
         List<UserBean> managerList = unitService.getUnitManagers(unitId);

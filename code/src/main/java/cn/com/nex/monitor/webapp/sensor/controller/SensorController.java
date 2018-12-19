@@ -13,6 +13,7 @@ import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,7 @@ public class SensorController {
     private MessageService messageService;
 
     @GetMapping(value = "/index")
+    @PreAuthorize("hasRole('ADMIN')")
     public String page() {
         return "sensor/page";
     }
@@ -60,6 +62,7 @@ public class SensorController {
 
     @ResponseBody
     @GetMapping(value = "/getSensors")
+    @PreAuthorize("hasRole('ADMIN')")
     public TableData<SensorBean> getSensors(SearchParam param, String sensorNameLike, String sensorModelLike) {
         TableData<SensorBean> tableData = new TableData<>();
         try {
@@ -76,6 +79,7 @@ public class SensorController {
 
     @ResponseBody
     @PostMapping(value = "/deleteSensors")
+    @PreAuthorize("hasRole('ADMIN')")
     public NumericBean deleteSensors(@RequestBody List<String> sensorIds) {
         NumericBean bean = new NumericBean();
 
@@ -93,6 +97,7 @@ public class SensorController {
 
     @ResponseBody
     @PostMapping(value = "/saveSensor")
+    @PreAuthorize("hasRole('ADMIN')")
     public CommonBean saveSensor(SensorBean sensor, boolean isCreate) {
         CommonBean bean = new CommonBean();
         try {

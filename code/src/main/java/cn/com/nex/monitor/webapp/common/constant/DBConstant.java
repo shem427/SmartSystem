@@ -7,6 +7,7 @@ public final class DBConstant {
     // COMMON
     public static final String IS_ACTIVE = "ACTIVE";
     public static final String TOTAL = "TOTAL";
+    public static final String RADIATION_THRESHOLD = "RADIATION";
     // USER TABLE
     public static final String USER_TABLE = "USER";
     public static final String USER_ID = "USER_ID";

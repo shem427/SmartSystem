@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +46,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/userModal")
+    @PreAuthorize("hasRole('ADMIN')")
     public String userModal(Model model, String userId) {
         model.addAttribute("allRoles", getUserRoleMap());
         if (userId != null) {
@@ -79,6 +81,7 @@ public class UserController {
 
     @ResponseBody
     @GetMapping(value = "/getUsers")
+    @PreAuthorize("hasRole('ADMIN')")
     public TableData<UserBean> getUsers(SearchParam param, String userIdLike, String nameLike) {
         TableData<UserBean> tableData = new TableData<>();
         try {
@@ -95,6 +98,7 @@ public class UserController {
 
     @ResponseBody
     @PostMapping(value = "/deleteUsers")
+    @PreAuthorize("hasRole('ADMIN')")
     public NumericBean deleteUsers(@RequestBody List<String> userIds) {
         NumericBean bean = new NumericBean();
         UserBean self = MonitorUtil.getUserFromSecurity();
@@ -119,6 +123,7 @@ public class UserController {
     }
 
     @ResponseBody
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "resetPassword")
     public NumericBean resetPassword(@RequestBody List<String> userIds) {
         NumericBean bean = new NumericBean();
@@ -135,6 +140,7 @@ public class UserController {
     }
 
     @ResponseBody
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/saveUser")
     public CommonBean saveUser(UserBean user, boolean isCreate) {
         CommonBean bean = new CommonBean();

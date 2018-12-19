@@ -2,6 +2,7 @@ package cn.com.nex.monitor.webapp.setting.controller;
 
 import cn.com.nex.monitor.webapp.common.bean.CommonBean;
 import cn.com.nex.monitor.webapp.common.MessageService;
+import cn.com.nex.monitor.webapp.common.constant.DBConstant;
 import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.setting.bean.ChangePassword;
@@ -11,6 +12,7 @@ import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +35,6 @@ public class SettingController {
      */
     private static final Logger LOG = LoggerFactory.getLogger(SettingController.class);
 
-    private static final String RADIATION_THRESHOLD = "RADIATION";
     private static final int RADIATION_DEFAULT_NORMAL = 70;
     private static final int RADIATION_DEFAULT_WARNING = 50;
 
@@ -104,9 +105,10 @@ public class SettingController {
     }
 
     @GetMapping(value = "/threshold")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView thresholdSetting() {
         Map<String, Object> model = new HashMap<>();
-        ThresholdBean bean = settingService.getThreshold(RADIATION_THRESHOLD);
+        ThresholdBean bean = settingService.getThreshold(DBConstant.RADIATION_THRESHOLD);
         if (bean == null) {
             bean = new ThresholdBean();
             bean.setNorml(RADIATION_DEFAULT_NORMAL);
@@ -118,6 +120,7 @@ public class SettingController {
     }
 
     @PostMapping(value = "/updateThreshold")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
     public CommonBean updateThreshold(ThresholdBean threshold) {
         CommonBean bean = new CommonBean();

@@ -94,6 +94,17 @@ public class DashboardDao {
         return count > 0;
     }
 
+    public List<Integer> getUnitRadiationData(String unitId) {
+        String sql = "SELECT `RAD_VALUE` FROM `RADIATION` WHERE `UNIT_ID`=? LIMIT 500";
+        return jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
+            List<Integer> retList = new ArrayList<>();
+            while (rs.next()) {
+                retList.add(rs.getInt("RAD_VALUE"));
+            }
+            return retList;
+        });
+    }
+
     private DashboardUnitBean initDashUnitBean(Map<String, Object> item) {
         DashboardUnitBean bean = new DashboardUnitBean();
         bean.setUnitId((String) item.get("UNIT_ID"));

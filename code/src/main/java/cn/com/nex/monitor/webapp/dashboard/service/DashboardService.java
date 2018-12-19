@@ -40,4 +40,8 @@ public class DashboardService {
     public boolean isParentUnit(String unitId) {
         return dashboardDao.isParentUnit(unitId);
     }
+
+    public List<Integer> getUnitRadiationData(String unitId) {
+        return dashboardDao.getUnitRadiationData(unitId);
+    }
 }

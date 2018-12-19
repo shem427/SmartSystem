@@ -109,24 +109,13 @@
                     <li>
                         <a id="dashboardLink" href="#" class="menuItem"><i class="fa fa-dashboard fa-fw"></i>首页</a>
                     </li>
-                    <li>
-                        <a href="#"><i class="fa fa-table fa-fw"></i>数据详细<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li><a id="sensorDetail1Link" href="#" class="menuItem">传感器-1</a></li>
-                            <li><a id="sensorDetail2Link" href="#" class="menuItem">传感器-2</a></li>
-                            <li><a id="sensorDetail3Link" href="#" class="menuItem">传感器-3</a></li>
-                            <li><a id="sensorDetail4Link" href="#" class="menuItem">传感器-4</a></li>
-                            <li><a id="sensorDetail5Link" href="#" class="menuItem">传感器-5</a></li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')">
                         <a id="unitLink" href="#" class="menuItem"><i class="fa fa-building fa-fw"></i>组织管理</a>
                     </li>
-                    <li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')">
                         <a id="sensorLink" href="#" class="menuItem"><i class="fa fa-lightbulb-o fa-fw"></i>传感器管理</a>
                     </li>
-                    <li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')">
                         <a id="userLink" href="#" class="menuItem"><i class="fa fa-user fa-fw"></i>用户管理</a>
                     </li>
                     <li>
@@ -134,7 +123,7 @@
                         <ul class="nav nav-second-level">
                             <li><a id="changePasswordSettingLink" href="#" class="menuItem">修改密码</a></li>
                             <li><a id="updateProfileSettingLink" href="#" class="menuItem">修改个人资料</a></li>
-                            <li><a id="updateThresholdSettingLink" href="#" class="menuItem">辐射阈值设置</a></li>
+                            <li sec:authorize="hasRole('ROLE_ADMIN')"><a id="updateThresholdSettingLink" href="#" class="menuItem">辐射阈值设置</a></li>
                         </ul>
                     </li>
                 </ul>

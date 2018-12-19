@@ -37,4 +37,16 @@
             </div>
         </div>
     </div>
+    <input type="hidden" id="unitId" th:value="${unitId}" />
 </div>
+<!-- Flot Charts JavaScript -->
+<script th:src="@{/js/flot/excanvas.min.js}"></script>
+<script th:src="@{/js/flot/jquery.flot.js}"></script>
+<script th:src="@{/js/flot/jquery.flot.pie.js}"></script>
+<script th:src="@{/js/flot/jquery.flot.resize.js}"></script>
+<script th:src="@{/js/flot/jquery.flot.tooltip.min.js}"></script>
+<script>
+    $(function() {
+        $.mr.dashboard.initGraphic();
+    });
+</script>
