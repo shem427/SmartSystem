@@ -8,6 +8,9 @@ $(function() {
             var iconCls = $('.iconCls');
 
             var levelInfo = $.mr.resource.UNIT_LEVEL[level];
+
+            $('.status-icon').tooltip();
+
             titleIcon.addClass('fa fa-' + levelInfo.iconCls + ' fa-fw');
             titleText.text(levelInfo.title);
             iconCls.addClass('fa fa-' + levelInfo.iconCls + ' fa-5x');
@@ -75,6 +78,29 @@ $(function() {
                     _self._plot(lineChartData, pieChartData);
                 }
             });
+            $.mr.table.create({
+                selector: '#unitDataTable',
+                url: 'dashboard/getRadiationData',
+                sortName: 'RAD_ID',
+                pageSize: 5,
+                pageList: [5, 10, 20, 50],
+                columns: [{
+                    field: 'radNo',
+                    title: 'No.'
+                }, {
+                    field: 'radValue',
+                    title: '辐射值'
+                }],
+                queryParams: function(params) {
+                    return {
+                        limit: params.limit,
+                        offset: params.offset,
+                        sortOrder: params.order,
+                        sortField: params.sort,
+                        unitId: $('#unitId').val()
+                    };
+                }
+            });
         },
         _initLineChartData: function(data) {
             var ret = [];
@@ -100,7 +126,7 @@ $(function() {
             var radiationLineChart = $('#radiationLineChart');
             var radiationPieChart = $('#radiationPieChart');
             var series = [{
-                data: radiationLineChart,
+                data: lineChartData,
                 lines: {
                     fill: true
                 }

@@ -1,6 +1,8 @@
 package cn.com.nex.monitor.webapp.dashboard.dao;
 
+import cn.com.nex.monitor.webapp.common.bean.SearchParam;
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
+import cn.com.nex.monitor.webapp.dashboard.bean.RadiationBean;
 import cn.com.nex.monitor.webapp.warn.bean.UnitWarnBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -102,6 +104,31 @@ public class DashboardDao {
                 retList.add(rs.getInt("RAD_VALUE"));
             }
             return retList;
+        });
+    }
+
+    public List<RadiationBean> getRadiationData(SearchParam searchParam, String unitId) {
+        String sql = "SELECT (@i :=@i + 1) AS NO, `RAD_VALUE` FROM `RADIATION`, (SELECT @i := ?) AS it WHERE `UNIT_ID`=? " + searchParam.toSQL();
+        return jdbcTemplate.query(sql, new Object[] {searchParam.getOffset(), unitId}, rs -> {
+            List<RadiationBean> list = new ArrayList<>();
+            while (rs.next()) {
+                RadiationBean rb = new RadiationBean();
+                rb.setRadNo(rs.getInt("NO"));
+                rb.setRadValue(rs.getInt("RAD_VALUE"));
+                list.add(rb);
+            }
+            return list;
+        });
+    }
+
+    public int countRadiationData(String unitId) {
+        String sql = "SELECT COUNT(`RAD_VALUE`) AS TOTAL FROM `RADIATION` WHERE `UNIT_ID`=?";
+        return jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
+            int total = 0;
+            while(rs.next()) {
+                total = rs.getInt("TOTAL");
+            }
+            return total;
         });
     }
 

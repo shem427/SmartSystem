@@ -1,6 +1,9 @@
 package cn.com.nex.monitor.webapp.dashboard.service;
 
+import cn.com.nex.monitor.webapp.common.bean.SearchParam;
+import cn.com.nex.monitor.webapp.common.bean.TableData;
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
+import cn.com.nex.monitor.webapp.dashboard.bean.RadiationBean;
 import cn.com.nex.monitor.webapp.dashboard.dao.DashboardDao;
 import cn.com.nex.monitor.webapp.warn.bean.UnitWarnBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +46,16 @@ public class DashboardService {
 
     public List<Integer> getUnitRadiationData(String unitId) {
         return dashboardDao.getUnitRadiationData(unitId);
+    }
+
+    public TableData<RadiationBean> getRadiationData(SearchParam searchParam, String unitId) {
+        int total = dashboardDao.countRadiationData(unitId);
+        List<RadiationBean> list = dashboardDao.getRadiationData(searchParam, unitId);
+        TableData<RadiationBean> tableData = new TableData<RadiationBean>();
+
+        tableData.setRows(list);
+        tableData.setTotal(total);
+
+        return tableData;
     }
 }
