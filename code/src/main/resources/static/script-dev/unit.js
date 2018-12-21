@@ -25,7 +25,7 @@ $(function() {
                 selectedMulti: false,
                 callback: {
                     onNodeCreated: function(event, treeId, treeNode) {
-                        if (treeNode.id === 'UT00000000000001') {
+                        if (treeNode.id === 'UT00000000000000') {
                             self.unitTree.expandNode(treeNode, true, false, true, true);
                         }
                     },
