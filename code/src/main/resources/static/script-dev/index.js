@@ -14,6 +14,7 @@ $(function() {
             var $userLink = $('#userLink');
             var $unitLink = $('#unitLink');
             var $sensorLink = $('#sensorLink');
+            var $warnLink = $('#warnLink');
 
             var menuItems = $('.menuItem');
 
@@ -84,6 +85,13 @@ $(function() {
                         $('#logoutForm').submit();
                     }
                 });
+            });
+
+            $warnLink.click(function(e) {
+                e.preventDefault();
+                menuItems.removeClass('active');
+                $warnLink.addClass('active');
+                _self.getWrapperPage('warn/index');
             });
 
             // click dashboard link.
