@@ -36,6 +36,8 @@ $(function() {
         VALIDATION_MSG_MAIL_ADDRESS: '邮件地址格式不正确！',
         VALIDATION_MSG_DIGIT: '只能输入数字！',
 
+        VALIDATION_MSG_DATE_FROM_TO: '结束日期必须大于开始日期',
+
         UNIT_NO_SELECTION: '请选择组织节点。',
         UNIT_DELETE_CONFIRM: '确定要删除组织？<br/>&nbsp;&nbsp;&nbsp;&nbsp;组织名：',
         UNIT_NOT_ADD_UNDER_LEAF: '叶节点组织无法添加子组织。',

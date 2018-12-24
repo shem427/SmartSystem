@@ -10,13 +10,13 @@
                 <i class="fa fa-search fa-fw"></i>查询条件
             </div>
             <div class="panel-body">
-                <form role="form">
+                <form role="form" id="warnSearchForm">
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>开始日期</label>
                                 <div class="input-group">
-                                    <input type="date" class="form-control" placeholder="开始日期" id="beginDate" readonly="readonly" />
+                                    <input type="date" class="form-control" placeholder="开始日期" id="beginDate" name="beginDate" readonly="readonly" />
                                     <span class="input-group-btn">
                                         <button class="btn btn-default btn-date" type="button">
                                             <span class="fa fa-calendar"></span>
@@ -29,7 +29,7 @@
                             <div class="form-group">
                                 <label>结束日期</label>
                                 <div class="input-group">
-                                    <input type="date" class="form-control" placeholder="结束日期" id="endDate" readonly="readonly" />
+                                    <input type="date" class="form-control" placeholder="结束日期" id="endDate" name="endDate" readonly="readonly" />
                                     <span class="input-group-btn">
                                         <button class="btn btn-default btn-date" type="button">
                                             <span class="fa fa-calendar"></span>

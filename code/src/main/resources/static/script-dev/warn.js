@@ -2,23 +2,54 @@ $(function() {
     $.mr.warn = {
         init: function() {
             // init data.
-            var $btnDate = $('.btn-date');
-            var $dateControls = $('#beginDate, #endDate');
+            var btnDate = $('.btn-date');
+            var dateControls = $('#beginDate, #endDate');
+            var form = $('#warnSearchForm');
 
-            $dateControls.datetimepicker({
+            dateControls.datetimepicker({
                 format: 'yyyy-mm-dd',
                 language: 'zh-CN',
                 todayHighlight: 1,
                 minView: "month",
                 autoclose: 1
             });
-            $btnDate.click(function() {
+            btnDate.click(function() {
                 var $this = $(this);
                 var dateControl = $this.parent().prev();
                 dateControl.datetimepicker('show');
             });
+            form.bootstrapValidator({
+                message: 'value is not valid',
+                live: 'disabled',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    endDate: {
+                        validators: {
+                            callback: {
+                                message: $.mr.resource.VALIDATION_MSG_DATE_FROM_TO,
+                                callback: function(value) {
+                                    var beginDate = $('#beginDate').val();
+                                    var endDate = value;
+                                    return beginDate <= endDate;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
 
             $('#warnSearch').click(function() {
+                var form = $("#warnSearchForm");
+                form.data("bootstrapValidator").resetForm();
+                form.bootstrapValidator('validate');
+                if (!form.data('bootstrapValidator').isValid()) {
+                    return false;
+                }
                 $.mr.table.refresh({
                     selector: '#warnTable',
                     params: {
