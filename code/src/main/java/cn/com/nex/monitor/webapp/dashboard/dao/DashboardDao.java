@@ -6,11 +6,13 @@ import cn.com.nex.monitor.webapp.dashboard.bean.RadiationBean;
 import cn.com.nex.monitor.webapp.warn.bean.UnitWarnBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 
+import java.sql.Types;
 import java.util.*;
 
 @Component
@@ -21,14 +23,17 @@ public class DashboardDao {
     public void updateUnitStatus() {
         resetUnitStatus();
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
-                .withProcedureName("updateUnitStatus");
+                .withProcedureName("updateUnitStatus").withoutProcedureColumnMetaDataAccess();
         simpleJdbcCall.execute();
     }
 
     public Collection<DashboardUnitBean> getUnitListByManagerAndParent(String userId, String parentId) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
-                .withProcedureName("getUnitByManagerParentId");
-        Map<String, Object> inParamMap = new HashMap<String, Object>();
+                .withProcedureName("getUnitByManagerParentId").withoutProcedureColumnMetaDataAccess();
+        simpleJdbcCall.addDeclaredParameter(new SqlParameter("userId", Types.CHAR));
+        simpleJdbcCall.addDeclaredParameter(new SqlParameter("unitParentId", Types.CHAR));
+
+        Map<String, Object> inParamMap = new HashMap<>();
         inParamMap.put("userId", userId);
         inParamMap.put("unitParentId", parentId);
         SqlParameterSource in = new MapSqlParameterSource(inParamMap);
