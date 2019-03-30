@@ -27,7 +27,7 @@ public class SensorService {
     }
 
     public SensorBean getSensorById(String sensorId) {
-        return sensorDao.get(sensorId);
+        return sensorDao.getSensorById(sensorId);
     }
 
     @Transactional

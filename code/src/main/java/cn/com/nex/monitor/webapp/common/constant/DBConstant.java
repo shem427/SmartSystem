@@ -20,6 +20,7 @@ public final class DBConstant {
     // SENSOR TABLE
     public static final String SENSOR_TABLE = "SENSOR";
     public static final String SENSOR_ID = "SENSOR_ID";
+    public static final String RADIATION_MODEL_ID = "RADIATION_MODEL_ID";
     public static final String SENSOR_NAME = "SENSOR_NAME";
     public static final String SENSOR_MODEL = "SENSOR_MODEL";
     public static final String SENSOR_SN = "SENSOR_SN";

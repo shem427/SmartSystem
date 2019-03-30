@@ -1,11 +1,11 @@
 $(function() {
     // ajax global setting for csrf.
     $.ajaxSetup({
-        beforeSend: function(xhr) {
-            var header = $("meta[name='_csrf_header']").attr("content");
-            var token = $("meta[name='_csrf']").attr("content");
-            xhr.setRequestHeader(header, token);
-        },
+        // beforeSend: function(xhr) {
+        //     var header = $("meta[name='_csrf_header']").attr("content");
+        //     var token = $("meta[name='_csrf']").attr("content");
+        //     xhr.setRequestHeader(header, token);
+        // },
         error: function(xhr, status, error) {
             console.log(error);
             if (xhr.status === 401) {

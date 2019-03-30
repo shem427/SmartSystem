@@ -1,6 +1,7 @@
 package cn.com.nex.monitor.webapp.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MonitorPasswordEncoder passwordEncoder;
 
+    @Value("${cn.com.nex.monitor.csrf.enable}")
+    private boolean enableCSRF = true;
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -39,6 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        if (!enableCSRF) {
+            http.csrf().disable();
+        }
         http.formLogin()
                 .loginPage("/login").failureUrl("/login?error")
                 .defaultSuccessUrl("/index", true)
@@ -46,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/data/**").permitAll()
                 .antMatchers("/logout").permitAll()
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/img/**").permitAll()

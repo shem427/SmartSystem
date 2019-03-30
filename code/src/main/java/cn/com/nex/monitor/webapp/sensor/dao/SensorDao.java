@@ -27,6 +27,7 @@ public class SensorDao extends CommonDao<SensorBean> {
     protected SensorBean convertBean(ResultSet rs) throws SQLException {
         SensorBean bean = new SensorBean();
         bean.setSensorId(rs.getString(DBConstant.SENSOR_ID));
+        bean.setRadiationModelId(rs.getString(DBConstant.RADIATION_MODEL_ID));
         bean.setSensorName(rs.getString(DBConstant.SENSOR_NAME));
         bean.setSensorSn(rs.getString(DBConstant.SENSOR_SN));
         bean.setSensorModel(rs.getString(DBConstant.SENSOR_MODEL));
@@ -58,10 +59,18 @@ public class SensorDao extends CommonDao<SensorBean> {
         return DBConstant.SENSOR_ID;
     }
 
+    public SensorBean getSensorById(String sensorId) {
+        String sql = "SELECT S.`SENSOR_ID`, S.`RADIATION_MODEL_ID`, S.`SENSOR_NAME`, S.`SENSOR_REMARK`, S.`SENSOR_SN`, S.`SENSOR_MODEL`,"
+                + " S.`UNIT_ID`, U.`UNIT_NAME`, getUnitPath(S.`UNIT_ID`) AS `UNIT_FULL_PATH`"
+                + " FROM `SENSOR` S, `UNIT` U WHERE S.`UNIT_ID`=U.`UNIT_ID` AND S.`ACTIVE`=true"
+                + " AND U.`ACTIVE`=true AND S.`SENSOR_ID`=?";
+        return jdbcTemplate.query(sql, new String[] {sensorId}, getSingleExtractor());
+    }
+
     public List<SensorBean> searchSensor(SearchParam param, String sensorNameLike, String sensorModelLike) {
         List<String> argList = new ArrayList<>();
 
-        String sql = "SELECT S.`SENSOR_ID`, S.`SENSOR_NAME`, S.`SENSOR_REMARK`, S.`SENSOR_SN`, S.`SENSOR_MODEL`,"
+        String sql = "SELECT S.`SENSOR_ID`, S.`RADIATION_MODEL_ID`, S.`SENSOR_NAME`, S.`SENSOR_REMARK`, S.`SENSOR_SN`, S.`SENSOR_MODEL`,"
                 + " S.`UNIT_ID`, U.`UNIT_NAME`, getUnitPath(S.`UNIT_ID`) AS `UNIT_FULL_PATH`"
                 + " FROM `SENSOR` S, `UNIT` U WHERE S.`UNIT_ID`=U.`UNIT_ID` AND S.`ACTIVE`=true"
                 + " AND U.`ACTIVE`=true ";
@@ -93,15 +102,25 @@ public class SensorDao extends CommonDao<SensorBean> {
     }
 
     public int addSensor(SensorBean sensor) {
-        String sql = "INSERT INTO `SENSOR` (`SENSOR_NAME`,`SENSOR_REMARK`,`SENSOR_SN`,`SENSOR_MODEL`,`UNIT_ID`, `ACTIVE`) VALUES (?,?,?,?,?, true)";
-        return jdbcTemplate.update(sql, sensor.getSensorName(), sensor.getSensorRemark(),
-                sensor.getSensorSn(), sensor.getSensorModel(), sensor.getUnitId());
+        String sql = "INSERT INTO `SENSOR` (`SENSOR_NAME`,`RADIATION_MODEL_ID`,`SENSOR_REMARK`,`SENSOR_SN`,`SENSOR_MODEL`,`UNIT_ID`, `ACTIVE`) VALUES (?,?,?,?,?,?, true)";
+        return jdbcTemplate.update(sql,
+                sensor.getSensorName(),
+                sensor.getRadiationModelId(),
+                sensor.getSensorRemark(),
+                sensor.getSensorSn(),
+                sensor.getSensorModel(),
+                sensor.getUnitId());
     }
 
-    public int updateSensor(SensorBean user) {
-        String sql = "UPDATE `SENSOR` SET `SENSOR_NAME`=?, `SENSOR_REMARK`=?, `SENSOR_SN`=?, `SENSOR_MODEL`=? WHERE `SENSOR_ID`=?";
-        return jdbcTemplate.update(sql, user.getSensorName(), user.getSensorRemark(), user.getSensorSn(),
-                user.getSensorModel(), user.getSensorId());
+    public int updateSensor(SensorBean sensor) {
+        String sql = "UPDATE `SENSOR` SET `SENSOR_NAME`=?, `RADIATION_MODEL_ID`=?, `SENSOR_REMARK`=?, `SENSOR_SN`=?, `SENSOR_MODEL`=? WHERE `SENSOR_ID`=?";
+        return jdbcTemplate.update(sql,
+                sensor.getSensorName(),
+                sensor.getRadiationModelId(),
+                sensor.getSensorRemark(),
+                sensor.getSensorSn(),
+                sensor.getSensorModel(),
+                sensor.getSensorId());
     }
 
     private String getWhereForSearch(String sensorNameLike, String sensorModelLike, List<String> argList) {

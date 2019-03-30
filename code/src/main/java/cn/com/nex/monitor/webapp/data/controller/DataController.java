@@ -16,13 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class DataController {
     /** LOG */
     private static final Logger LOG = LoggerFactory.getLogger(DashboardController.class);
+    private static final String MSG_PREFIX = "$$$";
+    private static final String MSG_SUFFIX = "===";
 
     @Autowired
     private DataService dataService;
 
-    @ResponseBody
-    @PostMapping(value = "/setData")
-    public String setData(DataBean data) {
-        return null;
+    @PostMapping(value = "/upload")
+    public String uploadData(DataBean data) {
+        boolean valid = isMsgValid(data.getMsg());
+        if (!valid) {
+            throw new IllegalArgumentException("msg not correct. msg=" + data.getMsg());
+        }
+        dataService.uploadData(data);
+
+        return "sucess";
+    }
+
+    private boolean isMsgValid(String msg) {
+        return msg.startsWith(MSG_PREFIX) && msg.endsWith(MSG_SUFFIX);
     }
 }

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 5642
-Source Server Version : 50642
+Source Server         : monitor
+Source Server Version : 50725
 Source Host           : localhost:3306
 Source Database       : monitor
 
 Target Server Type    : MYSQL
-Target Server Version : 50642
+Target Server Version : 50725
 File Encoding         : 65001
 
-Date: 2019-03-26 00:34:15
+Date: 2019-03-30 22:55:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,11 +22,11 @@ DROP TABLE IF EXISTS `radiation`;
 CREATE TABLE `radiation` (
   `RAD_ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `UNIT_ID` char(16) NOT NULL,
-  `RAD_VALUE` varchar(45) DEFAULT NULL,
+  `RAD_VALUE` int(11) DEFAULT NULL,
   PRIMARY KEY (`RAD_ID`),
   KEY `RAD_UNIT_ID` (`UNIT_ID`),
   CONSTRAINT `RAD_UNIT_ID` FOREIGN KEY (`UNIT_ID`) REFERENCES `unit` (`UNIT_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of radiation
@@ -131,6 +131,9 @@ INSERT INTO `radiation` VALUES ('97', 'UT00000000000007', '90');
 INSERT INTO `radiation` VALUES ('98', 'UT00000000000007', '63');
 INSERT INTO `radiation` VALUES ('99', 'UT00000000000007', '78');
 INSERT INTO `radiation` VALUES ('100', 'UT00000000000007', '51');
+INSERT INTO `radiation` VALUES ('101', 'UT00000000000008', '50');
+INSERT INTO `radiation` VALUES ('102', 'UT00000000000008', '50');
+INSERT INTO `radiation` VALUES ('103', 'UT00000000000008', '55');
 
 -- ----------------------------
 -- Table structure for sensor
@@ -138,13 +141,15 @@ INSERT INTO `radiation` VALUES ('100', 'UT00000000000007', '51');
 DROP TABLE IF EXISTS `sensor`;
 CREATE TABLE `sensor` (
   `SENSOR_ID` char(16) NOT NULL DEFAULT 'SS',
-  `SENSOR_NAME` varchar(128) DEFAULT NULL,
+  `RADIATION_MODEL_ID` varchar(32) DEFAULT NULL,
+  `SENSOR_NAME` varchar(128) NOT NULL,
   `UNIT_ID` char(16) NOT NULL,
   `SENSOR_REMARK` varchar(1024) DEFAULT NULL,
   `SENSOR_SN` varchar(128) DEFAULT NULL,
   `SENSOR_MODEL` varchar(64) DEFAULT NULL,
   `ACTIVE` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`SENSOR_ID`),
+  UNIQUE KEY `RADIATION_MODEL_ID_idx` (`RADIATION_MODEL_ID`) USING BTREE,
   KEY `SENSOR_UNIT_ID_idx` (`UNIT_ID`),
   CONSTRAINT `SENSOR_UNIT_ID` FOREIGN KEY (`UNIT_ID`) REFERENCES `unit` (`UNIT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -152,6 +157,8 @@ CREATE TABLE `sensor` (
 -- ----------------------------
 -- Records of sensor
 -- ----------------------------
+INSERT INTO `sensor` VALUES ('SS00000000000001', null, 'AYFY-sensor-1', 'UT00000000000008', 'xxx', '1234567', 'UV', '0');
+INSERT INTO `sensor` VALUES ('SS00000000000002', 'xxxxxxxxxxxx', 'AYFY-sensor-2', 'UT00000000000008', 'fdf', '234454545', 'UV', '1');
 
 -- ----------------------------
 -- Table structure for sensor_seq
@@ -160,11 +167,13 @@ DROP TABLE IF EXISTS `sensor_seq`;
 CREATE TABLE `sensor_seq` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of sensor_seq
 -- ----------------------------
+INSERT INTO `sensor_seq` VALUES ('1');
+INSERT INTO `sensor_seq` VALUES ('2');
 
 -- ----------------------------
 -- Table structure for threshold
@@ -207,12 +216,12 @@ CREATE TABLE `unit` (
 INSERT INTO `unit` VALUES ('UT00000000000000', '/', null, '系统根节点', '1', '0', '-1');
 INSERT INTO `unit` VALUES ('UT00000000000001', 'AAA省BBB市第一人民医院', 'UT00000000000000', '地址：BBB市CCC路123号', '1', '0', '2');
 INSERT INTO `unit` VALUES ('UT00000000000002', '口腔科', 'UT00000000000001', '', '1', '0', '2');
-INSERT INTO `unit` VALUES ('UT00000000000003', '神经外科', 'UT00000000000001', '', '1', '0', '-1');
+INSERT INTO `unit` VALUES ('UT00000000000003', '神经外科', 'UT00000000000001', '', '1', '0', '0');
 INSERT INTO `unit` VALUES ('UT00000000000004', '口腔科病房402', 'UT00000000000002', '外科大楼5楼', '1', '0', '2');
-INSERT INTO `unit` VALUES ('UT00000000000005', '神经外科病房708', 'UT00000000000003', '外科大楼7层', '1', '0', '-1');
+INSERT INTO `unit` VALUES ('UT00000000000005', '神经外科病房708', 'UT00000000000003', '外科大楼7层', '1', '0', '0');
 INSERT INTO `unit` VALUES ('UT00000000000006', '紫外光灯01', 'UT00000000000004', '病房窗户附近', '1', '1', '-1');
 INSERT INTO `unit` VALUES ('UT00000000000007', '紫外光灯02', 'UT00000000000004', '门后', '1', '1', '2');
-INSERT INTO `unit` VALUES ('UT00000000000008', '紫外光灯03', 'UT00000000000005', '门口', '1', '1', '-1');
+INSERT INTO `unit` VALUES ('UT00000000000008', '紫外光灯03', 'UT00000000000005', '门口', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for unit_manager
@@ -265,7 +274,7 @@ CREATE TABLE `unit_warn` (
   `NOTIFY_TIME` datetime NOT NULL,
   PRIMARY KEY (`WARN_ID`),
   KEY `UNIT_ID_WARN_idx` (`UNIT_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of unit_warn
@@ -274,6 +283,17 @@ INSERT INTO `unit_warn` VALUES ('1', 'UT00000000000007', '2', '2018-12-24 15:15:
 INSERT INTO `unit_warn` VALUES ('2', 'UT00000000000007', '2', '2018-12-24 15:30:12');
 INSERT INTO `unit_warn` VALUES ('3', 'UT00000000000007', '2', '2018-12-24 15:55:10');
 INSERT INTO `unit_warn` VALUES ('4', 'UT00000000000007', '2', '2019-03-25 16:30:11');
+INSERT INTO `unit_warn` VALUES ('5', 'UT00000000000007', '2', '2019-03-30 12:40:11');
+INSERT INTO `unit_warn` VALUES ('6', 'UT00000000000007', '2', '2019-03-30 12:45:10');
+INSERT INTO `unit_warn` VALUES ('7', 'UT00000000000007', '2', '2019-03-30 12:55:10');
+INSERT INTO `unit_warn` VALUES ('8', 'UT00000000000007', '2', '2019-03-30 13:00:10');
+INSERT INTO `unit_warn` VALUES ('9', 'UT00000000000007', '2', '2019-03-30 13:05:10');
+INSERT INTO `unit_warn` VALUES ('10', 'UT00000000000007', '2', '2019-03-30 13:10:11');
+INSERT INTO `unit_warn` VALUES ('11', 'UT00000000000007', '2', '2019-03-30 13:15:11');
+INSERT INTO `unit_warn` VALUES ('12', 'UT00000000000007', '2', '2019-03-30 13:30:10');
+INSERT INTO `unit_warn` VALUES ('13', 'UT00000000000007', '2', '2019-03-30 13:55:10');
+INSERT INTO `unit_warn` VALUES ('14', 'UT00000000000007', '2', '2019-03-30 14:20:10');
+INSERT INTO `unit_warn` VALUES ('15', 'UT00000000000007', '2', '2019-03-30 14:45:10');
 
 -- ----------------------------
 -- Table structure for user

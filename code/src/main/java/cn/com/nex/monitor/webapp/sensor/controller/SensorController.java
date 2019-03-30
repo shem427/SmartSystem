@@ -46,6 +46,7 @@ public class SensorController {
             SensorBean sensorBean = sensorService.getSensorById(sensorId);
             if (sensorBean != null) {
                 model.addAttribute("sensorId", sensorBean.getSensorId());
+                model.addAttribute("radiationModelId", sensorBean.getRadiationModelId());
                 model.addAttribute("sensorName", sensorBean.getSensorName());
                 model.addAttribute("sensorModel", sensorBean.getSensorModel());
                 model.addAttribute("sensorSn", sensorBean.getSensorSn());

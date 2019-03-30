@@ -12,6 +12,7 @@ public class SensorBean extends CommonBean {
     private String sensorSn;
     private String sensorModel;
     private String sensorRemark;
+    private String radiationModelId;
     private String unitId;
     private String unitName;
     private String unitFullPath;

@@ -15,6 +15,9 @@ $(function() {
                     field: 'sensorName',
                     title: '传感器名称'
                 }, {
+                    field: 'radiationModelId',
+                    title: '紫外模块ID'
+                }, {
                     field: 'sensorModel',
                     title: '传感器型号'
                 }, {
@@ -128,6 +131,7 @@ $(function() {
 
             $('#saveSensor').click(function() {
                 var sensorId = $('#sensorId').val();
+                var radiationModelId = $('#radiationModelId').val();
                 var sensorName = $('#sensorName').val();
                 var sensorModel = $('#sensorModel').val();
                 var sensorSn = $('#sensorSn').val();
@@ -147,6 +151,7 @@ $(function() {
 
                 var data = {
                     sensorName: sensorName,
+                    radiationModelId: radiationModelId,
                     sensorModel: sensorModel,
                     sensorSn: sensorSn,
                     sensorRemark: sensorRemark,
