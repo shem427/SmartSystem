@@ -10,11 +10,12 @@ https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f54
 
 部署：
 1. 新建数据库，名称中输入monitor，字符集设置为UTF8mb4
-2. 在MySQL中运行db/monitor.sql，设置DB的结构
-3. 用记事本打开deploy.bat，修改以下两项
+2. 在MySQL中运行db/monitor_ddl.sql，设置DB的结构
+3. 在MySQL中运行db/monitor_data.sql，导入初始数据
+4. 用记事本打开deploy.bat，修改以下两项
 	--spring.datasource.username=shen
 	--spring.datasource.password=0944
 	修改为正确的数据库用户名与密码，保存。
-4. 双击deploy.bat，保持命令行窗口不关闭。
-5. 浏览器中打开： http://localhost:8080/monitor/index
-6. 用户名/密码中输入000001/123456
+5. 双击deploy.bat，保持命令行窗口不关闭。
+6. 浏览器中打开： http://localhost:8080/monitor/index
+7. 用户名/密码中输入000001/123456
