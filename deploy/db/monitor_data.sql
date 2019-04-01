@@ -104,6 +104,11 @@ INSERT INTO `radiation` VALUES ('99', 'UT00000000000007', '78');
 INSERT INTO `radiation` VALUES ('100', 'UT00000000000007', '51');
 
 -- ----------------------------
+-- ----------------------------
+-- Records of sensor
+-- ----------------------------
+INSERT INTO `sensor` VALUES ('SS00000000000003', 'f5:2b:46:18:00:d2', '测试用传感器', 'UT00000000000013', '测试用', 'senor0001', 'UVsenor', '1');
+
 -- Records of threshold
 -- ----------------------------
 INSERT INTO `threshold` VALUES ('RADIATION', '70', '50');
@@ -170,6 +175,8 @@ INSERT INTO `unit_warn` VALUES ('4', 'UT00000000000007', '2', '2019-03-25 16:30:
 INSERT INTO `unit_warn` VALUES ('5', 'UT00000000000007', '2', '2019-03-25 16:50:03');
 INSERT INTO `unit_warn` VALUES ('6', 'UT00000000000007', '2', '2019-03-25 16:55:02');
 INSERT INTO `unit_warn` VALUES ('7', 'UT00000000000007', '2', '2019-03-25 17:20:02');
+INSERT INTO `unit_warn` VALUES ('16', 'UT00000000000007', '2', '2019-04-01 02:35:03');
+INSERT INTO `unit_warn` VALUES ('17', 'UT00000000000007', '2', '2019-04-01 02:40:05');
 
 -- ----------------------------
 -- Records of user
