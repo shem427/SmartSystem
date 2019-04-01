@@ -8,6 +8,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class DataBean extends CommonBean {
     private String msg;
-    private String ID;
+    private String iD;
     private int value;
 }
