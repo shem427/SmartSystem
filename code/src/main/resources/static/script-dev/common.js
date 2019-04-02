@@ -329,7 +329,7 @@ $(function() {
                     pagination: options.pagination !== false,
                     sortable: options.sortable !== false,
                     sortName: options.sortName,
-                    sortOrder: 'asc',
+                    sortOrder: options.sortOrder || 'asc',
                     queryParams: options.queryParams || function(params) {
                         return {
                             limit: params.limit,

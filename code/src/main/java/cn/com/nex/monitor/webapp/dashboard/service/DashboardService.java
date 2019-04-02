@@ -5,6 +5,7 @@ import cn.com.nex.monitor.webapp.common.bean.TableData;
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
 import cn.com.nex.monitor.webapp.dashboard.bean.RadiationBean;
 import cn.com.nex.monitor.webapp.dashboard.dao.DashboardDao;
+import cn.com.nex.monitor.webapp.unit.dao.UnitDao;
 import cn.com.nex.monitor.webapp.warn.bean.UnitWarnBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ import java.util.List;
 public class DashboardService {
     @Autowired
     private DashboardDao dashboardDao;
+
+    @Autowired
+    private UnitDao unitDao;
 
     public Collection<DashboardUnitBean> getUnitListByManagerAndParent(String userId, String parentId) {
         return dashboardDao.getUnitListByManagerAndParent(userId, parentId);
@@ -57,5 +61,9 @@ public class DashboardService {
         tableData.setTotal(total);
 
         return tableData;
+    }
+
+    public String getUnitPath(String unitId) {
+        return unitDao.getUnitFullPath(unitId);
     }
 }

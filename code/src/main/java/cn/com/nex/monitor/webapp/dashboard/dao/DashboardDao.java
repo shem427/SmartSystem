@@ -68,7 +68,7 @@ public class DashboardDao {
         String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, `UNIT_STATUS` FROM `UNIT` WHERE ACTIVE=true AND LEAF=true AND UNIT_STATUS > 0";
         return jdbcTemplate.query(sql, rs -> {
             List<DashboardUnitBean> beanList = new ArrayList<>();
-            if (rs.next()) {
+            while (rs.next()) {
                 DashboardUnitBean bean = new DashboardUnitBean();
                 bean.setUnitId(rs.getString("UNIT_ID"));
                 bean.setUnitName(rs.getString("UNIT_NAME"));
@@ -102,7 +102,7 @@ public class DashboardDao {
     }
 
     public List<Integer> getUnitRadiationData(String unitId) {
-        String sql = "SELECT `RAD_VALUE` FROM `RADIATION` WHERE `UNIT_ID`=? LIMIT 500";
+        String sql = "SELECT `RAD_VALUE` FROM `RADIATION` WHERE `UNIT_ID`=? ORDER BY `RAD_ID` DESC LIMIT 500";
         return jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
             List<Integer> retList = new ArrayList<>();
             while (rs.next()) {
