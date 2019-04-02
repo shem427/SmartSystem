@@ -19,6 +19,8 @@ import java.util.Properties;
 @Component
 public class MailHelper {
 
+    @Value("${cn.com.nex.monitor.mail.enabled}")
+    private boolean mailEnabled;
     @Value("${cn.com.nex.monitor.mail.mailDebug}")
     private String mailDebug;
     @Value("${cn.com.nex.monitor.mail.smtpAuth}")
@@ -41,6 +43,9 @@ public class MailHelper {
     private String body;
 
     public void send(DashboardUnitBean unit, List<String> addrList) throws Exception {
+        if (!mailEnabled) {
+            return;
+        }
         //使用JavaMail发送邮件的5个步骤
         //1、创建session
         Session session = Session.getInstance(initProp());
