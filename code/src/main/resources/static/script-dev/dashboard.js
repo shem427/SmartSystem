@@ -16,7 +16,8 @@ $(function() {
             titleText.text(levelInfo.title);
             iconCls.addClass('fa fa-' + levelInfo.iconCls + ' fa-5x');
 
-            $('.status-icon').click(function() {
+            $('.status-icon').click(function(e) {
+                e.preventDefault();
                 var unitId = $(this).prop('id');
                 $.mr.ajax({
                     url: 'dashboard/index',
@@ -32,7 +33,8 @@ $(function() {
                 });
             });
 
-            $('#btnRefresh').click(function() {
+            $('#btnRefresh').click(function(e) {
+                e.preventDefault();
                 var parentId = $('#parentId').val();
                 $.mr.ajax({
                     url: 'dashboard/index',
@@ -48,7 +50,8 @@ $(function() {
                 });
             });
 
-            $('#btnUpLevel').click(function() {
+            $('#btnUpLevel').click(function(e) {
+                e.preventDefault();
                 var parentId = $('#parentId').val();
                 $.mr.ajax({
                     url: 'dashboard/upIndex',
@@ -68,7 +71,8 @@ $(function() {
         initGraphic: function() {
             $('.panel-icon a').tooltip();
             _self._processGraphic();
-            $('.btnUpLevel').click(function() {
+            $('.btnUpLevel').click(function(e) {
+                e.preventDefault();
                 var unitId = $('#unitId').val();
                 var level = parseInt($('#unitLevel').val());
                 $.mr.ajax({
