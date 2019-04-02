@@ -40,7 +40,7 @@ public class DashboardDao {
 
         Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
 
-        Map<String, DashboardUnitBean> beanMap = new HashMap<>();
+        Set<DashboardUnitBean> beanSet = new TreeSet<>();
         Iterator<Map.Entry<String, Object>> it = simpleJdbcCallResult.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, Object> entry = it.next();
@@ -52,11 +52,11 @@ public class DashboardDao {
                 }
                 for (Map<String, Object> item : value) {
                     DashboardUnitBean dashUnit = initDashUnitBean(item);
-                    beanMap.put(dashUnit.getUnitId(), dashUnit);
+                    beanSet.add(dashUnit);
                 }
             }
         }
-        return beanMap.values();
+        return beanSet;
     }
 
     public void addUnitWarn(UnitWarnBean bean) {

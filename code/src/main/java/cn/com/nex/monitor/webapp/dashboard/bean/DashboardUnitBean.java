@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DashboardUnitBean extends CommonBean {
+public class DashboardUnitBean extends CommonBean implements Comparable<DashboardUnitBean> {
     private String unitId;
     private String unitName;
     private String remark;
@@ -31,5 +31,10 @@ public class DashboardUnitBean extends CommonBean {
         } else {
             return "Normal";
         }
+    }
+
+    @Override
+    public int compareTo(DashboardUnitBean o) {
+        return this.unitId.compareTo(o.unitId);
     }
 }

@@ -65,7 +65,7 @@ public class DashboardController {
         if (isParent) {
             return showUnitStatus(model, pId, level);
         } else {
-            return showUnitDetail(model, pId);
+            return showUnitDetail(model, pId, level);
         }
     }
 
@@ -91,8 +91,9 @@ public class DashboardController {
         }
     }
 
-    private ModelAndView showUnitDetail(Map<String, Object> model, String unitId) {
+    private ModelAndView showUnitDetail(Map<String, Object> model, String unitId, Integer level) {
         model.put("unitId", unitId);
+        model.put("level", level);
         return new ModelAndView("dashboard/unitDataGraphic", model);
     }
 

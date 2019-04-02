@@ -10,6 +10,7 @@ $(function() {
             var levelInfo = $.mr.resource.UNIT_LEVEL[level];
 
             $('.status-icon').tooltip();
+            $('.panel-icon a').tooltip();
 
             titleIcon.addClass('fa fa-' + levelInfo.iconCls + ' fa-fw');
             titleText.text(levelInfo.title);
@@ -62,8 +63,30 @@ $(function() {
                     }
                 });
             });
+            setTimeout(function() { $('#btnRefresh').trigger('click'); }, 15000);
         },
         initGraphic: function() {
+            $('.panel-icon a').tooltip();
+            _self._processGraphic();
+            $('.btnUpLevel').click(function() {
+                var unitId = $('#unitId').val();
+                var level = parseInt($('#unitLevel').val());
+                $.mr.ajax({
+                    url: 'dashboard/upIndex',
+                    type: 'get',
+                    data: {
+                        currentId: unitId,
+                        level: level ? (level - 1) : 1
+                    },
+                    dataType: 'html',
+                    success: function(data) {
+                        $('#page-wrapper').empty().append(data);
+                    }
+                });
+            });
+            setTimeout(function() { _self._processGraphic(); }, 1500);
+        },
+        _processGraphic: function() {
             $.mr.ajax({
                 url: 'dashboard/getUnitDatas',
                 type: 'get',
@@ -163,10 +186,6 @@ $(function() {
                     tickFormatter: function() {
                         return "";
                     }
-                },
-                yaxis: {
-                    min: 0,
-                    max: 110
                 },
                 legend: {
                     show: true
