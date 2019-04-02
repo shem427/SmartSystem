@@ -1,6 +1,5 @@
 package cn.com.nex.monitor.webapp.data.controller;
 
-import cn.com.nex.monitor.webapp.dashboard.controller.DashboardController;
 import cn.com.nex.monitor.webapp.data.bean.DataBean;
 import cn.com.nex.monitor.webapp.data.service.DataService;
 import org.slf4j.Logger;
@@ -17,7 +16,7 @@ import java.util.Map;
 @RequestMapping(value = "/data")
 public class DataController {
     /** LOG */
-    private static final Logger LOG = LoggerFactory.getLogger(DashboardController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DataController.class);
     private static final String MSG_PREFIX = "$$$";
     private static final String MSG_SUFFIX = "===";
 
