@@ -88,7 +88,7 @@ $(function() {
                     }
                 });
             });
-            setTimeout(function() { _self._processGraphic(); }, 1500);
+            setTimeout(function() { _self._processGraphic(); }, 5000);
         },
         _processGraphic: function() {
             $.mr.ajax({
@@ -109,6 +109,7 @@ $(function() {
                 selector: '#unitDataTable',
                 url: 'dashboard/getRadiationData',
                 sortName: 'RAD_ID',
+                sortOrder: 'desc',
                 pageSize: 5,
                 pageList: [5, 10, 20, 50],
                 columns: [{

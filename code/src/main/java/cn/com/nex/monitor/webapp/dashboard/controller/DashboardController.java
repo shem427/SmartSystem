@@ -94,6 +94,8 @@ public class DashboardController {
     private ModelAndView showUnitDetail(Map<String, Object> model, String unitId, Integer level) {
         model.put("unitId", unitId);
         model.put("level", level);
+        String unitPath = dashboardService.getUnitPath(unitId);
+        model.put("unitPath", unitPath);
         return new ModelAndView("dashboard/unitDataGraphic", model);
     }
 
