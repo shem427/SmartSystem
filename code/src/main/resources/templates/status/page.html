@@ -21,7 +21,6 @@
                 <div class="panel-footer">
                     <span class="pull-left">详细</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -44,7 +43,6 @@
                 <div class="panel-footer">
                     <span class="pull-left">详细</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -67,7 +65,6 @@
                 <div class="panel-footer">
                     <span class="pull-left">详细</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -90,14 +87,30 @@
                 <div class="panel-footer">
                     <span class="pull-left">详细</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
                     <div class="clearfix"></div>
                 </div>
             </a>
         </div>
     </div>
 </div>
-<!--<script th:src="@{/script/sensor.js}"></script>
+<div class="row">
+    <input type="hidden" id="mapKey" th:value="${mapKey}" />
+    <div class="col-sm-12 col-md-8">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa hospital-o fa-fw"></i>&nbsp;医院一览
+            </div>
+            <div class="panel-body">
+                <div id="__mapContainer" style="height:600px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/script/status.js}"></script>
 <script>
-    $(function() {$.mr.sensor.init();});
-</script>-->
+    $(function() {
+        $.mr.map.create($('#mapKey').val());
+        $.mr.status.markHospital();
+    });
+</script>

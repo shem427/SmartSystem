@@ -16,6 +16,7 @@ public class DataUploadTask extends Thread {
     @Override
     @Transactional
     public void run() {
-        dataDao.uploadData(data);
+        dataDao.uploadRadiationData(data);
+        dataDao.uploadSensorData(data);
     }
 }

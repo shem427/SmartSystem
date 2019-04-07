@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 @Component
 public class DataDao extends CommonDao<DataBean> {
@@ -42,13 +44,18 @@ public class DataDao extends CommonDao<DataBean> {
         throw new UnsupportedOperationException("not support.");
     }
 
-    public int uploadData(DataBean data) {
+    public int uploadRadiationData(DataBean data) {
         String unitId = getUnitIdByRadiationModel(data.getID());
         if (unitId == null) {
             throw new IllegalArgumentException("紫外模块没有关联到紫外灯！");
         }
         String sql = "INSERT INTO `RADIATION` (`UNIT_ID`, `RAD_VALUE`) VALUES (?,?)";
         return jdbcTemplate.update(sql, unitId, data.getValue());
+    }
+
+    public int uploadSensorData(DataBean data) {
+        String sql = "INSERT INTO `SENSOR_DATA` (`RADIATION_MODEL_ID`, `DATA_VALUE`, `DATA_TIME`) VALUES (?, ?, ?)";
+        return jdbcTemplate.update(sql, data.getID(), data.getValue(), new Timestamp(new Date().getTime()));
     }
 
     private String getUnitIdByRadiationModel(String radiationModelId) {

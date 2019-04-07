@@ -1,11 +1,5 @@
 $(function() {
-    // ajax global setting for csrf.
     $.ajaxSetup({
-        // beforeSend: function(xhr) {
-        //     var header = $("meta[name='_csrf_header']").attr("content");
-        //     var token = $("meta[name='_csrf']").attr("content");
-        //     xhr.setRequestHeader(header, token);
-        // },
         error: function(xhr, status, error) {
             console.log(error);
             if (xhr.status === 401) {
@@ -375,6 +369,23 @@ $(function() {
             },
             getSelections: function(selector) {
                 return $(selector).bootstrapTable('getSelections');
+            }
+        },
+        map: {
+            create: function(key) {
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+                script.src = "https://map.qq.com/api/js?v=2.exp&key=" + key + "&callback=$.mr.map.init";
+                document.body.appendChild(script);
+            },
+            init: function() {
+                var pt = new qq.maps.LatLng(35.4606661, 109.3359375);
+                var mapOptions = {
+                    zoom: 4,
+                    center: pt,
+                    mapTypeId: qq.maps.MapTypeId.ROADMAP
+                };
+                $.mr.mapinstance = new qq.maps.Map(document.getElementById("__mapContainer"), mapOptions);
             }
         }
     };

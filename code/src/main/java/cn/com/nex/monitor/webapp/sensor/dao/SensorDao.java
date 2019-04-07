@@ -5,16 +5,28 @@ import cn.com.nex.monitor.webapp.common.constant.DBConstant;
 import cn.com.nex.monitor.webapp.common.dao.CommonDao;
 import cn.com.nex.monitor.webapp.sensor.bean.SensorBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class SensorDao extends CommonDao<SensorBean> {
+
+    @Value("${cn.com.nex.monitor.active.interval}")
+    private int activeInterval;
 
     /**
      * 从ResultSet中抽取Bean对象。
@@ -121,6 +133,27 @@ public class SensorDao extends CommonDao<SensorBean> {
                 sensor.getSensorSn(),
                 sensor.getSensorModel(),
                 sensor.getSensorId());
+    }
+
+    public int[] countSensor(String parentUnitId) {
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
+                .withProcedureName("countSensor").withoutProcedureColumnMetaDataAccess();
+        simpleJdbcCall.addDeclaredParameter(new SqlParameter("parentUnitId", Types.CHAR));
+        simpleJdbcCall.addDeclaredParameter(new SqlParameter("inactiveHours", Types.INTEGER));
+
+        simpleJdbcCall.addDeclaredParameter(new SqlOutParameter("activeCount", Types.INTEGER));
+        simpleJdbcCall.addDeclaredParameter(new SqlOutParameter("inactiveCount", Types.INTEGER));
+
+        Map<String, Object> inParamMap = new HashMap<>();
+        inParamMap.put("parentUnitId", parentUnitId);
+        inParamMap.put("inactiveHours", activeInterval);
+        SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+        Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+
+        int activeCount = (int) simpleJdbcCallResult.get("activeCount");
+        int inactiveCount = (int) simpleJdbcCallResult.get("inactiveCount");
+
+        return new int[] {activeCount, inactiveCount};
     }
 
     private String getWhereForSearch(String sensorNameLike, String sensorModelLike, List<String> argList) {

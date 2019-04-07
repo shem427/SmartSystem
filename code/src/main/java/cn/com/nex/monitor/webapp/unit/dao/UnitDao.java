@@ -2,15 +2,21 @@ package cn.com.nex.monitor.webapp.unit.dao;
 
 import cn.com.nex.monitor.webapp.common.constant.DBConstant;
 import cn.com.nex.monitor.webapp.common.dao.CommonDao;
+import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Types;
+import java.util.*;
 
 @Component
 public class UnitDao extends CommonDao<UnitBean> {
@@ -158,5 +164,29 @@ public class UnitDao extends CommonDao<UnitBean> {
         user.setMailAddress(rs.getString("MAIL_ADDRESS"));
 
         return user;
+    }
+
+    public int countUnitByStatus(int status, String parentUnitId) {
+//        String sql = "SELECT COUNT(1) FROM `UNIT` WHERE ACTIVE=true AND UNIT_STATUS <= 0 AND LEAF=true";
+//        return jdbcTemplate.query(sql, rs -> {
+//            if (rs.next()) {
+//                return rs.getInt(1);
+//            }
+//            return 0;
+//        });
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
+                .withProcedureName("countLightByStatus").withoutProcedureColumnMetaDataAccess();
+        simpleJdbcCall.addDeclaredParameter(new SqlParameter("parentUnitId", Types.CHAR));
+        simpleJdbcCall.addDeclaredParameter(new SqlParameter("stats", Types.INTEGER));
+
+        simpleJdbcCall.addDeclaredParameter(new SqlOutParameter("size", Types.INTEGER));
+
+        Map<String, Object> inParamMap = new HashMap<>();
+        inParamMap.put("parentUnitId", parentUnitId);
+        inParamMap.put("stats", status);
+        SqlParameterSource in = new MapSqlParameterSource(inParamMap);
+        Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
+
+        return (int) simpleJdbcCallResult.get("size");
     }
 }
