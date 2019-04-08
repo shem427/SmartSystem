@@ -3,6 +3,7 @@ package cn.com.nex.monitor.webapp.status.controller;
 import cn.com.nex.monitor.webapp.setting.controller.SettingController;
 import cn.com.nex.monitor.webapp.setting.service.SettingService;
 import cn.com.nex.monitor.webapp.status.bean.MapMarkerBean;
+import cn.com.nex.monitor.webapp.status.bean.StatusBean;
 import cn.com.nex.monitor.webapp.status.service.StatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,24 +41,8 @@ public class StatusController {
     private String topUnitId;
 
     @GetMapping(value = "/index")
-    public ModelAndView page(String pUnitId) {
-        String parentUnitId = null;
-        if (pUnitId == null) {
-            parentUnitId = topUnitId;
-        } else {
-            parentUnitId = pUnitId;
-        }
+    public ModelAndView page() {
         Map<String, Object> model = new HashMap<>();
-        int normalLightCount = statusService.getNormalLightCount(parentUnitId);
-        int abnormalLightCount = statusService.getAbnormalLightCount(parentUnitId);
-        int[] counts = statusService.countSensor(parentUnitId);
-
-
-        model.put("normalLight", normalLightCount);
-        model.put("abnormalLight", abnormalLightCount);
-        model.put("activeSensor", counts[0]);
-        model.put("inactiveSensor", counts[1]);
-
         model.put("mapKey", mapKey);
         model.put("mapCK", mapCK);
 
@@ -68,5 +53,35 @@ public class StatusController {
     @ResponseBody
     public List<MapMarkerBean> markHospital() {
         return statusService.getAllHospitalLocation();
+    }
+
+    @GetMapping(value = "/getStatus")
+    @ResponseBody
+    public StatusBean getStatus(String pUnitId) {
+        String parentUnitId = null;
+        if (pUnitId == null) {
+            parentUnitId = topUnitId;
+        } else {
+            parentUnitId = pUnitId;
+        }
+        int normalLight = statusService.getNormalLightCount(parentUnitId);
+        int warningLight = statusService.getWarningLightCount(parentUnitId);
+        int errorLight = statusService.getErrorLightCount(parentUnitId);
+
+        int[] sensors = statusService.countSensor(parentUnitId);
+
+        StatusBean status = new StatusBean();
+        status.setActiveSensor(sensors[0]);
+        status.setInactiveSensor(sensors[1]);
+        status.setErrorLight(errorLight);
+        status.setNormalLight(normalLight);
+        status.setWarningLight(warningLight);
+//        status.setActiveSensor(52);
+//        status.setInactiveSensor(5);
+//        status.setErrorLight(4);
+//        status.setNormalLight(40);
+//        status.setWarningLight(13);
+
+        return status;
     }
 }

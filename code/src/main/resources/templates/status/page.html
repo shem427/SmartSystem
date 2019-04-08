@@ -12,7 +12,7 @@
                         <i class="fa fa-lightbulb-o fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="normalLight" th:text="${normalLight}">26</div>
+                        <div class="huge" id="normalLight">26</div>
                         <div>正常紫外灯数</div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                         <i class="fa fa-lightbulb-o fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="abnormalLight" th:text="${abnormalLight}">26</div>
+                        <div class="huge" id="abnormalLight">26</div>
                         <div>异常紫外灯数</div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                         <i class="fa fa-microchip fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="activeSensor" th:text="${activeSensor}">26</div>
+                        <div class="huge" id="activeSensor">26</div>
                         <div>活跃传感器数</div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                         <i class="fa fa-microchip fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge" id="inactiveSensor" th:text="${inactiveSensor}">26</div>
+                        <div class="huge" id="inactiveSensor">26</div>
                         <div>非活跃传感器数</div>
                     </div>
                 </div>
@@ -96,21 +96,49 @@
 <div class="row">
     <input type="hidden" id="mapKey" th:value="${mapKey}" />
     <div class="col-sm-12 col-md-8">
-
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa hospital-o fa-fw"></i>&nbsp;医院一览
+                <i class="fa fa-hospital-o fa-fw"></i>&nbsp;医院一览
             </div>
             <div class="panel-body">
-                <div id="__mapContainer" style="height:600px;"></div>
+                <div id="__mapContainer" style="height:550px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-pie-chart fa-fw"></i>&nbsp;紫外线灯状态
+                    </div>
+                    <div class="panel-body" id="lightStatus" style="height:255px;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-pie-chart fa-fw"></i>&nbsp;传感器状态
+                    </div>
+                    <div class="panel-body" id="sensorStatus" style="height:255px;">
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<script th:src="@{/js/raphael.min.js}"></script>
+<script th:src="@{/js/morris.min.js}"></script>
 <script th:src="@{/script/status.js}"></script>
 <script>
     $(function() {
         $.mr.map.create($('#mapKey').val());
+        $.mr.status.initStatus(undefined);
         $.mr.status.markHospital();
     });
 </script>

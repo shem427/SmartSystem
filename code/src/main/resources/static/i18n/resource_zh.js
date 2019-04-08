@@ -62,6 +62,9 @@ $(function() {
         }],
         STATUS_NORMAL: '合格',
         STATUS_WARNING: '延长照射时间',
-        STATUS_ERROR: '不合格'
+        STATUS_ERROR: '不合格',
+
+        ACTIVE_SENSOR: '活跃传感器',
+        INACTIVE_SENSOR: '非活跃传感器'
     };
 });

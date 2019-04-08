@@ -32,8 +32,12 @@ private UnitDao unitDao;
         return unitDao.countUnitByStatus(0, parentUnitId) + unitDao.countUnitByStatus(-1, parentUnitId);
     }
 
-    public int getAbnormalLightCount(String parentUnitId) {
-        return unitDao.countUnitByStatus(1, parentUnitId) + unitDao.countUnitByStatus(2, parentUnitId);
+    public int getWarningLightCount(String parentUnitId) {
+        return unitDao.countUnitByStatus(1, parentUnitId);
+    }
+
+    public int getErrorLightCount(String parentUnitId) {
+        return unitDao.countUnitByStatus(2, parentUnitId);
     }
 
     public int[] countSensor(String parentUnitId) {
