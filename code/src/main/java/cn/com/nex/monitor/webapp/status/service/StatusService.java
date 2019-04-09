@@ -62,4 +62,8 @@ private UnitDao unitDao;
 
         return markerList;
     }
+
+    public UnitBean getUnitInfo(String parentUnitId) {
+        return unitDao.get(parentUnitId);
+    }
 }

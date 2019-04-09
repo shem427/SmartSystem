@@ -1,10 +1,12 @@
 package cn.com.nex.monitor.webapp.status.controller;
 
+import cn.com.nex.monitor.webapp.common.MessageService;
 import cn.com.nex.monitor.webapp.setting.controller.SettingController;
 import cn.com.nex.monitor.webapp.setting.service.SettingService;
 import cn.com.nex.monitor.webapp.status.bean.MapMarkerBean;
 import cn.com.nex.monitor.webapp.status.bean.StatusBean;
 import cn.com.nex.monitor.webapp.status.service.StatusService;
+import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class StatusController {
 
     @Autowired
     private StatusService statusService;
+
+    @Autowired
+    private MessageService messageService;
 
     @Value("${cn.com.nex.monitor.map.key}")
     private String mapKey;
@@ -59,18 +64,24 @@ public class StatusController {
     @ResponseBody
     public StatusBean getStatus(String pUnitId) {
         String parentUnitId = null;
+        StatusBean status = new StatusBean();
         if (pUnitId == null) {
             parentUnitId = topUnitId;
+            status.setUnitId(topUnitId);
+            status.setUnitName(messageService.getMessage("mr.unit.status.top"));
         } else {
             parentUnitId = pUnitId;
+            UnitBean unitInfo = statusService.getUnitInfo(parentUnitId);
+            status.setUnitId(parentUnitId);
+            status.setUnitName(unitInfo.getName());
         }
+
         int normalLight = statusService.getNormalLightCount(parentUnitId);
         int warningLight = statusService.getWarningLightCount(parentUnitId);
         int errorLight = statusService.getErrorLightCount(parentUnitId);
 
         int[] sensors = statusService.countSensor(parentUnitId);
 
-        StatusBean status = new StatusBean();
         status.setActiveSensor(sensors[0]);
         status.setInactiveSensor(sensors[1]);
         status.setErrorLight(errorLight);

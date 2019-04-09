@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class StatusBean extends CommonBean {
+    private String unitId;
+    private String unitName;
     private int normalLight;
     private int warningLight;
     private int errorLight;
