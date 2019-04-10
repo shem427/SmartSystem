@@ -118,6 +118,9 @@ $(function() {
                 }, {
                     field: 'radValue',
                     title: '辐射值'
+                }, {
+                    field: 'uploadTime',
+                    title: '检测时间'
                 }],
                 queryParams: function(params) {
                     return {

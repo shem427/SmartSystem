@@ -1,6 +1,7 @@
 package cn.com.nex.monitor.webapp.dashboard.dao;
 
 import cn.com.nex.monitor.webapp.common.bean.SearchParam;
+import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
 import cn.com.nex.monitor.webapp.dashboard.bean.RadiationBean;
 import cn.com.nex.monitor.webapp.warn.bean.UnitWarnBean;
@@ -113,13 +114,14 @@ public class DashboardDao {
     }
 
     public List<RadiationBean> getRadiationData(SearchParam searchParam, String unitId) {
-        String sql = "SELECT (@i :=@i + 1) AS NO, `RAD_VALUE` FROM `RADIATION`, (SELECT @i := ?) AS it WHERE `UNIT_ID`=? " + searchParam.toSQL();
+        String sql = "SELECT (@i :=@i + 1) AS NO, `RAD_VALUE`, `UPLOAD_TIME` FROM `RADIATION`, (SELECT @i := ?) AS it WHERE `UNIT_ID`=? " + searchParam.toSQL();
         return jdbcTemplate.query(sql, new Object[] {searchParam.getOffset(), unitId}, rs -> {
             List<RadiationBean> list = new ArrayList<>();
             while (rs.next()) {
                 RadiationBean rb = new RadiationBean();
                 rb.setRadNo(rs.getInt("NO"));
                 rb.setRadValue(rs.getInt("RAD_VALUE"));
+                rb.setUploadTime(MonitorUtil.formatDate(rs.getTimestamp("UPLOAD_TIME")));
                 list.add(rb);
             }
             return list;

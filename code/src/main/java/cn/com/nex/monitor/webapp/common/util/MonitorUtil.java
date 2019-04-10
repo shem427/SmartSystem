@@ -19,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public final class MonitorUtil {
     private static final Logger LOG = LoggerFactory.getLogger(MonitorUtil.class);
@@ -94,6 +96,14 @@ public final class MonitorUtil {
         double lat = (double) location.get("lat");
 
         return new double[] {lat, lng};
+    }
+
+    public static String formatDate(Date date) {
+        if (date == null) {
+            return "";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        return sdf.format(date);
     }
 
     private static JSONObject httpGet(String url) {

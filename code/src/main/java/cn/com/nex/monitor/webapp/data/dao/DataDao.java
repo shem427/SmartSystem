@@ -49,8 +49,8 @@ public class DataDao extends CommonDao<DataBean> {
         if (unitId == null) {
             throw new IllegalArgumentException("紫外模块没有关联到紫外灯！");
         }
-        String sql = "INSERT INTO `RADIATION` (`UNIT_ID`, `RAD_VALUE`) VALUES (?,?)";
-        return jdbcTemplate.update(sql, unitId, data.getValue());
+        String sql = "INSERT INTO `RADIATION` (`UNIT_ID`, `RAD_VALUE`, `UPLOAD_TIME`) VALUES (?,?,?)";
+        return jdbcTemplate.update(sql, unitId, data.getValue(), new Timestamp(data.getUploadTime().getTime()));
     }
 
     public int uploadSensorData(DataBean data) {

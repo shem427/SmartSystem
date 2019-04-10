@@ -9,4 +9,5 @@ import lombok.EqualsAndHashCode;
 public class RadiationBean extends CommonBean {
     private int radNo;
     private int radValue;
+    private String uploadTime;
 }
