@@ -41,6 +41,10 @@ public class UserService {
         return usersData;
     }
 
+    public List<UserBean> searchUser(String userIdLike, String nameLike) {
+        return userDao.searchUser(null, userIdLike, nameLike);
+    }
+
     @Transactional
     public int deleteUser(List<String> userIds) {
         int count = 0;

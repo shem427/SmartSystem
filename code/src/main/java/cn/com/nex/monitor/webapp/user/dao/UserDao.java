@@ -67,7 +67,9 @@ public class UserDao extends CommonDao<UserBean> {
         if (sqlWhere.length() > 0) {
             sql = sql + " WHERE " + sqlWhere;
         }
-        sql += param.toSQL();
+        if (param != null) {
+            sql += param.toSQL();
+        }
 
         return jdbcTemplate.query(sql, argList.toArray(new String[0]), getAllExtractor());
     }

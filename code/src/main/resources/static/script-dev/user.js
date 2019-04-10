@@ -1,6 +1,7 @@
 $(function() {
     var _self;
     $.mr.user = {
+        lastCondition: undefined,
         _initUserTable: function() {
             $.mr.table.create({
                 selector: '#userTable',
@@ -26,6 +27,10 @@ $(function() {
                 queryParams: function(params) {
                     var userIdLike = $('#userIdLike').val();
                     var nameLike = $('#userNameLike').val();
+                    _self.lastCondition = {
+                        userIdLike: userIdLike,
+                        nameLike: nameLike
+                    };
                     return {
                         limit: params.limit,
                         offset: params.offset,
@@ -135,6 +140,16 @@ $(function() {
                                 $.mr.messageBox.info($.mr.resource.USER_DELETE_SUCCESS + data.number);
                             }
                         });
+                    }
+                });
+            });
+            $('#export').click(function() {
+                $.mr.ajax({
+                    url: 'user/export',
+                    type: 'get',
+                    data: _self.lastCondition,
+                    success: function(data) {
+                        alert('success!');
                     }
                 });
             });

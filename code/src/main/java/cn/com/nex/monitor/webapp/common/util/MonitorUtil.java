@@ -1,7 +1,6 @@
 package cn.com.nex.monitor.webapp.common.util;
 
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
-import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpResponse;

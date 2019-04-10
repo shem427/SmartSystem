@@ -6,6 +6,7 @@ import cn.com.nex.monitor.webapp.common.bean.NumericBean;
 import cn.com.nex.monitor.webapp.common.bean.SearchParam;
 import cn.com.nex.monitor.webapp.common.bean.TableData;
 import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
+import cn.com.nex.monitor.webapp.common.util.JxlsUtil;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import cn.com.nex.monitor.webapp.user.service.UserService;
@@ -20,6 +21,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 @Controller
@@ -43,6 +49,20 @@ public class UserController {
     @GetMapping(value = "/index")
     public String page() {
         return "user/page";
+    }
+
+    @GetMapping(value = "/export")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void exportUsers(String userIdLike, String nameLike, HttpServletResponse response) throws IOException {
+        List<UserBean> userList = userService.searchUser(userIdLike, nameLike);
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", String.format("attachment; filename=\"userList.xlsx\""));
+        InputStream template = UserController.class.getResourceAsStream("/templet/users.xlsx");
+        //FileOutputStream os = new FileOutputStream(new File("d:\\test.xlsx"));
+        JxlsUtil.exportExcel(template, response.getOutputStream(), userList);
+        response.flushBuffer();
+        //os.close();
+        template.close();
     }
 
     @GetMapping(value = "/userModal")
@@ -83,10 +103,11 @@ public class UserController {
     @GetMapping(value = "/getUsers")
     @PreAuthorize("hasRole('ADMIN')")
     public TableData<UserBean> getUsers(SearchParam param, String userIdLike, String nameLike) {
-        TableData<UserBean> tableData = new TableData<>();
+        TableData<UserBean> tableData = null;
         try {
             tableData = userService.searchUser(param, userIdLike, nameLike);
         } catch(Exception e) {
+            tableData = new TableData<>();
             String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
             tableData.setStatus(CommonBean.Status.ERROR);
             tableData.setMessage(message);
