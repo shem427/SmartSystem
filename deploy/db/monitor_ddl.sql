@@ -60,7 +60,7 @@ CREATE TABLE `sensor_data` (
   PRIMARY KEY (`DATA_ID`),
   KEY `sensor_id_fk` (`RADIATION_MODEL_ID`),
   CONSTRAINT `sensor_id_fk` FOREIGN KEY (`RADIATION_MODEL_ID`) REFERENCES `sensor` (`RADIATION_MODEL_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for sensor_seq
