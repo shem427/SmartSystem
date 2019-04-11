@@ -89,6 +89,10 @@ $(function() {
                 });
             });
             setTimeout(function() { _self._processGraphic(); }, 5000);
+
+            $('#exportBtn').click(function() {
+                $('#downloadForm').submit();
+            });
         },
         _processGraphic: function() {
             $.mr.ajax({

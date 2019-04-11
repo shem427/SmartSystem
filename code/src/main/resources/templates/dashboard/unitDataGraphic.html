@@ -37,6 +37,9 @@
                 <span class="panel-icon pull-right">
                     <a href="#" title="返回" class="btnUpLevel"><i class="fa fa-arrow-up fa-fw"></i></a>
                 </span>
+                <span class="panel-icon pull-right">
+                    <button class="btn btn-default btn-sm" id="exportBtn">导出Excel</button>
+                </span>
             </div>
             <div class="panel-body">
                 <div class="dataTable_wrapper">
@@ -49,6 +52,9 @@
     <input type="hidden" id="unitId" th:value="${unitId}" />
     <input type="hidden" id="unitLevel" th:value="${level}" />
 </div>
+<form id="downloadForm" type="get" th:action="@{/dashboard/export}" style="display:none;" target="_self">
+    <input type="hidden" th:value="${unitId}" name="unitId" />
+</form>
 <script th:src="@{/script/dashboard.js}"></script>
 <!-- Flot Charts JavaScript -->
 <script th:src="@{/js/flot/excanvas.min.js}"></script>

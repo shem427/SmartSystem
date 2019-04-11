@@ -7,6 +7,7 @@ import cn.com.nex.monitor.webapp.common.bean.SearchParam;
 import cn.com.nex.monitor.webapp.common.bean.TableData;
 import cn.com.nex.monitor.webapp.common.constant.DBConstant;
 import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
+import cn.com.nex.monitor.webapp.common.util.JxlsUtil;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
 import cn.com.nex.monitor.webapp.dashboard.bean.RadiationBean;
@@ -15,16 +16,21 @@ import cn.com.nex.monitor.webapp.dashboard.service.DashboardService;
 import cn.com.nex.monitor.webapp.setting.bean.ThresholdBean;
 import cn.com.nex.monitor.webapp.setting.service.SettingService;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
+import cn.com.nex.monitor.webapp.user.controller.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -149,4 +155,20 @@ public class DashboardController {
 
         return tableData;
     }
+
+    @GetMapping(value = "/export")
+    public void exportRadiation(HttpServletResponse response, String unitId) throws IOException {
+        InputStream template = UserController.class.getResourceAsStream("/templet/radiations.xlsx");
+        try {
+            List<RadiationBean> radList = dashboardService.getRadiationData(unitId);
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment; filename=radiationList.xlsx");
+
+            JxlsUtil.exportExcel(template, response.getOutputStream(), radList);
+            response.flushBuffer();
+        } finally {
+            template.close();
+        }
+    }
+
 }

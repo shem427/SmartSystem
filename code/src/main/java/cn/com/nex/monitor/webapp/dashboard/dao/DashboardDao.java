@@ -114,8 +114,13 @@ public class DashboardDao {
     }
 
     public List<RadiationBean> getRadiationData(SearchParam searchParam, String unitId) {
-        String sql = "SELECT (@i :=@i + 1) AS NO, `RAD_VALUE`, `UPLOAD_TIME` FROM `RADIATION`, (SELECT @i := ?) AS it WHERE `UNIT_ID`=? " + searchParam.toSQL();
-        return jdbcTemplate.query(sql, new Object[] {searchParam.getOffset(), unitId}, rs -> {
+        String sql = "SELECT (@i :=@i + 1) AS NO, `RAD_VALUE`, `UPLOAD_TIME` FROM `RADIATION`, (SELECT @i := ?) AS it WHERE `UNIT_ID`=?";
+        int from = 0;
+        if (searchParam != null) {
+            sql = sql + " " + searchParam.toSQL();
+            from = searchParam.getOffset();
+        }
+        return jdbcTemplate.query(sql, new Object[] {from, unitId}, rs -> {
             List<RadiationBean> list = new ArrayList<>();
             while (rs.next()) {
                 RadiationBean rb = new RadiationBean();

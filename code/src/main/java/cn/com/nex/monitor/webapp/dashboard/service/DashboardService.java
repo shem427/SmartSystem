@@ -63,6 +63,10 @@ public class DashboardService {
         return tableData;
     }
 
+    public List<RadiationBean> getRadiationData(String unitId) {
+        return dashboardDao.getRadiationData(null, unitId);
+    }
+
     public String getUnitPath(String unitId) {
         return unitDao.getUnitFullPath(unitId);
     }
