@@ -6,10 +6,12 @@ import cn.com.nex.monitor.webapp.common.bean.NumericBean;
 import cn.com.nex.monitor.webapp.common.bean.SearchParam;
 import cn.com.nex.monitor.webapp.common.bean.TableData;
 import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
+import cn.com.nex.monitor.webapp.common.util.JxlsUtil;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.sensor.bean.SensorBean;
 import cn.com.nex.monitor.webapp.sensor.service.SensorService;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
+import cn.com.nex.monitor.webapp.user.controller.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Controller
@@ -32,6 +37,22 @@ public class SensorController {
 
     @Autowired
     private MessageService messageService;
+
+    @GetMapping(value = "/export")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void exportUsers(HttpServletResponse response) throws IOException {
+        InputStream template = UserController.class.getResourceAsStream("/templet/sensors.xlsx");
+        try {
+            List<SensorBean> list = sensorService.searchSensor();
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment; filename=sensorsList.xlsx");
+
+            JxlsUtil.exportExcel(template, response.getOutputStream(), list);
+            response.flushBuffer();
+        } finally {
+            template.close();
+        }
+    }
 
     @GetMapping(value = "/index")
     @PreAuthorize("hasRole('ADMIN')")

@@ -53,16 +53,18 @@ public class UserController {
 
     @GetMapping(value = "/export")
     @PreAuthorize("hasRole('ADMIN')")
-    public void exportUsers(String userIdLike, String nameLike, HttpServletResponse response) throws IOException {
-        List<UserBean> userList = userService.searchUser(userIdLike, nameLike);
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", String.format("attachment; filename=\"userList.xlsx\""));
+    public void exportUsers(HttpServletResponse response) throws IOException {
         InputStream template = UserController.class.getResourceAsStream("/templet/users.xlsx");
-        //FileOutputStream os = new FileOutputStream(new File("d:\\test.xlsx"));
-        JxlsUtil.exportExcel(template, response.getOutputStream(), userList);
-        response.flushBuffer();
-        //os.close();
-        template.close();
+        try {
+            List<UserBean> userList = userService.searchUser();
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment; filename=userList.xlsx");
+
+            JxlsUtil.exportExcel(template, response.getOutputStream(), userList);
+            response.flushBuffer();
+        } finally {
+            template.close();
+        }
     }
 
     @GetMapping(value = "/userModal")

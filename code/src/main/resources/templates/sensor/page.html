@@ -46,12 +46,15 @@
                     <button class="btn btn-primary" id="createSensorBtn">添加</button>
                     <button class="btn btn-default" id="updateSensorBtn">编辑</button>
                     <button class="btn btn-default" id="deleteSensorBtn">删除</button>
+                    <button class="btn btn-default" id="exportSensorBtn">导出Excel</button>
                 </div>
                 <table id="sensorTable" class="table table-striped table-bordered table-hover"></table>
             </div>
         </div>
     </div>
 </div>
+<form id="downloadForm" type="get" th:action="@{/sensor/export}" style="display:none;" target="_self">
+</form>
 <script th:src="@{/script/sensor.js}"></script>
 <script>
     $(function() {$.mr.sensor.init();});

@@ -102,6 +102,9 @@ $(function() {
                     }
                 });
             });
+            $('#exportSensorBtn').click(function() {
+                $('#downloadForm').submit();
+            });
         },
         _showSensorModal: function(sensorId) {
             var data;

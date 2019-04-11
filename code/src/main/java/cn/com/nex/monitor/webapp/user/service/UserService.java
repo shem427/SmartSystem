@@ -41,8 +41,8 @@ public class UserService {
         return usersData;
     }
 
-    public List<UserBean> searchUser(String userIdLike, String nameLike) {
-        return userDao.searchUser(null, userIdLike, nameLike);
+    public List<UserBean> searchUser() {
+        return userDao.searchUser(null, null, null);
     }
 
     @Transactional

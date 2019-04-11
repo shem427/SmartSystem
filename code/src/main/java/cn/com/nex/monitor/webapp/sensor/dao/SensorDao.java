@@ -91,7 +91,9 @@ public class SensorDao extends CommonDao<SensorBean> {
         if (sqlWhere.length() > 0) {
             sql = sql + sqlWhere;
         }
-        sql += param.toSQL();
+        if (param != null) {
+            sql += param.toSQL();
+        }
 
         return jdbcTemplate.query(sql, argList.toArray(new String[0]), getAllExtractor());
     }

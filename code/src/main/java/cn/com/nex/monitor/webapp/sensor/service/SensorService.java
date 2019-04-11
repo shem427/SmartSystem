@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,6 +25,10 @@ public class SensorService {
         usersData.setRows(sensorList);
 
         return usersData;
+    }
+
+    public List<SensorBean> searchSensor() {
+        return sensorDao.searchSensor(null, null, null);
     }
 
     public SensorBean getSensorById(String sensorId) {
