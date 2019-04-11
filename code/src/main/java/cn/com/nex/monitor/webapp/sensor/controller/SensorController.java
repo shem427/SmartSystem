@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -44,8 +45,9 @@ public class SensorController {
         InputStream template = UserController.class.getResourceAsStream("/templet/sensors.xlsx");
         try {
             List<SensorBean> list = sensorService.searchSensor();
+            String fileName = "sensorsList_" + MonitorUtil.formatDate(new Date(), "yyyyMMddHHmmss") + ".xlsx";
             response.setContentType("application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment; filename=sensorsList.xlsx");
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
 
             JxlsUtil.exportExcel(template, response.getOutputStream(), list);
             response.flushBuffer();

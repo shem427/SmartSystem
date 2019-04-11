@@ -98,10 +98,14 @@ public final class MonitorUtil {
     }
 
     public static String formatDate(Date date) {
+        return formatDate(date, "yyyy-MM-dd HH:mm:ss.SSS");
+    }
+
+    public static String formatDate(Date date, String pattern) {
         if (date == null) {
             return "";
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         return sdf.format(date);
     }
 

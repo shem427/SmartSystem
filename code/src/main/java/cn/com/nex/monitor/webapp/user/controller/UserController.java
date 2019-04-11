@@ -56,9 +56,10 @@ public class UserController {
     public void exportUsers(HttpServletResponse response) throws IOException {
         InputStream template = UserController.class.getResourceAsStream("/templet/users.xlsx");
         try {
+            String fileName = "userList_" + MonitorUtil.formatDate(new Date(), "yyyyMMddHHmmss") + ".xlsx";
             List<UserBean> userList = userService.searchUser();
             response.setContentType("application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment; filename=userList.xlsx");
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
 
             JxlsUtil.exportExcel(template, response.getOutputStream(), userList);
             response.flushBuffer();

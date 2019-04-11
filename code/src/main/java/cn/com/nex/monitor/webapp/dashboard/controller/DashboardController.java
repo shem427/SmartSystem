@@ -17,6 +17,8 @@ import cn.com.nex.monitor.webapp.setting.bean.ThresholdBean;
 import cn.com.nex.monitor.webapp.setting.service.SettingService;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import cn.com.nex.monitor.webapp.user.controller.UserController;
+import org.jxls.common.Context;
+import org.jxls.util.JxlsHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/dashboard")
@@ -161,10 +160,14 @@ public class DashboardController {
         InputStream template = UserController.class.getResourceAsStream("/templet/radiations.xlsx");
         try {
             List<RadiationBean> radList = dashboardService.getRadiationData(unitId);
+            String fileName = "radiationList_" + MonitorUtil.formatDate(new Date(), "yyyyMMddHHmmss") + ".xlsx";
             response.setContentType("application/vnd.ms-excel");
-            response.setHeader("Content-Disposition", "attachment; filename=radiationList.xlsx");
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
 
-            JxlsUtil.exportExcel(template, response.getOutputStream(), radList);
+            Context context = new Context();
+            context.putVar("datas", radList);
+            context.putVar("unitPath", dashboardService.getUnitPath(unitId));
+            JxlsHelper.getInstance().processTemplate(template, response.getOutputStream(), context);
             response.flushBuffer();
         } finally {
             template.close();
