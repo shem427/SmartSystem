@@ -15,7 +15,8 @@ $(function() {
             var $unitLink = $('#unitLink');
             var $sensorLink = $('#sensorLink');
             var $warnLink = $('#warnLink');
-            var $statusLink = $('#statusLink');
+            var $hospitalStatusLink = $('#hospitalStatusLink');
+            var $statusSearchLink = $('#statusSearchLink');
 
             var menuItems = $('.menuItem');
 
@@ -95,11 +96,18 @@ $(function() {
                 _self.getWrapperPage('warn/index');
             });
 
-            $statusLink.click(function(e) {
+            $hospitalStatusLink.click(function(e) {
                 e.preventDefault();
                 menuItems.removeClass('active');
-                $statusLink.addClass('active');
-                _self.getWrapperPage('status/index');
+                $hospitalStatusLink.addClass('active');
+                _self.getWrapperPage('status/hospitalIndex');
+            });
+
+            $statusSearchLink.click(function(e) {
+                e.preventDefault();
+                menuItems.removeClass('active');
+                $statusSearchLink.addClass('active');
+                _self.getWrapperPage('status/statusIndex');
             });
 
             // click dashboard link.

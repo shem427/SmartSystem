@@ -45,13 +45,18 @@ public class StatusController {
     @Value("${cn.com.nex.monitor.top.unit}")
     private String topUnitId;
 
-    @GetMapping(value = "/index")
-    public ModelAndView page() {
+    @GetMapping(value = "/hospitalIndex")
+    public ModelAndView hospitalIndex() {
         Map<String, Object> model = new HashMap<>();
         model.put("mapKey", mapKey);
         model.put("mapCK", mapCK);
 
-        return new ModelAndView("status/page", model);
+        return new ModelAndView("status/hospitalPage", model);
+    }
+
+    @GetMapping(value = "/statusIndex")
+    public String statusIndex() {
+        return "status/statusPage";
     }
 
     @GetMapping(value = "/markHospital")
@@ -87,11 +92,6 @@ public class StatusController {
         status.setErrorLight(errorLight);
         status.setNormalLight(normalLight);
         status.setWarningLight(warningLight);
-//        status.setActiveSensor(52);
-//        status.setInactiveSensor(5);
-//        status.setErrorLight(4);
-//        status.setNormalLight(40);
-//        status.setWarningLight(13);
 
         return status;
     }
