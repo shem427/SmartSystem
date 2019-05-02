@@ -72,7 +72,7 @@ public class StatusService {
         return unitDao.get(parentUnitId);
     }
 
-    public StatusBean getUnitStatus(String unitId) {
-        return statusDao.getUnitStatus(unitId);
+    public StatusBean getUnitStatus(String unitId, String userId) {
+        return statusDao.getUnitStatus(unitId, userId);
     }
 }

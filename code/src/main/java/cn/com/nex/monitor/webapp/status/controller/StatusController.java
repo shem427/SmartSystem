@@ -1,10 +1,12 @@
 package cn.com.nex.monitor.webapp.status.controller;
 
 import cn.com.nex.monitor.webapp.common.MessageService;
+import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.status.bean.MapMarkerBean;
 import cn.com.nex.monitor.webapp.status.bean.StatusBean;
 import cn.com.nex.monitor.webapp.status.service.StatusService;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
+import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +101,8 @@ public class StatusController {
         if (unitId == null) {
             return new StatusBean();
         } else {
-            return statusService.getUnitStatus(unitId);
+            UserBean user = MonitorUtil.getUserFromSecurity();
+            return statusService.getUnitStatus(unitId, user.getUserId());
         }
     }
 }
