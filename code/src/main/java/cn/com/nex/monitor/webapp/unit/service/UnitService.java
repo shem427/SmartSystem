@@ -1,13 +1,17 @@
 package cn.com.nex.monitor.webapp.unit.service;
 
+import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
+import cn.com.nex.monitor.webapp.dashboard.dao.DashboardDao;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.unit.dao.UnitDao;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -15,6 +19,9 @@ public class UnitService {
 
     @Autowired
     private UnitDao unitDao;
+
+    @Autowired
+    private DashboardDao dashboardDao;
 
     public List<UnitBean> getSubUnit(String unitId) {
         return unitDao.getUnitByParentId(unitId);
@@ -25,6 +32,24 @@ public class UnitService {
             return null;
         }
         return unitDao.getManagers(unitId);
+    }
+
+    public List<UnitBean> getSubUnitByUser(String userId, String parentUnitId) {
+        List<UnitBean> beanList = new ArrayList<>();
+        Collection<DashboardUnitBean> dashUnitList = dashboardDao.getUnitListByManagerAndParent(userId, parentUnitId);
+        Iterator<DashboardUnitBean> it = dashUnitList.iterator();
+        while (it.hasNext()) {
+            UnitBean unit = new UnitBean();
+            DashboardUnitBean dashBean = it.next();
+            unit.setUnitRemark(dashBean.getRemark());
+            unit.setId(dashBean.getUnitId());
+            unit.setName(dashBean.getUnitName());
+            unit.setPId(parentUnitId);
+            unit.setIsParent(!dashBean.isLeaf());
+
+            beanList.add(unit);
+        }
+        return beanList;
     }
 
     @Transactional

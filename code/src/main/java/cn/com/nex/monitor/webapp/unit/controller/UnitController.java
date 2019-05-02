@@ -4,12 +4,14 @@ import cn.com.nex.monitor.webapp.common.MessageService;
 import cn.com.nex.monitor.webapp.common.bean.CommonBean;
 import cn.com.nex.monitor.webapp.common.bean.StringValueBean;
 import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
+import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.unit.service.UnitService;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,9 @@ import java.util.Map;
 public class UnitController {
     /** LOG */
     private static final Logger LOG = LoggerFactory.getLogger(UnitController.class);
+
+    @Value("${cn.com.nex.monitor.top.unit}")
+    private String topUnitId;
 
     @Autowired
     private UnitService unitService;
@@ -49,6 +54,16 @@ public class UnitController {
     @ResponseBody
     public List<UnitBean> getSubUnit(String id) {
         return unitService.getSubUnit(id);
+    }
+
+    @GetMapping(value = "/subUnitByUser")
+    @ResponseBody
+    public List<UnitBean> getSubUnitByUser(String id) {
+        UserBean self = MonitorUtil.getUserFromSecurity();
+        if (id == null) {
+            id = topUnitId;
+        }
+        return unitService.getSubUnitByUser(self.getUserId(), id);
     }
 
     @GetMapping(value = "/addPage")

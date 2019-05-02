@@ -1,8 +1,11 @@
 package cn.com.nex.monitor.webapp.status.service;
 
+import cn.com.nex.monitor.webapp.common.bean.CommonBean;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.sensor.dao.SensorDao;
 import cn.com.nex.monitor.webapp.status.bean.MapMarkerBean;
+import cn.com.nex.monitor.webapp.status.bean.StatusBean;
+import cn.com.nex.monitor.webapp.status.dao.StatusDao;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.unit.dao.UnitDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +18,11 @@ import java.util.List;
 @Service
 public class StatusService {
     @Autowired
-private UnitDao unitDao;
+    private UnitDao unitDao;
     @Autowired
     private SensorDao sensorDao;
+    @Autowired
+    private StatusDao statusDao;
 
     @Value("${cn.com.nex.monitor.top.unit}")
     private String topUnitId;
@@ -65,5 +70,9 @@ private UnitDao unitDao;
 
     public UnitBean getUnitInfo(String parentUnitId) {
         return unitDao.get(parentUnitId);
+    }
+
+    public StatusBean getUnitStatus(String unitId) {
+        return statusDao.getUnitStatus(unitId);
     }
 }

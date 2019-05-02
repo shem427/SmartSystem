@@ -1,8 +1,6 @@
 package cn.com.nex.monitor.webapp.status.controller;
 
 import cn.com.nex.monitor.webapp.common.MessageService;
-import cn.com.nex.monitor.webapp.setting.controller.SettingController;
-import cn.com.nex.monitor.webapp.setting.service.SettingService;
 import cn.com.nex.monitor.webapp.status.bean.MapMarkerBean;
 import cn.com.nex.monitor.webapp.status.bean.StatusBean;
 import cn.com.nex.monitor.webapp.status.service.StatusService;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,5 +91,15 @@ public class StatusController {
         status.setWarningLight(warningLight);
 
         return status;
+    }
+
+    @GetMapping(value = "/getUnitStatus")
+    @ResponseBody
+    public StatusBean getUnitStatus(String unitId) {
+        if (unitId == null) {
+            return new StatusBean();
+        } else {
+            return statusService.getUnitStatus(unitId);
+        }
     }
 }

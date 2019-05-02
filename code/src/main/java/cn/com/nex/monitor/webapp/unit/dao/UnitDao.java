@@ -167,13 +167,6 @@ public class UnitDao extends CommonDao<UnitBean> {
     }
 
     public int countUnitByStatus(int status, String parentUnitId) {
-//        String sql = "SELECT COUNT(1) FROM `UNIT` WHERE ACTIVE=true AND UNIT_STATUS <= 0 AND LEAF=true";
-//        return jdbcTemplate.query(sql, rs -> {
-//            if (rs.next()) {
-//                return rs.getInt(1);
-//            }
-//            return 0;
-//        });
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withProcedureName("countLightByStatus").withoutProcedureColumnMetaDataAccess();
         simpleJdbcCall.addDeclaredParameter(new SqlParameter("parentUnitId", Types.CHAR));

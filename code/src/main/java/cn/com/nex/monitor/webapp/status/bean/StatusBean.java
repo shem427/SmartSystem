@@ -9,9 +9,13 @@ import lombok.EqualsAndHashCode;
 public class StatusBean extends CommonBean {
     private String unitId;
     private String unitName;
+    private String unitPath;
     private int normalLight;
     private int warningLight;
     private int errorLight;
     private int activeSensor;
     private int inactiveSensor;
+    private int normalRadiationData;
+    private int warningRadiationData;
+    private int errorRadiationData;
 }

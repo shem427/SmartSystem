@@ -3,46 +3,35 @@
         <h4 class="page-header" id="pageTitle">状态统计</h4>
     </div>
 </div>
-<div class="row" id="searchCondition">
-    <div class="col-xs-12">
+<div class="row">
+    <div class="col-lg-6 col-xs-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-search fa-fw"></i>查询条件
+                <i class="fa fa-building fa-fw"></i>组织树
             </div>
             <div class="panel-body">
-                <form role="form">
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>组织名</label>
-                                <input type="text" id="unitNameLike" class="form-control" placeholder="支持模糊查询" />
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label for="parentUnitFullPath">父组织</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="parentUnitFullPath" name="parentUnitFullPath" value="/" readonly="readonly" />
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default btn-date" type="button" id="btnSelectUnit">
-                                            <span class="fa fa-building"></span>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <button id="statusSearch" type="button" class="btn btn-primary">查询</button>
-                        </div>
-                    </div>
-                </form>
+                <ul id="unitTree" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-xs-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-pie-chart fa-fw"></i>统计
+            </div>
+            <div class="panel-body">
+                <div id="pieChart" class="flot-area"></div>
             </div>
         </div>
     </div>
 </div>
 <script th:src="@{/script/status.js}"></script>
+<!-- Flot Charts JavaScript -->
+<script th:src="@{/js/flot/excanvas.min.js}"></script>
+<script th:src="@{/js/flot/jquery.flot.js}"></script>
+<script th:src="@{/js/flot/jquery.flot.pie.js}"></script>
+<script th:src="@{/js/flot/jquery.flot.resize.js}"></script>
+<script th:src="@{/js/flot/jquery.flot.tooltip.min.js}"></script>
 <script>
     $(function() {
         $.mr.status.initStatus();

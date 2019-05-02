@@ -83,63 +83,62 @@ $(function() {
             });
         },
         initStatus: function() {
-            $('#btnSelectUnit').click(function() {
-                $.mr.modal.create({
-                    url: 'unit/unitSelectModal',
-                    afterDisplaying: function(dialog) {
-                        var selectUnitBtn = $('#selectUnit', dialog);
-
-                        _self._initUnitModalTree('#unitModalTree', selectUnitBtn);
-
-                        selectUnitBtn.prop('disabled', true);
-                        selectUnitBtn.click(function() {
-                            var selectedUnitId = $('#selectedUnitId').val();
-                            $.mr.ajax({
-                                url: 'unit/getUnitFullPath',
-                                type: 'get',
-                                dataType: 'json',
-                                data: {unitId: selectedUnitId},
-                                async: false,
-                                success: function(data) {
-                                    $('#parentUnitFullPath').val(data.value);
-                                    $.mr.modal.destroy({
-                                        selector: '#unitSelectModal'
-                                    });
-                                }
-                            });
-                        });
-                    }
-                });
-            });
-        },
-        _initUnitModalTree: function(treeSelector, selectBtn) {
-            _self._unitModalTree = $.mr.tree.create({
-                selector: treeSelector,
-                url: 'unit/subUnit',
+            // init Tree
+            _self.unitTree = $.mr.tree.create({
+                selector: '#unitTree',
+                url: 'unit/subUnitByUser',
                 checkEnabled: false,
                 editEnabled: false,
                 selectedMulti: false,
                 callback: {
-                    onNodeCreated: function(event, treeId, treeNode) {
-                        if (treeNode.id === 'UT00000000000000') {
-                            _self._unitModalTree.expandNode(treeNode, true, false, true, true);
-                        }
-                    },
                     beforeClick: function(treeId, treeNode, clickFlag) {
-                        var selectedUnitId = $('#selectedUnitId');
+                        var pieChart = $('#pieChart');
                         if (clickFlag === 0) {
                             // cancel select.
-                            selectBtn.prop('disabled', true);
-                            selectedUnitId.val('');
+                            pieChart.empty();
                             return false;
-                        } else {
-                            selectedUnitId.val(treeNode.id);
-                            selectBtn.prop('disabled', false);
                         }
+                        $.mr.ajax({
+                            url: 'status/getUnitStatus',
+                            type: 'get',
+                            data: { unitId: treeNode.id },
+                            contentType: 'application/json',
+                            success: function (data) {
+                                var pieData = _self._initPieChartData(data);
+                                var pieChart = $('#pieChart');
+                                $.plot(pieChart, pieData, {
+                                    series: {
+                                        pie: {
+                                            innerRadius: 0.3,
+                                            show: true
+                                        }
+                                    },
+                                    grid: {
+                                        hoverable: true,
+                                        clickable: true
+                                    },
+                                    legend: {
+                                        show: false
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             });
-        }
+        },
+        _initPieChartData: function(data) {
+            return [{
+                label: $.mr.resource.STATUS_NORMAL,
+                data: data.normalRadiationData
+            }, {
+                label: $.mr.resource.STATUS_WARNING,
+                data: data.warningRadiationData
+            }, {
+                label: $.mr.resource.STATUS_ERROR,
+                data: data.errorRadiationData
+            }];
+        },
     };
     _self = $.mr.status;
 });

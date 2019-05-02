@@ -151,6 +151,7 @@ public class DashboardDao {
         bean.setParentId((String) item.get("PARENT_ID"));
         bean.setRemark((String) item.get("REMARK"));
         bean.setUnitStatus((Integer) item.get("UNIT_STATUS"));
+        bean.setLeaf((Boolean) item.get("LEAF"));
 
         return bean;
     }
