@@ -1,6 +1,6 @@
 html {
-	width:100%;
-	height:100%;
+    width:100%;
+    height:100%;
 }
 body {
     background-color: #f8f8f8;
@@ -792,3 +792,20 @@ div.flot-area {
 	color: #F5E79E;
 }
 /*------------- Dashboard ED -------------*/
+
+.warn-table {
+    max-height: calc(100vh - 350px);
+    overflow: auto;
+}
+.radiaiton-table {
+    max-height: calc(100vh - 580px);
+    overflow: auto;
+}
+.sensor-table {
+    max-height: calc(100vh - 390px);
+    overflow: auto;
+}
+.user-table {
+    max-height: calc(100vh - 390px);
+    overflow: auto;
+}
