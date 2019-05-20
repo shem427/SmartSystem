@@ -121,10 +121,10 @@ $(function() {
                     title: 'No.'
                 }, {
                     field: 'radValue',
-                    title: '辐射值'
+                    title: '辐射值（单位：uW/cm<sup>2</sup>）'
                 }, {
                     field: 'uploadTime',
-                    title: '检测时间'
+                    title: '辐照时间'
                 }],
                 queryParams: function(params) {
                     return {

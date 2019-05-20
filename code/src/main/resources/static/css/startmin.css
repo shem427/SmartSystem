@@ -764,7 +764,7 @@ div.flot-area {
 .status-icon {
 	background-color: #f7fff9;
     text-align: center;
-	padding: 12px;
+	padding: 0 12px 12px 12px;
 	box-shadow:3px 3px 3px #aaaaaa;
 }
 

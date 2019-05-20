@@ -21,6 +21,11 @@
                 <div class="row">
                     <div class="col-xs-4 col-md-3" th:each="unit : ${units}">
                         <div th:class="${unit.statusCls}" th:id="${unit.unitId}" th:title="${unit.remark}">
+                            <div style="float:right;">
+                                <span class="badge" style="color:red;">33</span>
+                                <span class="badge" style="color:white;">29</span>
+                            </div>
+                            <br />
                             <i class="iconCls"></i>
                             <div class="caption status-remark">
                                 <p th:text="${unit.unitName}"></p>
