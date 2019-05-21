@@ -69,7 +69,7 @@ $(function() {
                     }
                 });
             });
-            setTimeout(function() { $('#btnRefresh').trigger('click'); }, 15000);
+            setTimeout(function() { $('#btnRefresh').trigger('click'); }, 30000);
         },
         initGraphic: function() {
             $('.panel-icon a').tooltip();
@@ -92,7 +92,7 @@ $(function() {
                     }
                 });
             });
-            setTimeout(function() { _self._processGraphic(); }, 5000);
+            setTimeout(function() { _self._processGraphic(); }, 10000);
 
             $('#exportBtn').click(function() {
                 $('#downloadForm').submit();
