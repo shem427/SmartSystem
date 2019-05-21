@@ -1,5 +1,8 @@
 package cn.com.nex.monitor.webapp.common.util;
 
+import cn.com.nex.monitor.webapp.common.MessageService;
+import cn.com.nex.monitor.webapp.common.bean.CommonBean;
+import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import net.sf.json.JSONObject;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -107,6 +110,14 @@ public final class MonitorUtil {
         }
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         return sdf.format(date);
+    }
+
+    public static void handleException(Exception e, CommonBean bean, MessageService messageService) {
+        String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
+        String reason = messageService.getMessage(MonitorConstant.LOG_ERROR_REASON, new String[] {e.getMessage()});
+        LOG.error(message, e);
+        bean.setStatus(CommonBean.Status.ERROR);
+        bean.setMessage(message + reason);
     }
 
     private static JSONObject httpGet(String url) {

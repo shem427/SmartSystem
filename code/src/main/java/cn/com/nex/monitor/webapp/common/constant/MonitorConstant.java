@@ -16,6 +16,7 @@ public class MonitorConstant {
     public static final String LOG_ENTRY_CODE = "mr.server.log.start";
     public static final String LOG_EXIT_CODE = "mr.server.log.end";
     public static final String LOG_ERROR = "mr.server.error";
+    public static final String LOG_ERROR_REASON = "mr.server.error.reason";
 
     public static final String CAN_NOT_DELETE_SELF = "mr.cannot.delete.self";
 

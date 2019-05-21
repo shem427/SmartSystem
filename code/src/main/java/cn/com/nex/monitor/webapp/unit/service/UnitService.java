@@ -54,6 +54,10 @@ public class UnitService {
 
     @Transactional
     public void add(UnitBean unit) {
+        // check name duplicated
+        if (unitNameDuplicated(unit, true)) {
+            throw new IllegalArgumentException("组织名重复，请修改！");
+        }
         // insert unit and return unit id.
         String unitId = unitDao.add(unit);
         // save unit_manager.
@@ -62,12 +66,24 @@ public class UnitService {
 
     @Transactional
     public int edit(UnitBean unit) {
+        // check name duplicated
+        if (unitNameDuplicated(unit, false)) {
+            throw new IllegalArgumentException("组织名重复，请修改！");
+        }
         // save unit.
         int ret = unitDao.edit(unit);
         // save unit_manager.
         saveUnitManagers(unit.getId(), unit.getManagerIdList());
 
         return ret;
+    }
+
+    private boolean unitNameDuplicated(UnitBean unit, boolean isAdd) {
+        if (isAdd) {
+            return unitDao.unitNameDuplicated(null, unit.getName());
+        } else {
+            return unitDao.unitNameDuplicated(unit.getId(), unit.getName());
+        }
     }
 
     @Transactional
@@ -90,5 +106,9 @@ public class UnitService {
     private void saveUnitManagers(String unitId, List<String> userIdList) {
         unitDao.deleteManagers(unitId);
         unitDao.saveManagers(unitId, userIdList);
+    }
+
+    public UnitBean getUnitByName(String name) {
+        return unitDao.getUnitByName(name);
     }
 }

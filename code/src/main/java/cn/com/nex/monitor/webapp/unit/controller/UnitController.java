@@ -3,23 +3,30 @@ package cn.com.nex.monitor.webapp.unit.controller;
 import cn.com.nex.monitor.webapp.common.MessageService;
 import cn.com.nex.monitor.webapp.common.bean.CommonBean;
 import cn.com.nex.monitor.webapp.common.bean.StringValueBean;
-import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
+import cn.com.nex.monitor.webapp.unit.bean.ImportUnitBean;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.unit.service.UnitService;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
+import org.apache.poi.util.IOUtils;
+import org.jxls.reader.ReaderBuilder;
+import org.jxls.reader.XLSReadStatus;
+import org.jxls.reader.XLSReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +49,11 @@ public class UnitController {
     @GetMapping(value = "/index")
     public String page() {
         return "unit/page";
+    }
+
+    @GetMapping(value = "/import")
+    public String importPage() {
+        return "unit/unitImportModal";
     }
 
     /**
@@ -113,10 +125,7 @@ public class UnitController {
                 unitService.add(unit);
             }
         } catch (Exception e) {
-            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
-            LOG.error(message, e);
-            bean.setStatus(CommonBean.Status.ERROR);
-            bean.setMessage(message);
+            MonitorUtil.handleException(e, bean, messageService);
         }
 
         return bean;
@@ -138,10 +147,7 @@ public class UnitController {
                 unitService.delete(unitId);
             }
         } catch (Exception e) {
-            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
-            LOG.error(message, e);
-            retBean.setStatus(CommonBean.Status.ERROR);
-            retBean.setMessage(message);
+            MonitorUtil.handleException(e, retBean, messageService);
         }
         return retBean;
     }
@@ -162,10 +168,7 @@ public class UnitController {
             String fullPath = unitService.getUnitFullPath(unitId);
             retBean.setValue(fullPath);
         } catch (Exception e) {
-            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
-            LOG.error(message, e);
-            retBean.setStatus(CommonBean.Status.ERROR);
-            retBean.setMessage(message);
+            MonitorUtil.handleException(e, retBean, messageService);
         }
         return retBean;
     }
@@ -173,5 +176,57 @@ public class UnitController {
     @GetMapping(value = "unitSelectModal")
     public String unitSelectModal() {
         return "unit/unitSelectModal";
+    }
+
+    @GetMapping(value = "/downloadTemplate")
+    public void downloadUnitTemplate(HttpServletResponse response) throws IOException {
+        InputStream template = UnitController.class.getResourceAsStream("/templet/unitsTemplate.xlsx");
+        try {
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment; filename=unitsTemplate.xlsx");
+
+            byte[] buffer = new byte[4096];
+            int i = template.read(buffer);
+            while (i != -1) {
+                response.getOutputStream().write(buffer, 0, i);
+                i = template.read(buffer);
+            }
+            response.flushBuffer();
+        } finally {
+            template.close();
+        }
+    }
+
+    @PostMapping(value = "importUnit")
+    @ResponseBody
+    public CommonBean importUnit(@RequestParam("file") MultipartFile file) {
+        List<ImportUnitBean> unitList = new ArrayList<>();
+        Map<String, List<ImportUnitBean>> beans = new HashMap<>();
+        beans.put("units", unitList);
+
+        CommonBean bean = new CommonBean();
+        InputStream xmlStream = new BufferedInputStream(UnitController.class
+                .getResourceAsStream("/templet/units.xml"));
+        InputStream xlsStream = null;
+        XLSReader mainReader = null;
+        try {
+            xlsStream = file.getInputStream();
+            mainReader = ReaderBuilder.buildFromXML(xmlStream);
+            XLSReadStatus status = mainReader.read(xlsStream, beans);
+
+            if (!status.isStatusOK()) {
+                bean.setStatus(CommonBean.Status.ERROR);
+                bean.setMessage("组织导入出错。请确认上传文件所使用的模板是否正确，内容是否正确。");
+            } else {
+                // TODO: import.
+            }
+        } catch (Exception e) {
+            MonitorUtil.handleException(e, bean, messageService);
+        } finally {
+            IOUtils.closeQuietly(xlsStream);
+            IOUtils.closeQuietly(xmlStream);
+        }
+
+        return bean;
     }
 }

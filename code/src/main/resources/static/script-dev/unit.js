@@ -65,6 +65,8 @@ $(function() {
             var addUnitBtn = $('#addUnit');
             var editUnitBtn = $('#editUnit');
             var deleteUnitBtn = $('#deleteUnit');
+            var downloadTemplateBtn = $('#downloadTemplate');
+            var importUnitBtn = $('#importUnit');
 
             addUnitBtn.click(function() {
                 var selectedNodes = $.mr.tree.getSelectedNode(self.unitTree);
@@ -140,6 +142,14 @@ $(function() {
                 } else {
                     $.mr.messageBox.alert($.mr.resource.UNIT_NO_SELECTION);
                 }
+            });
+            downloadTemplateBtn.click(function() {
+                $('#downloadForm').submit();
+            });
+            importUnitBtn.click(function() {
+                $.mr.modal.create({
+                    url: 'unit/import'
+                });
             });
         },
         /**
@@ -321,8 +331,59 @@ $(function() {
                 }
             });
             return userList;
-        }
+        },
         // ------------------------------------- 组织添加/编辑Modal 结束--------------------------------------------
+
+        // --------------------------------------- 组织导入Modal 开始-----------------------------------------------
+        initImportModal: function() {
+            $('#uploadFile').change(function() {
+                var path = $(this).val();
+                $(this).parent().next().text(path.replace(/^.*[\\\/]/, ''));
+            });
+            $('#btnImportUnit').click(function() {
+                var type = "file";
+                var formData = new FormData();
+                formData.append(type, $("#uploadFile")[0].files[0]);
+                /*$.mr.ajax({
+                    type: "post",
+                    url: 'unit/importUnit',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    mimeType: "multipart/form-data",
+                    success: function (data) {
+                        $.mr.modal.destroy({
+                            selector: '#unitImportModal'
+                        });
+                        $.mr.messageBox.info($.mr.resource.UNIT_IMPORT_SUCCESS, null, function() {
+                            var rootNode = $.mr.tree.getNodeByTId(self.unitTree, 0);
+                            $.mr.tree.refreshNode(self.unitTree, rootNode);
+                            self._clearDetail();
+                        });
+                    }
+                });*/
+                $.ajax({
+                    type: 'POST',
+                    url: $.mr.contextPath + 'unit/importUnit',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    mimeType: "multipart/form-data",
+                    success: function (data) {
+                        $.mr.modal.destroy({
+                            selector: '#unitImportModal'
+                        });
+                        $.mr.messageBox.info($.mr.resource.UNIT_IMPORT_SUCCESS, null, function() {
+                            var rootNode = $.mr.tree.getNodeByTId(self.unitTree, 0);
+                            $.mr.tree.refreshNode(self.unitTree, rootNode);
+                            self._clearDetail();
+                        });
+                    }
+                });
+            });
+        }
+        // --------------------------------------- 组织导入Modal 结束-----------------------------------------------
     };
     self = $.mr.unit;
 });

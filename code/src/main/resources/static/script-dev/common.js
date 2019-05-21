@@ -182,7 +182,7 @@ $(function() {
         ajax: function(options) {
             var ajaxOptions = {
                 url: $.mr.contextPath + options.url,
-                traditional: true,
+                traditional: options.traditional !== false,
                 type: options.type || "get",
                 data: options.data || {},
                 dataType: options.dataType || "json",
@@ -219,6 +219,15 @@ $(function() {
             };
             if (options.contentType) {
                 ajaxOptions.contentType = options.contentType;
+            }
+            if (options.mimeType) {
+                ajaxOptions.mimeType = options.mimeType;
+            }
+            if (options.contentType === false) {
+                options.contentType = false
+            }
+            if (options.processData === false) {
+                ajaxOptions.processData = false;
             }
             $.ajax(ajaxOptions);
         },

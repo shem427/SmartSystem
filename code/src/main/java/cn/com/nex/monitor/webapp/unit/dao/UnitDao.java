@@ -182,4 +182,43 @@ public class UnitDao extends CommonDao<UnitBean> {
 
         return (int) simpleJdbcCallResult.get("size");
     }
+
+    public boolean unitNameDuplicated(String unitId, String unitName) {
+        String sql = "SELECT COUNT(1) AS AMOUNT FROM `UNIT`";
+        if (unitId != null) {
+            sql += " WHERE `UNIT_ID` <> ?";
+            return jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
+                int count = 0;
+                if (rs.next()) {
+                    count = rs.getInt("AMOUNT");
+                }
+                return count != 0;
+            });
+        } else {
+            return jdbcTemplate.query(sql, rs -> {
+                int count = 0;
+                if (rs.next()) {
+                    count = rs.getInt("AMOUNT");
+                }
+                return count != 0;
+            });
+        }
+    }
+
+    public UnitBean getUnitByName(String name) {
+        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `LEAF` FROM `UNIT` WHERE UNIT_NAME=? AND ACTIVE=true";
+        return jdbcTemplate.query(sql, new String[] {name}, rs -> {
+            if (rs.next()) {
+                UnitBean bean = new UnitBean();
+                bean.setId(rs.getString("UNIT_ID"));
+                bean.setName(rs.getString("UNIT_NAME"));
+                bean.setPId(rs.getString("PARENT_ID"));
+                bean.setUnitRemark(rs.getString("REMARK"));
+                bean.setIsParent(!rs.getBoolean("LEAF"));
+
+                return bean;
+            }
+            return null;
+        });
+    }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<workbook>
+    <worksheet name="importUnit">
+        <section startRow="0" endRow="2">
+        </section>
+        <loop startRow="3" endRow="3" items="units" var="unit" varType="cn.com.nex.monitor.webapp.unit.bean.ImportUnitBean">
+            <section startRow="3" endRow="3">
+                <mapping row="3" col="0">unit.parentUnitName</mapping>
+                <mapping row="3" col="1">unit.name</mapping>
+                <mapping row="3" col="3">unit.leafMark</mapping>
+                <mapping row="3" col="4">unit.unitRemark</mapping>
+            </section>
+            <loopbreakcondition>
+                <rowcheck offset="0">
+                    <cellcheck offset="0"></cellcheck>
+                </rowcheck>
+            </loopbreakcondition>
+        </loop>
+    </worksheet>
+</workbook>

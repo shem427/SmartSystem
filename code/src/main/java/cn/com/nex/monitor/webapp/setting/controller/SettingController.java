@@ -75,10 +75,7 @@ public class SettingController {
             String password = settingService.changePassword(user.getUserId(), cpBean.getNewPassword());
             user.setPassword(password);
         } catch (Exception e) {
-            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
-            LOG.error(message, e);
-            bean.setStatus(CommonBean.Status.ERROR);
-            bean.setMessage(message);
+            MonitorUtil.handleException(e, bean, messageService);
         }
 
         return bean;
@@ -95,10 +92,7 @@ public class SettingController {
             user.setName(profile.getName());
             user.setPhoneNumber(profile.getPhoneNumber());
         } catch (Exception e) {
-            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
-            LOG.error(message, e);
-            bean.setStatus(CommonBean.Status.ERROR);
-            bean.setMessage(message);
+            MonitorUtil.handleException(e, bean, messageService);
         }
 
         return bean;
@@ -127,10 +121,7 @@ public class SettingController {
         try {
             settingService.updateThreshold(threshold);
         } catch (Exception e) {
-            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
-            LOG.error(message, e);
-            bean.setStatus(CommonBean.Status.ERROR);
-            bean.setMessage(message);
+            MonitorUtil.handleException(e, bean, messageService);
         }
         return bean;
     }

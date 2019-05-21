@@ -111,10 +111,7 @@ public class SensorController {
             int count = sensorService.deleteSensor(sensorIds);
             bean.setNumber(count);
         } catch (Exception e) {
-            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
-            bean.setStatus(CommonBean.Status.ERROR);
-            bean.setMessage(message);
-            LOG.error(message, e);
+            MonitorUtil.handleException(e, bean, messageService);
         }
         return bean;
     }
@@ -131,10 +128,7 @@ public class SensorController {
                 sensorService.updateSensor(sensor);
             }
         } catch (Exception e) {
-            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
-            bean.setStatus(CommonBean.Status.ERROR);
-            bean.setMessage(message);
-            LOG.error(message, e);
+            MonitorUtil.handleException(e, bean, messageService);
         }
         return bean;
     }

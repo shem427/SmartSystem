@@ -98,11 +98,19 @@ public class StatusController {
     @GetMapping(value = "/getUnitStatus")
     @ResponseBody
     public StatusBean getUnitStatus(String unitId) {
-        if (unitId == null) {
-            return new StatusBean();
-        } else {
-            UserBean user = MonitorUtil.getUserFromSecurity();
-            return statusService.getUnitStatus(unitId, user.getUserId());
+        StatusBean bean;
+        try {
+            if (unitId == null) {
+                bean = new StatusBean();
+                return bean;
+            } else {
+                UserBean user = MonitorUtil.getUserFromSecurity();
+                bean = statusService.getUnitStatus(unitId, user.getUserId());
+            }
+        } catch (Exception e) {
+            bean = new StatusBean();
+            MonitorUtil.handleException(e, bean, messageService);
         }
+        return bean;
     }
 }

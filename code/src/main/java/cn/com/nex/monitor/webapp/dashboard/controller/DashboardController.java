@@ -127,10 +127,7 @@ public class DashboardController {
             bean.setWarningCount(warning);
             bean.setErrorCount(error);
         } catch (Exception e) {
-            String message = messageService.getMessage(MonitorConstant.LOG_ERROR);
-            bean.setStatus(CommonBean.Status.ERROR);
-            bean.setMessage(message);
-            LOG.error(message, e);
+            MonitorUtil.handleException(e, bean, messageService);
         }
 
         return bean;
