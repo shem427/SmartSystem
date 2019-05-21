@@ -72,6 +72,12 @@ public class DashboardController {
         }
     }
 
+    @GetMapping(value = "/indexDetail")
+    public ModelAndView pageDetail(String parentId, Integer level) {
+        Map<String, Object> model = new HashMap<>();
+        return showUnitDetail(model, parentId, level);
+    }
+
     @GetMapping(value = "/upIndex")
     public ModelAndView upIndexpage(String currentId, Integer level) {
         String parentId = dashboardService.getParentIdByUnitId(currentId);

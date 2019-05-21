@@ -22,6 +22,18 @@ $(function() {
                 }, {
                     field: 'mailAddress',
                     title: '邮件'
+                }, {
+                    field: 'userRoles',
+                    title: '权限',
+                    formatter: function(value, row, index) {
+                        if (value === 'ADMIN') {
+                            return $.mr.resource.ROLE_ADMIN;
+                        } else if (value === 'USER') {
+                            return $.mr.resource.ROLE_USER;
+                        } else {
+                            return '';
+                        }
+                    }
                 }],
                 queryParams: function(params) {
                     var userIdLike = $('#userIdLike').val();

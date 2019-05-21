@@ -67,6 +67,9 @@ $(function() {
         STATUS_ERROR: '不合格',
 
         ACTIVE_SENSOR: '活跃传感器',
-        INACTIVE_SENSOR: '非活跃传感器'
+        INACTIVE_SENSOR: '非活跃传感器',
+
+        ROLE_ADMIN: '管理员',
+        ROLE_USER: '用户'
     };
 });

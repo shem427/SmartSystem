@@ -19,6 +19,7 @@ public class UserBean extends CommonBean implements UserDetails {
     private String phoneNumber;
 
     private List<? extends GrantedAuthority> authorities;
+
     @JsonIgnore
     private String password;
 

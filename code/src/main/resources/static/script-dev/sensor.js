@@ -28,7 +28,10 @@ $(function() {
                     title: '备注'
                 }, {
                     field: 'unitFullPath',
-                    title: '关联紫外线灯路径'
+                    title: '所属组织',
+                    formatter: function(value, row) {
+                        return '<a href="#" id="' + row.unitId + '" class="unitFullPath">' + value + '</a>';
+                    }
                 }],
                 queryParams: function(params) {
                     var sensorNameLike = $('#sensorNameLike').val();
@@ -41,6 +44,9 @@ $(function() {
                         sensorNameLike: sensorNameLike,
                         sensorModelLike: sensorModelLike
                     };
+                },
+                onLoadSuccess: function() {
+                    _self._setUnitDetailEvt();
                 }
             });
         },
@@ -114,6 +120,29 @@ $(function() {
             $.mr.modal.create({
                 url: 'sensor/sensorModal',
                 data: data
+            });
+        },
+        _setUnitDetailEvt: function() {
+            var unitPathLink = $('.unitFullPath');
+            unitPathLink.click(function(e) {
+                var unitFullPath = $(this).text();
+                var pathArray = unitFullPath.split("/");
+                var unitId = $(this).prop('id');
+                var level = pathArray.length - 1;
+                e.preventDefault();
+                $.mr.ajax({
+                    url: 'dashboard/indexDetail',
+                    type: 'get',
+                    data: {
+                        parentId: unitId,
+                        level: level
+                    },
+                    dataType: 'html',
+                    success: function(data) {
+                        $('#page-wrapper').empty().append(data);
+                        history.pushState(data, null, location.href);
+                    }
+                });
             });
         },
         init: function() {
