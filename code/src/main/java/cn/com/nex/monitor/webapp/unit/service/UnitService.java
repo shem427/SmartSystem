@@ -2,6 +2,7 @@ package cn.com.nex.monitor.webapp.unit.service;
 
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
 import cn.com.nex.monitor.webapp.dashboard.dao.DashboardDao;
+import cn.com.nex.monitor.webapp.unit.bean.ImportUnitBean;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.unit.dao.UnitDao;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
@@ -108,7 +109,46 @@ public class UnitService {
         unitDao.saveManagers(unitId, userIdList);
     }
 
-    public UnitBean getUnitByName(String name) {
-        return unitDao.getUnitByName(name);
+    public void importUnit(List<ImportUnitBean> unitList, List<String> msgList) {
+        int size = unitList.size();
+        List<ImportUnitBean> newUnitList = new ArrayList<>();
+        for (ImportUnitBean unit : unitList) {
+            // 获取父组织
+            UnitBean parent = unitDao.getUnitByName(unit.getParentUnitName());
+            if (parent == null) {
+                newUnitList.add(unit);
+                continue;
+            } else {
+                unit.setPId(parent.getId());
+            }
+            // check unit name exists.
+            UnitBean self = unitDao.getUnitByName(unit.getName());
+            if (self != null) {
+                msgList.add("组织名：" + unit.getName() + "已经存在，无法导入，改件忽略！");
+            }
+            // leaf
+            unit.setIsParent(!isUnitLeaf(unit));
+            unitDao.add(unit);
+        }
+        if (size == newUnitList.size() || newUnitList.isEmpty()) {
+            return;
+        } else {
+            importUnit(newUnitList, msgList);
+        }
+    }
+
+    private boolean isUnitLeaf(ImportUnitBean unit) {
+        String leafMark = unit.getLeafMark().trim().toLowerCase();
+        if (leafMark  == null) {
+            return false;
+        }
+        if ("yes".equals(leafMark)
+                || "true".equals(leafMark)
+                || "t".equals(leafMark)
+                || "y".equals(leafMark)
+                || "是".equals(leafMark)) {
+            return true;
+        }
+        return false;
     }
 }

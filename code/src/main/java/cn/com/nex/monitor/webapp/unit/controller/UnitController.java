@@ -218,7 +218,16 @@ public class UnitController {
                 bean.setStatus(CommonBean.Status.ERROR);
                 bean.setMessage("组织导入出错。请确认上传文件所使用的模板是否正确，内容是否正确。");
             } else {
-                // TODO: import.
+                List<String> msgList = new ArrayList<>();
+                unitService.importUnit(beans.get("units"), msgList);
+                if (!msgList.isEmpty()) {
+                    bean.setStatus(CommonBean.Status.WARNING);
+                    StringBuilder sb = new StringBuilder();
+                    for (String msg : msgList) {
+                        sb.append(msg).append("\r\n");
+                    }
+                    bean.setMessage(sb.toString());
+                }
             }
         } catch (Exception e) {
             MonitorUtil.handleException(e, bean, messageService);

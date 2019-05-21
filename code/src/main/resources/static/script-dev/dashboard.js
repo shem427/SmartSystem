@@ -47,6 +47,7 @@ $(function() {
                     dataType: 'html',
                     success: function(data) {
                         $('#page-wrapper').empty().append(data);
+                        history.replaceState(data, null, location.href)
                     }
                 });
             });
