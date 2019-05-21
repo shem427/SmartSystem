@@ -291,10 +291,25 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUnitUntilParentId`(IN unitId CHAR(16), IN unitParentId CHAR(16))
 BEGIN
     DECLARE pId CHAR(16);
+    DECLARE normalLightCount INT DEFAULT 0;
+    DECLARE warnLightCount INT DEFAULT 0;
+    DECLARE errorLightCount INT DEFAULT 0;
+
     SET @@max_sp_recursion_depth = 100;
     SELECT `PARENT_ID` INTO pId FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
     IF unitParentId=pId THEN
-        SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `UNIT_STATUS` FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
+        CALL countLightByStatus(unitId, 0, @size);
+        SET normalLightCount = normalLightCount + @size;
+        CALL countLightByStatus(unitId, -1, @size);
+        SET normalLightCount = normalLightCount + @size;
+
+        CALL countLightByStatus(unitId, 1, @size);
+        SET warnLightCount = warnLightCount + @size;
+
+        CALL countLightByStatus(unitId, 2, @size);
+        SET errorLightCount = errorLightCount + @size;
+
+        SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `UNIT_STATUS`, `LEAF`, errorLightCount AS `ERROR_COUNT`, warnLightCount AS `WARN_COUNT`, normalLightCount AS `NORMAL_COUNT` FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
     ELSEIF pId IS NOT NULL THEN
         CALL getUnitUntilParentId(pId, unitParentId);
     END IF;

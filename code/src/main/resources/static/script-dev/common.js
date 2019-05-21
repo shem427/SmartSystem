@@ -1,4 +1,11 @@
 $(function() {
+    if (window.history && window.history.pushState) {
+        $(window).on('popstate', function (e) {
+            if (history.state) {
+                $('#page-wrapper').empty().append(history.state);
+            }
+        });
+    }
     $.ajaxSetup({
         error: function(xhr, status, error) {
             console.log(error);
@@ -21,7 +28,7 @@ $(function() {
                     dataType: options.dataType || "html",
                     async: options.async !== false,
                     cache: false,
-                    success: function(data) {
+                    success: function (data) {
                         var dialog = $(data);
                         // create dialog
                         $("body").append(dialog);
@@ -29,10 +36,10 @@ $(function() {
                             keyboard: false,
                             backdrop: 'static'
                         });
-                        dialog.on('hidden.bs.modal', function() {
+                        dialog.on('hidden.bs.modal', function () {
                             dialog.empty().remove();
                         });
-                        dialog.on('show.bs.modal', function() {
+                        dialog.on('show.bs.modal', function () {
                             if (options.afterDisplaying) {
                                 options.afterDisplaying(dialog);
                             }

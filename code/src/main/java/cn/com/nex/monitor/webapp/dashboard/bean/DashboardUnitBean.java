@@ -14,6 +14,10 @@ public class DashboardUnitBean extends CommonBean implements Comparable<Dashboar
     private boolean isLeaf;
     private int unitStatus;
 
+    private int normalCount;
+    private int warnCount;
+    private int errorCount;
+
     public String getStatusCls() {
         if (unitStatus == 1) {
             return "thumbnail status-icon warning";

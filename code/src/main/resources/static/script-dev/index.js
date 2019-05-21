@@ -125,6 +125,7 @@ $(function() {
                 dataType: 'html',
                 success: function(data) {
                     $pageWrapper.empty().append(data);
+                    history.pushState(data, null, location.href);
                 }
             });
         }

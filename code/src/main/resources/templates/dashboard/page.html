@@ -21,9 +21,10 @@
                 <div class="row">
                     <div class="col-xs-4 col-md-3" th:each="unit : ${units}">
                         <div th:class="${unit.statusCls}" th:id="${unit.unitId}" th:title="${unit.remark}">
-                            <div style="float:right;">
-                                <span class="badge" style="color:red;">33</span>
-                                <span class="badge" style="color:white;">29</span>
+                            <div class="badgeContainer" th:if="${!unit.leaf}">
+                                <span class="badge badgeError" th:text="${unit.errorCount}">33</span>
+                                <span class="badge badgeWarn" th:text="${unit.warnCount}">29</span>
+                                <span class="badge badgeNormal" th:text="${unit.normalCount}">59</span>
                             </div>
                             <br />
                             <i class="iconCls"></i>

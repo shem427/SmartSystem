@@ -153,6 +153,10 @@ public class DashboardDao {
         bean.setUnitStatus((Integer) item.get("UNIT_STATUS"));
         bean.setLeaf((Boolean) item.get("LEAF"));
 
+        bean.setErrorCount((Integer) item.get("ERROR_COUNT"));
+        bean.setWarnCount((Integer) item.get("WARN_COUNT"));
+        bean.setNormalCount((Integer) item.get("NORMAL_COUNT"));
+
         return bean;
     }
 

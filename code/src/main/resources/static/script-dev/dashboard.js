@@ -29,6 +29,7 @@ $(function() {
                     dataType: 'html',
                     success: function(data) {
                         $('#page-wrapper').empty().append(data);
+                        history.pushState(data, null, location.href);
                     }
                 });
             });
@@ -63,6 +64,7 @@ $(function() {
                     dataType: 'html',
                     success: function(data) {
                         $('#page-wrapper').empty().append(data);
+                        history.pushState(data, null, location.href);
                     }
                 });
             });
@@ -85,6 +87,7 @@ $(function() {
                     dataType: 'html',
                     success: function(data) {
                         $('#page-wrapper').empty().append(data);
+                        history.pushState(data, null, location.href);
                     }
                 });
             });
