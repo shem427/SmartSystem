@@ -34,10 +34,10 @@ $(function() {
             };
 
             // dashboard link
-            $dashboardLink.click(function(e) {
+            $hospitalStatusLink.click(function(e) {
                 e.preventDefault();
                 menuItems.removeClass('active');
-                $dashboardLink.addClass('active');
+                $hospitalStatusLink.addClass('active');
                 _self.getWrapperPage('dashboard/index');
             });
 
@@ -96,10 +96,10 @@ $(function() {
                 _self.getWrapperPage('warn/index');
             });
 
-            $hospitalStatusLink.click(function(e) {
+            $dashboardLink.click(function(e) {
                 e.preventDefault();
                 menuItems.removeClass('active');
-                $hospitalStatusLink.addClass('active');
+                $dashboardLink.addClass('active');
                 _self.getWrapperPage('status/hospitalIndex');
             });
 
