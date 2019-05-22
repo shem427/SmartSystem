@@ -23,13 +23,27 @@ $(function() {
                                 } else {
                                     $.mr.mapinstance.panTo(marker.getPosition());
                                     $.mr.mapinstance.zoomTo(18);
-                                    _self.initStatus(item.hospitalId);
+                                    _self.initHospital(item.hospitalId);
                                 }
                             });
                         });
                         _self.hospitals.push(marker);
                     });
                 }
+            });
+        },
+        _initUnitMegaMenu: function() {
+            var selectedUnitId = $('#selectedUnit').val();
+            var unitSelectA = $('#unitSelectA');
+            var unitSelectUl = $('#unitSelectUl');
+            var unitSelectCancelBtn = $('#unitSelectCancelBtn');
+            var unitSelectOKBtn = $('#unitSelectOKBtn');
+            unitSelectA.click(function(e) {
+                e.preventDefault();
+                unitSelectUl.show();
+            });
+            unitSelectCancelBtn.click(function() {
+                unitSelectUl.hide();
             });
         },
         initHospital: function(pId) {
@@ -46,7 +60,7 @@ $(function() {
                 dataType: 'json',
                 data: {pUnitId: pId},
                 success: function(status) {
-                    $('#pageTitle').text('状态 - ' + status.unitName);
+                    $('.titleInput').val(status.unitName);
                     $('#normalLight').text(status.normalLight);
                     $('#abnormalLight').text(status.warningLight + status.errorLight);
                     $('#activeSensor').text(status.activeSensor);
@@ -70,6 +84,7 @@ $(function() {
                             {value: status.inactiveSensor, label: $.mr.resource.INACTIVE_SENSOR}
                         ]
                     });
+                    _self._initUnitMegaMenu();
                 }
             });
 
