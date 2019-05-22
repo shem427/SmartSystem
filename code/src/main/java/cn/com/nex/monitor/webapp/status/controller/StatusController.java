@@ -67,24 +67,13 @@ public class StatusController {
     @GetMapping(value = "/getStatus")
     @ResponseBody
     public StatusBean getStatus(String pUnitId) {
-        String parentUnitId = null;
-        StatusBean status = new StatusBean();
-        if (pUnitId == null) {
-            parentUnitId = topUnitId;
-            status.setUnitId(topUnitId);
-            status.setUnitName(messageService.getMessage("mr.unit.status.top"));
-        } else {
-            parentUnitId = pUnitId;
-            UnitBean unitInfo = statusService.getUnitInfo(parentUnitId);
-            status.setUnitId(parentUnitId);
-            status.setUnitName(unitInfo.getName());
-        }
+        StatusBean status = statusService.getUnitInfo(pUnitId);
 
-        int normalLight = statusService.getNormalLightCount(parentUnitId);
-        int warningLight = statusService.getWarningLightCount(parentUnitId);
-        int errorLight = statusService.getErrorLightCount(parentUnitId);
+        int normalLight = statusService.getNormalLightCount(pUnitId);
+        int warningLight = statusService.getWarningLightCount(pUnitId);
+        int errorLight = statusService.getErrorLightCount(pUnitId);
 
-        int[] sensors = statusService.countSensor(parentUnitId);
+        int[] sensors = statusService.countSensor(pUnitId);
 
         status.setActiveSensor(sensors[0]);
         status.setInactiveSensor(sensors[1]);

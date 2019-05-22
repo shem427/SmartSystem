@@ -68,8 +68,8 @@ public class StatusService {
         return markerList;
     }
 
-    public UnitBean getUnitInfo(String parentUnitId) {
-        return unitDao.get(parentUnitId);
+    public StatusBean getUnitInfo(String parentUnitId) {
+        return statusDao.getUnitInfo(parentUnitId);
     }
 
     public StatusBean getUnitStatus(String unitId, String userId) {

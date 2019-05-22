@@ -7,12 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class StatusDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    public StatusBean getUnitInfo(String unitId) {
+        String getUnitSql = "SELECT `UNIT_ID`,`UNIT_NAME`,getUnitPath(UNIT_ID) AS UNIT_PATH, getUnitIdChain(UNIT_ID) AS UNIT_ID_CHAIN FROM `unit` WHERE `UNIT_ID`=?";
+        return jdbcTemplate.query(getUnitSql, new String[] {unitId}, rs -> {
+            StatusBean bean = new StatusBean();
+            bean.setUnitId(unitId);
+            while (rs.next()) {
+                bean.setUnitName(rs.getString("UNIT_NAME"));
+                bean.setUnitPath(rs.getString("UNIT_PATH"));
+                bean.setUnitIdChain(rs.getString("UNIT_ID_CHAIN"));
+            }
+            return bean;
+        });
+    }
 
     public StatusBean getUnitStatus(String unitId, String userId) {
         String sql = "SELECT `DATA_ID`, `NORML`, `WARN` FROM `THRESHOLD` WHERE `DATA_ID`=?";
@@ -26,14 +38,8 @@ public class StatusDao {
                 return null;
             }
         });
-        final StatusBean bean = new StatusBean();
-        bean.setUnitId(unitId);
 
-        String getUnitSql = "SELECT `UNIT_ID`,`UNIT_NAME`,getUnitPath(UNIT_ID) AS UNIT_PATH FROM `unit` WHERE `UNIT_ID`=?";
-        jdbcTemplate.query(getUnitSql, new String[] {unitId}, rs -> {
-            bean.setUnitName(rs.getString("UNIT_NAME"));
-            bean.setUnitPath(rs.getString("UNIT_PATH"));
-        });
+        final StatusBean bean = getUnitInfo(unitId);
         int unitPathLength = bean.getUnitPath().length();
 
         String normalSql = "SELECT COUNT(1) AS NORMAL FROM `RADIATION` R WHERE R.`RAD_VALUE` >= ? AND R.`UNIT_ID` IN (SELECT U.`UNIT_ID` FROM `unit` U, `unit_manager` M WHERE U.UNIT_ID=M.UNIT_ID AND M.USER_ID=? AND U.`LEAF`=true AND LEFT(getUnitPath(U.`UNIT_ID`), ?) = ?)";

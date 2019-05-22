@@ -10,6 +10,7 @@ public class StatusBean extends CommonBean {
     private String unitId;
     private String unitName;
     private String unitPath;
+    private String unitIdChain;
     private int normalLight;
     private int warningLight;
     private int errorLight;

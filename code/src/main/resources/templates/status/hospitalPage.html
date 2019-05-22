@@ -6,18 +6,18 @@
             <a href="#" id="unitSelectA"><span class="caret"></span></a>
             <ul id="unitSelectUl" class="dropdown-menu mega-dropdown-menu">
                 <li class="dropdown-header">
-                    <ul style="margin-bottom: -13px;">
-                        <li><a href="#">安徽省</a></li>
+                    <ul style="margin-bottom: -10px">
+                        <!--<li><a href="#">安徽省</a></li>
                         <li><a href="#">合肥市</a></li>
-                        <li class="selected">蜀山区</li>
+                        <li class="selected">蜀山区</li>-->
                     </ul>
                 </li>
                 <li class="divider"></li>
-                <li class="dropdown-item"><a href="#">Unique Features</a></li>
+                <!--<li class="dropdown-item"><a href="#">Unique Features</a></li>
                 <li class="dropdown-item"><a href="#">Image Responsive</a></li>
                 <li class="dropdown-item"><a href="#">Auto Carousel</a></li>
                 <li class="dropdown-item"><a href="#">Newsletter Form</a></li>
-                <li class="dropdown-item"><a href="#">Four columns</a></li>
+                <li class="dropdown-item"><a href="#">Four columns</a></li>-->
                 <li class="divider"></li>
                 <li>
                     <div>
@@ -29,6 +29,8 @@
         </h4>
     </div>
 </div>
+<input type="hidden" id="currentUnitId" value="UT00000000000000" />
+<input type="hidden" id="currentUnitIdChain" value="UT00000000000000" />
 <div class="row">
     <div class="col-sm-6 col-md-3">
         <div class="panel panel-primary">
@@ -154,7 +156,6 @@
                         <i class="fa fa-pie-chart fa-fw"></i>&nbsp;传感器状态
                     </div>
                     <div class="panel-body" id="sensorStatus" style="height:259px;">
-
                     </div>
                 </div>
             </div>
@@ -167,7 +168,7 @@
 <script>
     $(function() {
         $.mr.map.create($('#mapKey').val());
-        $.mr.status.initHospital(undefined);
+        $.mr.status.initHospital();
         $.mr.status.markHospital();
     });
 </script>
@@ -188,6 +189,7 @@
 
     .mega-dropdown-menu > li > ul > li {
         list-style: none;
+        padding-bottom: 2px;
     }
 
    .mega-dropdown-menu .dropdown-header {
@@ -197,6 +199,7 @@
 
     .dropdown-header > ul > li {
         display: inline;
+        margin-left: 5px;
     }
 
     .dropdown-header > ul > li.selected {

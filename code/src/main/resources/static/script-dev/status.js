@@ -16,7 +16,8 @@ $(function() {
                             animation: qq.maps.MarkerAnimation.DOWN,
                             map: $.mr.mapinstance
                         });
-                        qq.maps.event.addListener(marker, 'click', function() {
+                        // TODO: mark click event.
+                        /*qq.maps.event.addListener(marker, 'click', function() {
                             $.each(_self.hospitals, function(indx, m) {
                                 if (m !== marker) {
                                     m.setMap(null);
@@ -26,28 +27,108 @@ $(function() {
                                     _self.initHospital(item.hospitalId);
                                 }
                             });
-                        });
+                        });*/
                         _self.hospitals.push(marker);
                     });
                 }
             });
         },
         _initUnitMegaMenu: function() {
-            var selectedUnitId = $('#selectedUnit').val();
+            var currentUnitId = $('#currentUnitId').val();
+            var unitIdArray = $('#currentUnitIdChain').val().split(",");
+            var unitNameArray = $('#selectedUnit').val().split('/');
             var unitSelectA = $('#unitSelectA');
             var unitSelectUl = $('#unitSelectUl');
             var unitSelectCancelBtn = $('#unitSelectCancelBtn');
             var unitSelectOKBtn = $('#unitSelectOKBtn');
-            unitSelectA.click(function(e) {
+
+            unitSelectA.unbind('click').click(function(e) {
+                var dropDownHeader = $('li.dropdown-header > ul');
+                var li;
                 e.preventDefault();
+                if (!unitSelectUl.is(':hidden')) {
+                    return;
+                }
                 unitSelectUl.show();
+
+                // show current in mega.
+                if (currentUnitId === 'UT00000000000000') {
+                    dropDownHeader.empty().append('<li></li>');
+                } else {
+                    dropDownHeader.empty();
+                    for (var i = 1; i < unitIdArray.length; i++) {
+                        if (i === unitIdArray.length - 1) {
+                            li = $('<li class="selected"></li>').prop('id', unitIdArray[i]).text(unitNameArray[i]);
+                        } else {
+                            li = $('<li></li>').prop('id', unitIdArray[i]).html('<a href="#">' + unitNameArray[i] + '</a>');
+                        }
+                        dropDownHeader.append(li);
+                    }
+                }
+
+                _self._initMegaHeadEvt();
+
+                // show submenu in mega.
+                _self._initMegaItemEvt(currentUnitId)
             });
-            unitSelectCancelBtn.click(function() {
+            unitSelectCancelBtn.unbind('click').click(function() {
+                unitSelectUl.hide();
+            });
+            unitSelectOKBtn.unbind('click').click(function() {
+                var selectedUnitId = $('li.dropdown-header > ul > li:last').prop('id');
+                $('#currentUnitId').val(selectedUnitId);
+                _self.initHospital();
                 unitSelectUl.hide();
             });
         },
-        initHospital: function(pId) {
+        _initMegaItemEvt: function(unitId) {
+            $.mr.ajax({
+                url: 'unit/subUnitByUser',
+                type: 'get',
+                data: { id: unitId },
+                success: function(units) {
+                    var unitSelectUl = $('#unitSelectUl');
+                    var lastDivider = unitSelectUl.find('li.divider:last');
+                    unitSelectUl.find('li.dropdown-item').remove();
+                    $.each(units, function(idx, unit) {
+                        li = '<li class="dropdown-item" id="' + unit.id + '"><a href="#">' + unit.name + '</a></li>';
+                        lastDivider.before(li);
+                    });
+                    _self._initMegaMenuEvt();
+                }
+            });
+        },
+        _initMegaHeadEvt: function() {
+            $('.dropdown-header > ul > li > a').unbind('click').click(function(e) {
+                var unitId = $(this).parent().prop('id');
+                var unitName = $(this).text();
+                e.preventDefault();
+                $(this).parent().addClass('selected').nextAll().remove();
+                $(this).parent().empty().text(unitName);
+
+                _self._initMegaItemEvt(unitId);
+            });
+        },
+        _initMegaMenuEvt: function() {
+            $('li.dropdown-item > a').unbind('click').click(function(e) {
+                var unitId = $(this).parent().prop('id');
+                var unitName = $(this).text();
+                var dropDownHeader = $('li.dropdown-header > ul');
+                var lastLi = dropDownHeader.find('li:last');
+                var lastUnitName = lastLi.text();
+                e.preventDefault();
+                lastLi.removeClass('selected').text('').html('<a href="#">' + lastUnitName + '</a>');
+                dropDownHeader.append($('<li class="selected"></li>').prop('id', unitId).text(unitName));
+
+                _self._initMegaHeadEvt();
+
+                // show submenu in mega.
+                _self._initMegaItemEvt(unitId)
+            });
+        },
+        initHospital: function() {
             var upLevel = $('#btnUpLevel');
+            var pId = $('#currentUnitId').val();
             $('.panel-icon a').tooltip();
             if (!pId || pId === 'UT00000000000000') {
                 upLevel.hide();
@@ -60,7 +141,10 @@ $(function() {
                 dataType: 'json',
                 data: {pUnitId: pId},
                 success: function(status) {
-                    $('.titleInput').val(status.unitName);
+                    $('#currentUnitId').val(status.unitId);
+                    $('#currentUnitIdChain').val(status.unitIdChain);
+
+                    $('#selectedUnit').val(status.unitPath);
                     $('#normalLight').text(status.normalLight);
                     $('#abnormalLight').text(status.warningLight + status.errorLight);
                     $('#activeSensor').text(status.activeSensor);
