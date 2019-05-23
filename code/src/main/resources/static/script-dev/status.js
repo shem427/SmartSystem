@@ -45,25 +45,21 @@ $(function() {
                 var unitNameArray = $('#selectedUnit').val().split('/');
                 var dropDownHeader = $('li.dropdown-header > ul');
                 var li;
+                unitNameArray[0] = '全系统';
                 e.preventDefault();
                 if (!unitSelectUl.is(':hidden')) {
                     return;
                 }
                 unitSelectUl.show();
 
-                // show current in mega.
-                if (currentUnitId === 'UT00000000000000') {
-                    dropDownHeader.empty().append('<li></li>');
-                } else {
-                    dropDownHeader.empty();
-                    for (var i = 1; i < unitIdArray.length; i++) {
-                        if (i === unitIdArray.length - 1) {
-                            li = $('<li class="selected"></li>').prop('id', unitIdArray[i]).text(unitNameArray[i]);
-                        } else {
-                            li = $('<li></li>').prop('id', unitIdArray[i]).html('<a href="#">' + unitNameArray[i] + '</a>');
-                        }
-                        dropDownHeader.append(li);
+                dropDownHeader.empty();
+                for (var i = 0; i < unitIdArray.length; i++) {
+                    if (i === unitIdArray.length - 1) {
+                        li = $('<li class="selected"></li>').prop('id', unitIdArray[i]).text(unitNameArray[i]);
+                    } else {
+                        li = $('<li></li>').prop('id', unitIdArray[i]).html('<a href="#">' + unitNameArray[i] + '</a>');
                     }
+                    dropDownHeader.append(li);
                 }
 
                 _self._initMegaHeadEvt();
