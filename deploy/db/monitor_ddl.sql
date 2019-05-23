@@ -405,6 +405,33 @@ BEGIN
 END
 ;;
 DELIMITER ;
+
+-- ----------------------------
+-- Function structure for getUnitIdChain
+-- ----------------------------
+DROP FUNCTION IF EXISTS `getUnitIdChain`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getUnitIdChain`(id char(16)) RETURNS varchar(1024) CHARSET utf8mb4 COLLATE utf8mb4_bin
+    READS SQL DATA
+    DETERMINISTIC
+BEGIN
+    DECLARE currentPId char(16);  
+    DECLARE unitIdChain varchar(1024);
+    DECLARE tempId varchar(1024);
+    SET tempId='';
+
+    SELECT `UNIT_ID`, `PARENT_ID` INTO unitIdChain, currentPId FROM `unit` WHERE `UNIT_ID` = id AND ACTIVE=true;
+
+    WHILE currentPId IS NOT NULL DO
+        SELECT `UNIT_ID`, `PARENT_ID` INTO tempId, currentPId FROM `unit` WHERE `UNIT_ID` = currentPId AND ACTIVE=true;
+        SET unitIdChain = CONCAT(tempId, ',', unitIdChain);
+    END WHILE;
+
+    RETURN unitIdChain;
+END
+;;
+DELIMITER ;
+
 DROP TRIGGER IF EXISTS `sensor_BEFORE_INSERT`;
 DELIMITER ;;
 CREATE TRIGGER `sensor_BEFORE_INSERT` BEFORE INSERT ON `sensor` FOR EACH ROW BEGIN

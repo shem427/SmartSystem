@@ -34,15 +34,15 @@ $(function() {
             });
         },
         _initUnitMegaMenu: function() {
-            var currentUnitId = $('#currentUnitId').val();
-            var unitIdArray = $('#currentUnitIdChain').val().split(",");
-            var unitNameArray = $('#selectedUnit').val().split('/');
             var unitSelectA = $('#unitSelectA');
             var unitSelectUl = $('#unitSelectUl');
             var unitSelectCancelBtn = $('#unitSelectCancelBtn');
             var unitSelectOKBtn = $('#unitSelectOKBtn');
 
             unitSelectA.unbind('click').click(function(e) {
+                var currentUnitId = $('#currentUnitId').val();
+                var unitIdArray = $('#currentUnitIdChain').val().split(",");
+                var unitNameArray = $('#selectedUnit').val().split('/');
                 var dropDownHeader = $('li.dropdown-header > ul');
                 var li;
                 e.preventDefault();
