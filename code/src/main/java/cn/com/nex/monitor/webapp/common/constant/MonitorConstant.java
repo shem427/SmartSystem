@@ -23,4 +23,7 @@ public class MonitorConstant {
     public static final String UNIT_STATUS_JOB_START = "mr.unit.status.job.start";
     public static final String UNIT_STATUS_JOB_END = "mr.unit.status.job.end";
     public static final String UNIT_STATUS_JOB_ERROR = "mr.unit.status.job.error";
+
+    public static final String UNIT_TYPE_PREFIX = "mr.unit.type.";
+    public static final int[] UNIT_TYPE_VALUES = { 1, 2, 3, 4, 51, 52, 61, 62, 71, 72, 81, 82, 9 };
 }

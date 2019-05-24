@@ -28,10 +28,13 @@
                         <label for="unitRemark">备注</label>
                         <textarea class="form-control" id="unitRemark" placeholder="请输入备注" th:text="${unitRemark}" rows="4"></textarea>
                     </div>
-                    <div class="checkbox" th:if="${unitId == null}">
-                        <label>
-                            <input type="checkbox" id="unitLeaf" />紫外线灯节点
-                        </label>
+                    <div class="form-group" th:if="${unitId == null || !isParent}">
+                        <label for="unitType">组织类型</label>
+                        <select id="unitType" class="form-control">
+                            <th:block th:each="type : ${unitTypes}">
+                                <option th:value="${type.key}" th:text="${type.value}" th:selected="${type.key == unitType}"></option>
+                            </th:block>
+                        </select>
                     </div>
                     <div class="form-group" th:if="${unitId == null || !isParent}" id="managersDiv">
                         <label for="unitManagers">负责人</label>
@@ -43,10 +46,6 @@
                         <button type="button" class="btn btn-default" id="addManager">添加负责人</button>
                         <button type="button" class="btn btn-default" id="deleteManager">删除负责人</button>
                     </div>
-                    <!--<div class="form-group">
-                        <button type="button" class="btn btn-default" id="addManager">添加负责人</button>
-                        <button type="button" class="btn btn-default" id="deleteManager">删除负责人</button>
-                    </div>-->
                 </form>
             </div>
             <div class="modal-footer">

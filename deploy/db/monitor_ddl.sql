@@ -23,11 +23,11 @@ CREATE TABLE `radiation` (
   `RAD_ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `UNIT_ID` char(16) NOT NULL,
   `RAD_VALUE` int(11) DEFAULT NULL,
-  `UPLOAD_TIME` timestamp NULL DEFAULT NULL,
+  `UPLOAD_TIME` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`RAD_ID`) USING BTREE,
   KEY `RAD_UNIT_ID` (`UNIT_ID`) USING BTREE,
   CONSTRAINT `RAD_UNIT_ID` FOREIGN KEY (`UNIT_ID`) REFERENCES `unit` (`UNIT_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=193 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for sensor
@@ -90,6 +90,7 @@ CREATE TABLE `unit` (
   `UNIT_ID` char(16) NOT NULL DEFAULT 'UT00000000000000',
   `UNIT_NAME` varchar(128) NOT NULL,
   `PARENT_ID` char(16) DEFAULT NULL,
+  `UNIT_TYPE` int(4) NOT NULL,
   `REMARK` varchar(256) DEFAULT NULL,
   `ACTIVE` tinyint(1) NOT NULL DEFAULT '1',
   `LEAF` tinyint(1) NOT NULL DEFAULT '0',
@@ -120,7 +121,7 @@ DROP TABLE IF EXISTS `unit_seq`;
 CREATE TABLE `unit_seq` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for unit_warn
@@ -133,7 +134,7 @@ CREATE TABLE `unit_warn` (
   `NOTIFY_TIME` datetime NOT NULL,
   PRIMARY KEY (`WARN_ID`) USING BTREE,
   KEY `UNIT_ID_WARN_idx` (`UNIT_ID`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=373 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for user
@@ -309,7 +310,7 @@ BEGIN
         CALL countLightByStatus(unitId, 2, @size);
         SET errorLightCount = errorLightCount + @size;
 
-        SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `UNIT_STATUS`, `LEAF`, errorLightCount AS `ERROR_COUNT`, warnLightCount AS `WARN_COUNT`, normalLightCount AS `NORMAL_COUNT` FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
+        SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `UNIT_STATUS`, `LEAF`, `UNIT_TYPE`, errorLightCount AS `ERROR_COUNT`, warnLightCount AS `WARN_COUNT`, normalLightCount AS `NORMAL_COUNT` FROM `unit` WHERE `ACTIVE` = true AND `UNIT_ID`=unitId;
     ELSEIF pId IS NOT NULL THEN
         CALL getUnitUntilParentId(pId, unitParentId);
     END IF;
@@ -377,6 +378,30 @@ END
 DELIMITER ;
 
 -- ----------------------------
+-- Function structure for getUnitIdChain
+-- ----------------------------
+DROP FUNCTION IF EXISTS `getUnitIdChain`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getUnitIdChain`(`id` char(16)) RETURNS varchar(1024) CHARSET utf8mb4 COLLATE utf8mb4_bin
+BEGIN
+    DECLARE currentPId char(16);  
+    DECLARE unitIdChain varchar(1024);
+    DECLARE tempId varchar(1024);
+    SET tempId='';
+
+    SELECT `UNIT_ID`, `PARENT_ID` INTO unitIdChain, currentPId FROM `unit` WHERE `UNIT_ID` = id AND ACTIVE=true;
+
+    WHILE currentPId IS NOT NULL DO
+        SELECT `UNIT_ID`, `PARENT_ID` INTO tempId, currentPId FROM `unit` WHERE `UNIT_ID` = currentPId AND ACTIVE=true;
+        SET unitIdChain = CONCAT(tempId, ',', unitIdChain);
+    END WHILE;
+
+    RETURN unitIdChain;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
 -- Function structure for getUnitPath
 -- ----------------------------
 DROP FUNCTION IF EXISTS `getUnitPath`;
@@ -405,33 +430,6 @@ BEGIN
 END
 ;;
 DELIMITER ;
-
--- ----------------------------
--- Function structure for getUnitIdChain
--- ----------------------------
-DROP FUNCTION IF EXISTS `getUnitIdChain`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `getUnitIdChain`(id char(16)) RETURNS varchar(1024) CHARSET utf8mb4 COLLATE utf8mb4_bin
-    READS SQL DATA
-    DETERMINISTIC
-BEGIN
-    DECLARE currentPId char(16);  
-    DECLARE unitIdChain varchar(1024);
-    DECLARE tempId varchar(1024);
-    SET tempId='';
-
-    SELECT `UNIT_ID`, `PARENT_ID` INTO unitIdChain, currentPId FROM `unit` WHERE `UNIT_ID` = id AND ACTIVE=true;
-
-    WHILE currentPId IS NOT NULL DO
-        SELECT `UNIT_ID`, `PARENT_ID` INTO tempId, currentPId FROM `unit` WHERE `UNIT_ID` = currentPId AND ACTIVE=true;
-        SET unitIdChain = CONCAT(tempId, ',', unitIdChain);
-    END WHILE;
-
-    RETURN unitIdChain;
-END
-;;
-DELIMITER ;
-
 DROP TRIGGER IF EXISTS `sensor_BEFORE_INSERT`;
 DELIMITER ;;
 CREATE TRIGGER `sensor_BEFORE_INSERT` BEFORE INSERT ON `sensor` FOR EACH ROW BEGIN

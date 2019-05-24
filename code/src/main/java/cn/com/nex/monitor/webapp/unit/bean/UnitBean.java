@@ -11,6 +11,8 @@ import java.util.List;
 public class UnitBean extends CommonTreeBean {
     /** 备注 */
     private String unitRemark;
+    /** 组织类型 */
+    private int unitType;
     /** 管理者ID List */
     private List<String> managerIdList;
 }

@@ -26,6 +26,7 @@ public class UnitDao extends CommonDao<UnitBean> {
     private static final String PARENT_ID = "PARENT_ID";
     private static final String REMARK = "REMARK";
     private static final String LEAF = "LEAF";
+    private static final String UNIT_TYPE = "UNIT_TYPE";
 
     /**
      * 从ResultSet中抽取Bean对象。
@@ -42,6 +43,7 @@ public class UnitDao extends CommonDao<UnitBean> {
         bean.setPId(rs.getString(PARENT_ID));
         bean.setUnitRemark(rs.getString(REMARK));
         bean.setIsParent(!rs.getBoolean(LEAF));
+        bean.setUnitType(rs.getInt(UNIT_TYPE));
 
         return bean;
     }
@@ -67,7 +69,7 @@ public class UnitDao extends CommonDao<UnitBean> {
     }
 
     public List<UnitBean> getUnitByParentId(String pId) {
-        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, `REMARK`, `PARENT_ID`, `LEAF` FROM `UNIT` WHERE `ACTIVE`=true AND ";
+        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, `REMARK`, `PARENT_ID`, `LEAF`, `UNIT_TYPE` FROM `UNIT` WHERE `ACTIVE`=true AND ";
         if (pId == null) {
             sql += "`PARENT_ID` IS NULL";
             List<UnitBean> subList = jdbcTemplate.query(sql,
@@ -128,9 +130,9 @@ public class UnitDao extends CommonDao<UnitBean> {
         int id = getLastInsertId();
         String unitId = "UT"+ StringUtils.leftPad(String.valueOf(id), 14, '0');
 
-        String sql = "INSERT INTO `UNIT`(`UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `LEAF`) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `UNIT`(`UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `LEAF`, `UNIT_TYPE`) VALUES (?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, unitId, unit.getName(), unit.getPId(), unit.getUnitRemark(), !unit.getIsParent());
+        jdbcTemplate.update(sql, unitId, unit.getName(), unit.getPId(), unit.getUnitRemark(), !unit.getIsParent(), unit.getUnitType());
 
         return unitId;
     }
@@ -206,7 +208,7 @@ public class UnitDao extends CommonDao<UnitBean> {
     }
 
     public UnitBean getUnitByName(String name) {
-        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `LEAF` FROM `UNIT` WHERE UNIT_NAME=? AND ACTIVE=true";
+        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, `REMARK`, `LEAF`, `UNIT_TYPE` FROM `UNIT` WHERE UNIT_NAME=? AND ACTIVE=true";
         return jdbcTemplate.query(sql, new String[] {name}, rs -> {
             if (rs.next()) {
                 UnitBean bean = new UnitBean();
@@ -215,6 +217,7 @@ public class UnitDao extends CommonDao<UnitBean> {
                 bean.setPId(rs.getString("PARENT_ID"));
                 bean.setUnitRemark(rs.getString("REMARK"));
                 bean.setIsParent(!rs.getBoolean("LEAF"));
+                bean.setUnitType(rs.getInt("UNIT_TYPE"));
 
                 return bean;
             }

@@ -99,6 +99,7 @@ $(function() {
                     data = {
                         unitId: selectedNode.id,
                         unitName: selectedNode.name,
+                        unitType: selectedNode.unitType,
                         unitRemark: selectedNode.unitRemark,
                         isParent: selectedNode.isParent
                     };
@@ -194,11 +195,12 @@ $(function() {
          * 组织添加/编辑的Modal对话框的初始化，以及各个控件的事件定义
          */
         initModal: function() {
-            var leaf = $('#unitLeaf');
+            var unitTypeSelect = $('#unitType')
             var unitId = $('#unitId').val();
             var managersDiv = $('#managersDiv');
             var initManagerArea = function() {
-                var isLeaf = leaf.is(':checked');
+                var unitType = unitTypeSelect.val();
+                var isLeaf = (unitType === '9');
                 if (isLeaf) {
                     managersDiv.show();
                 } else {
@@ -208,7 +210,7 @@ $(function() {
             if (!unitId) {
                 initManagerArea();
             }
-            leaf.change(initManagerArea);
+            unitTypeSelect.change(initManagerArea);
             // 保存按钮事件
             $('#saveUnit').click(function() {
                 var unitId = $('#unitId').val();
@@ -220,14 +222,18 @@ $(function() {
                     name: unitName,
                     unitRemark: unitRemark
                 };
+                var unitType = $('#unitType').val();
                 if (unitId) {
                     data.id = unitId;
                     isEdit = true;
                 } else {
                     data.pId = parentId;
-                    data.isParent = $('#unitLeaf').is(':checked') === false;
+                    data.unitType = unitType;
+                    data.isParent = (unitType !== '9');
                 }
-                data.managerIdList = self._setUnitManagers(false);
+                if (unitType === '9') {
+                    data.managerIdList = self._setUnitManagers(false);
+                }
                 $.mr.ajax({
                     url: 'unit/saveUnit',
                     type: 'post',

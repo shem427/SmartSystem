@@ -3,6 +3,7 @@ package cn.com.nex.monitor.webapp.unit.controller;
 import cn.com.nex.monitor.webapp.common.MessageService;
 import cn.com.nex.monitor.webapp.common.bean.CommonBean;
 import cn.com.nex.monitor.webapp.common.bean.StringValueBean;
+import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.unit.bean.ImportUnitBean;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
@@ -26,10 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/unit")
@@ -81,8 +79,10 @@ public class UnitController {
     @GetMapping(value = "/addPage")
     public ModelAndView getAddPage(String parentId, String parentName) {
         Map<String, Object> model = new HashMap<>();
+        Map<Integer, String> unitTypeMap = getAllUnitType();
         model.put("parentId", parentId);
         model.put("parentName", parentName);
+        model.put("unitTypes", unitTypeMap);
 
         return new ModelAndView("unit/unitUpdateModal", model);
     }
@@ -93,17 +93,21 @@ public class UnitController {
                                     String parentName,
                                     String unitId,
                                     String unitName,
+                                    int unitType,
                                     String unitRemark,
                                     boolean isParent) {
         Map<String, Object> model = new HashMap<>();
         List<UserBean> managers = unitService.getUnitManagers(unitId);
+        Map<Integer, String> unitTypeMap = getAllUnitType();
 
         model.put("parentId", parentId);
         model.put("parentName", parentName);
         model.put("unitId", unitId);
         model.put("unitName", unitName);
+        model.put("unitType", unitType);
         model.put("unitRemark", unitRemark);
         model.put("managers", managers);
+        model.put("unitTypes", unitTypeMap);
         model.put("isParent", isParent);
 
         return new ModelAndView("unit/unitUpdateModal", model);
@@ -237,5 +241,15 @@ public class UnitController {
         }
 
         return bean;
+    }
+
+    private Map<Integer, String> getAllUnitType() {
+        Map<Integer, String> unitTypeMap = new LinkedHashMap<>();
+        for (int value : MonitorConstant.UNIT_TYPE_VALUES) {
+            String text = messageService.getMessage(MonitorConstant.UNIT_TYPE_PREFIX + value);
+            unitTypeMap.put(value, text);
+        }
+
+        return unitTypeMap;
     }
 }
