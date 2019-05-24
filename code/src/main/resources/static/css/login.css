@@ -66,16 +66,12 @@ body {
     padding: 0 40px;
 }
 
-.logo {
-    float: left;
-}
-
-.logo i {
+.logo_w i {
     color: #ffffff;
     font-size: 30px;
 }
 
-.logo h1 {
+.logo_w h1 {
     display: inline-block;
     color: #fff;
     margin: 0 0 0 10px;

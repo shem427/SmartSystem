@@ -754,10 +754,18 @@ div.flot-area {
 
 .logo {
     float: left;
-    min-width: 120px;
-    padding-left: 120px;
+    min-width: 68px;
+    padding-left: 68px;
     margin-left: 10px;
     background: url(../img/logo.png) no-repeat left;
+}
+
+.logo_w {
+    float: left;
+    min-width: 110px;
+    padding-left: 110px;
+    margin-left: 10px;
+    background: url(../img/logo_w.png) no-repeat left;
 }
 
 /*------------- Dashboard ST -------------*/

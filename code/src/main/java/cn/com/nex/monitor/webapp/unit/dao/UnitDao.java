@@ -184,10 +184,10 @@ public class UnitDao extends CommonDao<UnitBean> {
     }
 
     public boolean unitNameDuplicated(String unitId, String unitName) {
-        String sql = "SELECT COUNT(1) AS AMOUNT FROM `UNIT`";
+        String sql = "SELECT COUNT(1) AS AMOUNT FROM `UNIT` WHERE `ACTIVE`=true AND `UNIT_NAME`=?";
         if (unitId != null) {
-            sql += " WHERE `UNIT_ID` <> ?";
-            return jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
+            sql += " AND `UNIT_ID` <> ?";
+            return jdbcTemplate.query(sql, new String[] {unitName, unitId}, rs -> {
                 int count = 0;
                 if (rs.next()) {
                     count = rs.getInt("AMOUNT");
@@ -195,7 +195,7 @@ public class UnitDao extends CommonDao<UnitBean> {
                 return count != 0;
             });
         } else {
-            return jdbcTemplate.query(sql, rs -> {
+            return jdbcTemplate.query(sql, new String[] {unitName}, rs -> {
                 int count = 0;
                 if (rs.next()) {
                     count = rs.getInt("AMOUNT");
