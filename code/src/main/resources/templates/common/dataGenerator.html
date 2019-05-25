@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--
+    Copyright (C) 2018 by AnHui Nex Technology Inc., Ltd. All Rights Reserved.
+-->
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta http-equiv="Expires" content="-1" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>数据作成</title>
+
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <!-- Bootstrap Core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/startmin.css}" rel="stylesheet" />
+    <link th:href="@{/css/login.css}" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/js/html5shiv.js}"></script>
+    <script th:src="@{/js/respond.min.js}"></script>
+    <![endif]-->
+    <script th:inline="javascript">
+        var contextPath = /*[[@{/}]]*/ 'monitor';
+    </script>
+</head>
+<body>
+<div id="page" class="login">
+    <div id="header">
+        <div class="wrapper">
+            <div class="logo_w">
+                <h1>数据作成</h1>
+            </div>
+        </div>
+    </div>
+    <div id="content">
+        <div class="wrapper">
+            <div class="login-pannel">
+                <form role="form">
+                        <div class="form-group">
+                            <label for="radiationModelId">
+                                紫外模块ID
+                            </label>
+                            <input id="radiationModelId" name="radiationModelId" class="form-control" placeholder="紫外模块ID" type="text" autofocus="autofocus" />
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">
+                                紫外模块ID
+                            </label>
+                            <input id="amount" name="amount" class="form-control" placeholder="数据规模" type="number" />
+                        </div>
+                        <div class="form-group">
+                            <input type="button" id="btnExecute" class="btn btn-primary" name="btnExecute" value="执行" />
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <div class="copyright">
+            <span>中国电子科技集团公司第三十八研究所 版权所有 © 2018</span>
+        </div>
+    </div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+<script th:src="@{/script/common.js}"></script>
+<script th:src="@{/i18n/resource_zh.js}"></script>
+<script>
+$(function() {
+    $('#btnExecute').click(function() {
+        var radiationModelId = $('#radiationModelId').val();
+        var amount = parseInt($('#amount').val());
+
+        var uploadData = function() {
+            var value = parseInt(Math.random()*(100-10+1)+10, 10);
+            $.ajax({
+                url: 'data/upload',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    msg: '$$$dataUpdated===',
+                    ID: radiationModelId,
+                    value: value
+                })
+            });
+        };
+
+        var indx = 0;
+        while (indx !== amount) {
+            indx++;
+            setTimeout(function() {
+                uploadData();
+            }, 500);
+        }
+    });
+});
+</script>
+</body>
+</html>

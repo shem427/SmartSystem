@@ -5,6 +5,7 @@ import cn.com.nex.monitor.webapp.common.bean.TableData;
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
 import cn.com.nex.monitor.webapp.dashboard.bean.RadiationBean;
 import cn.com.nex.monitor.webapp.dashboard.dao.DashboardDao;
+import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.unit.dao.UnitDao;
 import cn.com.nex.monitor.webapp.warn.bean.UnitWarnBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class DashboardService {
         dashboardDao.addUnitWarn(bean);
     }
 
-    public String getParentIdByUnitId(String unitId) {
-        return dashboardDao.getParentIdByUnitId(unitId);
+    public UnitBean getParentUnitById(String unitId) {
+        return unitDao.getParentUnitById(unitId);
     }
 
     public boolean isParentUnit(String unitId) {

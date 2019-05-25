@@ -3,28 +3,36 @@ $(function() {
     $.mr.dashboard = {
         init: function() {
             var level = parseInt($('#unitLevel').val());
+            var unitType = $('#unitType').val();
             var titleIcon = $('#titleIcon');
-            var titleText = $('#titleText');
             var iconCls = $('.iconCls');
+            debugger;
+            var icon = _self._getIconClsByUnitType(unitType);
 
-            var levelInfo = $.mr.resource.UNIT_LEVEL[level];
 
             $('.status-icon').tooltip();
             $('.panel-icon a').tooltip();
 
-            titleIcon.addClass('fa fa-' + levelInfo.iconCls + ' fa-fw');
-            titleText.text(levelInfo.title);
-            iconCls.addClass('fa fa-' + levelInfo.iconCls + ' fa-5x');
+            titleIcon.addClass('fa fa-' + icon + ' fa-fw');
+            iconCls.each(function(idx, item) {
+                var subUnitType = $(item).parent().find('input[type="hidden"]').val();
+                var subIcon = _self._getIconClsByUnitType(subUnitType);
+                $(item).addClass('fa fa-' + subIcon + ' fa-5x');
+            });
 
             $('.status-icon').click(function(e) {
                 e.preventDefault();
                 var unitId = $(this).prop('id');
+                var unitName = $(this).find('div.caption > p').text();
+                var unitType = $('#unitType-' + unitId).val();
                 $.mr.ajax({
                     url: 'dashboard/index',
                     type: 'get',
                     data: {
                         parentId: unitId,
-                        level: level ? (level + 1) : 1
+                        level: level ? (level + 1) : 1,
+                        unitName: unitName,
+                        unitType: unitType
                     },
                     dataType: 'html',
                     success: function(data) {
@@ -37,12 +45,16 @@ $(function() {
             $('#btnRefresh').click(function(e) {
                 e.preventDefault();
                 var parentId = $('#parentId').val();
+                var unitName = $('#unitName').val();
+                var unitType = $('#unitType').val();
                 $.mr.ajax({
                     url: 'dashboard/index',
                     type: 'get',
                     data: {
                         parentId: parentId,
-                        level: level
+                        level: level,
+                        unitName: unitName,
+                        unitType: unitType
                     },
                     dataType: 'html',
                     success: function(data) {
@@ -70,6 +82,9 @@ $(function() {
                 });
             });
             setTimeout(function() { $('#btnRefresh').trigger('click'); }, 30000);
+        },
+        _getIconClsByUnitType: function(unitType) {
+            return $.mr.resource.UNIT_ICON_TYPE[unitType];
         },
         initGraphic: function() {
             $('.panel-icon a').tooltip();

@@ -224,4 +224,23 @@ public class UnitDao extends CommonDao<UnitBean> {
             return null;
         });
     }
+
+    public UnitBean getParentUnitById(String unitId) {
+        String sql = "SELECT * FROM `UNIT` U, (SELECT `PARENT_ID` FROM `UNIT` WHERE `UNIT_ID`=?) SU where U.`UNIT_ID`=SU.`PARENT_ID`";
+        return jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
+            if (rs.next()) {
+                UnitBean bean = new UnitBean();
+                bean.setUnitType(rs.getInt("UNIT_TYPE"));
+                bean.setIsParent(!rs.getBoolean("LEAF"));
+                bean.setPId(rs.getString("PARENT_ID"));
+                bean.setName(rs.getString("UNIT_NAME"));
+                bean.setId(rs.getString("UNIT_ID"));
+                bean.setUnitRemark(rs.getString("REMARK"));
+
+                return bean;
+            } else {
+                return null;
+            }
+        });
+    }
 }

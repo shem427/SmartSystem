@@ -80,17 +80,6 @@ public class DashboardDao {
         });
     }
 
-    public String getParentIdByUnitId(String unitId) {
-        String sql = "SELECT `PARENT_ID` FROM `UNIT` WHERE `UNIT_ID`=? AND `ACTIVE`=true";
-        return jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
-            if (rs.next()) {
-                String parentId = rs.getString("PARENT_ID");
-                return parentId;
-            }
-            return null;
-        });
-    }
-
     public boolean isParentUnit(String unitId) {
         String sql = "SELECT COUNT(1) AS CONT FROM `UNIT` WHERE `PARENT_ID`=?";
         int count = jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
@@ -152,6 +141,7 @@ public class DashboardDao {
         bean.setRemark((String) item.get("REMARK"));
         bean.setUnitStatus((Integer) item.get("UNIT_STATUS"));
         bean.setLeaf((Boolean) item.get("LEAF"));
+        bean.setUnitType((Integer) item.get("UNIT_TYPE"));
 
         bean.setErrorCount((Integer) item.get("ERROR_COUNT"));
         bean.setWarnCount((Integer) item.get("WARN_COUNT"));

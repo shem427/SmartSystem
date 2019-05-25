@@ -14,6 +14,7 @@ import cn.com.nex.monitor.webapp.dashboard.bean.UnitDataBean;
 import cn.com.nex.monitor.webapp.dashboard.service.DashboardService;
 import cn.com.nex.monitor.webapp.setting.bean.ThresholdBean;
 import cn.com.nex.monitor.webapp.setting.service.SettingService;
+import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import cn.com.nex.monitor.webapp.user.controller.UserController;
 import org.jxls.common.Context;
@@ -52,7 +53,7 @@ public class DashboardController {
     private MessageService messageService;
 
     @GetMapping(value = "/index")
-    public ModelAndView page(String parentId, Integer level) {
+    public ModelAndView page(String parentId, Integer level, String unitName, Integer unitType) {
         String pId;
         if (parentId == null) {
             pId = topUnitId;
@@ -60,11 +61,21 @@ public class DashboardController {
             pId = parentId;
         }
 
+        if (unitName == null) {
+            unitName = "全系统";
+        }
+
         if (level == null) {
             level = 0;
         }
+
+        if (unitType == null) {
+            unitType = 0;
+        }
         boolean isParent = dashboardService.isParentUnit(pId);
         Map<String, Object> model = new HashMap<>();
+        model.put("unitName", unitName);
+        model.put("unitType", unitType);
         if (isParent) {
             return showUnitStatus(model, pId, level);
         } else {
@@ -80,9 +91,11 @@ public class DashboardController {
 
     @GetMapping(value = "/upIndex")
     public ModelAndView upIndexpage(String currentId, Integer level) {
-        String parentId = dashboardService.getParentIdByUnitId(currentId);
+        UnitBean pUnit = dashboardService.getParentUnitById(currentId);
         Map<String, Object> model = new HashMap<>();
-        return showUnitStatus(model, parentId, level);
+        model.put("unitName", pUnit.getName());
+        model.put("unitType", pUnit.getUnitType());
+        return showUnitStatus(model, pUnit.getId(), level);
     }
 
     private ModelAndView showUnitStatus(Map<String, Object> model, String parentId, int level) {

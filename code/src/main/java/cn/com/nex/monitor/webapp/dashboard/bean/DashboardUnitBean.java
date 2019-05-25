@@ -12,6 +12,7 @@ public class DashboardUnitBean extends CommonBean implements Comparable<Dashboar
     private String remark;
     private String parentId;
     private boolean isLeaf;
+    private int unitType;
     private int unitStatus;
 
     private int normalCount;
