@@ -22,7 +22,7 @@ $(function() {
                 url: 'unit/subUnit',
                 checkEnabled: false,
                 editEnabled: false,
-                selectedMulti: false,
+                selectedMulti: true,
                 callback: {
                     onNodeCreated: function(event, treeId, treeNode) {
                         if (treeNode.id === 'UT00000000000000') {
@@ -72,6 +72,10 @@ $(function() {
                 var selectedNodes = $.mr.tree.getSelectedNode(self.unitTree);
                 var selectedNode;
                 if (selectedNodes && selectedNodes.length > 0) {
+                    if (selectedNodes.length > 1) {
+                        $.mr.messageBox.alert($.mr.resource.UNIT_ONLY_ONE_SELECTION);
+                        return;
+                    }
                     selectedNode = selectedNodes[0];
                     if (!selectedNode.isParent) {
                         $.mr.messageBox.alert($.mr.resource.UNIT_NOT_ADD_UNDER_LEAF);
@@ -94,6 +98,10 @@ $(function() {
                 var parentNode;
                 var data;
                 if (selectedNodes && selectedNodes.length > 0) {
+                    if (selectedNodes.length > 1) {
+                        $.mr.messageBox.alert($.mr.resource.UNIT_ONLY_ONE_SELECTION);
+                        return;
+                    }
                     selectedNode = selectedNodes[0];
                     parentNode = $.mr.tree.getNodeByTId(self.unitTree, selectedNode.parentTId);
                     data = {
@@ -121,8 +129,14 @@ $(function() {
             deleteUnitBtn.click(function() {
                 var selectedNodes = $.mr.tree.getSelectedNode(self.unitTree);
                 var msg;
+                var nodeNames = [];
+                var nodeIds = [];
                 if (selectedNodes && selectedNodes.length > 0) {
-                    msg = $.mr.resource.UNIT_DELETE_CONFIRM + selectedNodes[0].name;
+                    $.each(selectedNodes, function(idx, node) {
+                        nodeIds.push(node.id);
+                        nodeNames.push(node.name);
+                    });
+                    msg = $.mr.resource.UNIT_DELETE_CONFIRM + nodeNames.join(',');
                     $.mr.messageBox.confirm(msg, $.mr.resource.CONFIRM, {
                         yes: function() {
                             $.mr.ajax({
@@ -130,11 +144,14 @@ $(function() {
                                 type: 'post',
                                 dataType: 'json',
                                 data: {
-                                    unitId: selectedNodes[0].id
+                                    unitIds: nodeIds.join(',')
                                 },
                                 success: function() {
-                                    var parentNode = $.mr.tree.getNodeByTId(self.unitTree, selectedNodes[0].parentTId);
-                                    $.mr.tree.refreshNode(self.unitTree, parentNode);
+                                    var parentNode;
+                                    $.each(selectedNodes, function(idx, item) {
+                                        parentNode = $.mr.tree.getNodeByTId(self.unitTree, item.parentTId);
+                                        $.mr.tree.refreshNode(self.unitTree, parentNode);
+                                    });
                                     self._clearDetail();
                                 }
                             });

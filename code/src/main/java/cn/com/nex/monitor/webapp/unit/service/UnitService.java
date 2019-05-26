@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.lang.model.type.ArrayType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -88,16 +89,24 @@ public class UnitService {
     }
 
     @Transactional
-    public int delete(String unitId) {
-        if (unitId == null) {
+    public int delete(List<String> unitIdList) {
+        if (unitIdList == null || unitIdList.isEmpty()) {
             return 0;
         }
-        return unitDao.delete(unitId);
+        int count = 0;
+        for (String unitId : unitIdList) {
+            count += unitDao.delete(unitId);
+        }
+        return count;
     }
 
-    public boolean hasChildren(String unitId) {
+    public List<String> getChildrenIdList(String unitId) {
         List<UnitBean> subList = unitDao.getUnitByParentId(unitId);
-        return subList != null && !subList.isEmpty();
+        List<String> idList = new ArrayList<>();
+        subList.forEach(unit -> {
+            idList.add(unit.getId());
+        });
+        return idList;
     }
 
     public String getUnitFullPath(String unitId) {
@@ -124,7 +133,7 @@ public class UnitService {
             // check unit name exists.
             UnitBean self = unitDao.getUnitByName(unit.getName());
             if (self != null) {
-                msgList.add("组织名：" + unit.getName() + "已经存在，无法导入，改件忽略！");
+                msgList.add("组织名：" + unit.getName() + "已经存在，无法导入，该件忽略！");
             }
             // leaf
             unit.setIsParent(!isUnitLeaf(unit));

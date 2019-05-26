@@ -87,7 +87,12 @@ $(function() {
                     var lastDivider = unitSelectUl.find('li.divider:last');
                     unitSelectUl.find('li.dropdown-item').remove();
                     $.each(units, function(idx, unit) {
-                        li = '<li class="dropdown-item" id="' + unit.id + '"><a href="#">' + unit.name + '</a></li>';
+                        var li;
+                        if (unit.isParent) {
+                            li = '<li class="dropdown-item" id="' + unit.id + '"><a href="#">' + unit.name + '</a></li>';
+                        } else {
+                            li = '<li class="dropdown-item dropdown-content" id="' + unit.id + '">' + unit.name + '</li>';
+                        }
                         lastDivider.before(li);
                     });
                     _self._initMegaMenuEvt();

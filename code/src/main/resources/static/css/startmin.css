@@ -4,7 +4,7 @@ html {
 }
 body {
     background-color: #f8f8f8;
-    font-family: "微软雅黑";
+    font-family: "Microsoft YaHei";
 }
 
 #wrapper {
@@ -840,4 +840,13 @@ div.flot-area {
 .titleInput:focus {
     box-shadow: 0 2px 0 #eb1d21;
     border: 1px solid transparent !important;
+}
+.dropdown-content {
+    padding-left: 20px;
+}
+.dropdown-menu > li.dropdown-content > a {
+    color: #333;
+}
+.dropdown-menu > li.dropdown-item > a {
+    color: #337ab7;
 }

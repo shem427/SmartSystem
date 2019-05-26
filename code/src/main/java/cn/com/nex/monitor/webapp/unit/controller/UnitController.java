@@ -135,21 +135,25 @@ public class UnitController {
         return bean;
     }
 
-    @PostMapping(value = "deleteUnit")
+    @PostMapping(value = "/deleteUnit")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
-    public CommonBean deleteUnit(String unitId) {
+    public CommonBean deleteUnit(String unitIds) {
+        List<String> unitIdList = Arrays.asList(unitIds.split(","));
         CommonBean retBean = new CommonBean();
         try {
-            boolean hasChildren = unitService.hasChildren(unitId);
-            if (hasChildren) {
-                // 有下位组织，不能删除
-                String message = messageService.getMessage("mr.delete.unit.hasChildren");
-                retBean.setStatus(CommonBean.Status.WARNING);
-                retBean.setMessage(message);
-            } else {
-                unitService.delete(unitId);
+            for (String unitId : unitIdList) {
+                List<String> subUnitIdList = unitService.getChildrenIdList(unitId);
+                if (!subUnitIdList.isEmpty() && !unitIdList.containsAll(subUnitIdList)) {
+                    // 有下位组织未删除，不能删除
+                    String message = messageService.getMessage("mr.delete.unit.hasChildren");
+                    retBean.setStatus(CommonBean.Status.WARNING);
+                    retBean.setMessage(message);
+                    return retBean;
+                }
             }
+            unitService.delete(unitIdList);
+
         } catch (Exception e) {
             MonitorUtil.handleException(e, retBean, messageService);
         }

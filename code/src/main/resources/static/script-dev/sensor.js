@@ -126,24 +126,24 @@ $(function() {
             var unitPathLink = $('.unitFullPath');
             unitPathLink.click(function(e) {
                 var unitFullPath = $(this).text();
-                var pathArray = unitFullPath.split("/");
-                var unitId = $(this).prop('id');
-                var level = pathArray.length - 1;
-                e.preventDefault();
-                $.mr.ajax({
-                    url: 'dashboard/indexDetail',
-                    type: 'get',
-                    data: {
-                        parentId: unitId,
-                        level: level
-                    },
-                    dataType: 'html',
-                    success: function(data) {
-                        $('#page-wrapper').empty().append(data);
-                        history.pushState(data, null, location.href);
-                    }
-                });
+            var pathArray = unitFullPath.split("/");
+            var unitId = $(this).prop('id');
+            var level = pathArray.length - 1;
+            e.preventDefault();
+            $.mr.ajax({
+                url: 'dashboard/indexDetail',
+                type: 'get',
+                data: {
+                    parentId: unitId,
+                    level: level
+                },
+                dataType: 'html',
+                success: function(data) {
+                    $('#page-wrapper').empty().append(data);
+                    history.pushState(data, null, location.href);
+                }
             });
+        });
         },
         init: function() {
             _self._initSensorTable();

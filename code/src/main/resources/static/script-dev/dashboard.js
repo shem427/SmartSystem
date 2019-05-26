@@ -6,7 +6,6 @@ $(function() {
             var unitType = $('#unitType').val();
             var titleIcon = $('#titleIcon');
             var iconCls = $('.iconCls');
-            debugger;
             var icon = _self._getIconClsByUnitType(unitType);
 
 
