@@ -1,5 +1,6 @@
 package cn.com.nex.monitor.webapp.unit.service;
 
+import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
 import cn.com.nex.monitor.webapp.dashboard.dao.DashboardDao;
 import cn.com.nex.monitor.webapp.unit.bean.ImportUnitBean;
@@ -130,13 +131,22 @@ public class UnitService {
             } else {
                 unit.setPId(parent.getId());
             }
+            Integer unitType = parseUnitType(unit.getType());
+            if (unitType == null) {
+                msgList.add("组织类型：" + unit.getType() + "不正确，无法导入，该件忽略！");
+                continue;
+            } else {
+                unit.setUnitType(unitType);
+            }
             // check unit name exists.
             UnitBean self = unitDao.getUnitByName(unit.getName());
             if (self != null) {
                 msgList.add("组织名：" + unit.getName() + "已经存在，无法导入，该件忽略！");
+                continue;
             }
+
             // leaf
-            unit.setIsParent(!isUnitLeaf(unit));
+            unit.setIsParent(unitType.intValue() != 9);
             unitDao.add(unit);
         }
         if (size == newUnitList.size() || newUnitList.isEmpty()) {
@@ -146,18 +156,7 @@ public class UnitService {
         }
     }
 
-    private boolean isUnitLeaf(ImportUnitBean unit) {
-        String leafMark = unit.getLeafMark().trim().toLowerCase();
-        if (leafMark  == null) {
-            return false;
-        }
-        if ("yes".equals(leafMark)
-                || "true".equals(leafMark)
-                || "t".equals(leafMark)
-                || "y".equals(leafMark)
-                || "是".equals(leafMark)) {
-            return true;
-        }
-        return false;
+    private Integer parseUnitType(String type) {
+        return MonitorConstant.UNIT_TYPE_MAP.get(type);
     }
 }

@@ -7,8 +7,8 @@
             <section startRow="3" endRow="3">
                 <mapping row="3" col="0">unit.parentUnitName</mapping>
                 <mapping row="3" col="1">unit.name</mapping>
-                <mapping row="3" col="2">unit.leafMark</mapping>
-                <mapping row="3" col="3">unit.unitRemark</mapping>
+                <mapping row="3" col="2">unit.type</mapping>
+                <mapping row="3" col="4">unit.unitRemark</mapping>
             </section>
             <loopbreakcondition>
                 <rowcheck offset="0">

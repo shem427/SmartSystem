@@ -7,5 +7,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class ImportUnitBean extends UnitBean {
     private String parentUnitName;
-    private String leafMark;
+    private String type;
 }
