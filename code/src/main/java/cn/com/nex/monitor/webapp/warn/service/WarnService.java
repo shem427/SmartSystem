@@ -15,9 +15,13 @@ public class WarnService {
     @Autowired
     private WarnDao warnDao;
 
-    public TableData<UnitWarnBean> getWarns(SearchParam param, String userId, Date beginDate, Date endDate) {
-        int total = warnDao.countWarnsByUser(userId, beginDate, endDate);
-        List<UnitWarnBean> beanList = warnDao.getWarnsByUser(param, userId, beginDate, endDate);
+    public TableData<UnitWarnBean> getWarns(SearchParam param,
+                                            String userId,
+                                            Date beginDate,
+                                            Date endDate,
+                                            String unitPath) {
+        int total = warnDao.countWarnsByUser(userId, beginDate, endDate, unitPath);
+        List<UnitWarnBean> beanList = warnDao.getWarnsByUser(param, userId, beginDate, endDate, unitPath);
 
         TableData<UnitWarnBean> ret = new TableData<>();
         ret.setTotal(total);

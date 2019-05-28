@@ -7,6 +7,7 @@ import cn.com.nex.monitor.webapp.common.constant.MonitorConstant;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.unit.bean.ImportUnitBean;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
+import cn.com.nex.monitor.webapp.unit.bean.UnitChainBean;
 import cn.com.nex.monitor.webapp.unit.service.UnitService;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.apache.poi.util.IOUtils;
@@ -179,6 +180,19 @@ public class UnitController {
             MonitorUtil.handleException(e, retBean, messageService);
         }
         return retBean;
+    }
+
+    @GetMapping(value = "getUnitChain")
+    @ResponseBody
+    public UnitChainBean getUnitChain(String unitId) {
+        UnitChainBean unitChainBean;
+        try {
+            unitChainBean = unitService.getUnitChain(unitId);
+        } catch (Exception e) {
+            unitChainBean = new UnitChainBean();
+            MonitorUtil.handleException(e, unitChainBean, messageService);
+        }
+        return unitChainBean;
     }
 
     @GetMapping(value = "unitSelectModal")

@@ -1,8 +1,28 @@
 <div class="row">
     <div class="col-xs-12">
-        <h4 class="page-header">告警管理</h4>
+        <h4 class="page-header">
+            告警管理 -
+            <input type="text" class="titleInput" id="selectedUnit" readonly="readonly" />
+            <a href="#" id="unitSelectA"><span class="caret"></span></a>
+            <ul id="unitSelectUl" class="dropdown-menu mega-dropdown-menu">
+                <li class="dropdown-header">
+                    <ul style="margin-bottom: -10px">
+                    </ul>
+                </li>
+                <li class="divider"></li>
+                <li class="divider"></li>
+                <li>
+                    <div>
+                        <button class="btn btn-default" id="unitSelectCancelBtn">取消</button>
+                        <button class="btn btn-primary" id="unitSelectOKBtn">确定</button>
+                    </div>
+                </li>
+            </ul>
+        </h4>
     </div>
 </div>
+<input type="hidden" id="currentUnitId" value="UT00000000000000" />
+<input type="hidden" id="currentUnitIdChain" value="UT00000000000000" />
 <div class="row" id="searchCondition">
     <div class="col-xs-12">
         <div class="panel panel-default">

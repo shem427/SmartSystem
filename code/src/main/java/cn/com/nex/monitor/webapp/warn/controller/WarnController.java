@@ -42,7 +42,7 @@ public class WarnController {
 
     @GetMapping(value = "/getWarns")
     @ResponseBody
-    public TableData<UnitWarnBean> getWarns(SearchParam searchParam, String begin, String end) {
+    public TableData<UnitWarnBean> getWarns(SearchParam searchParam, String begin, String end, String unitPath) {
         Date beginDate = null;
         Date endDate = null;
         try {
@@ -54,7 +54,7 @@ public class WarnController {
                 endDate = sdf.parse(end + " 23:59:59.000");
             }
             UserBean user = MonitorUtil.getUserFromSecurity();
-            return warnService.getWarns(searchParam, user.getUserId(), beginDate, endDate);
+            return warnService.getWarns(searchParam, user.getUserId(), beginDate, endDate, unitPath);
         } catch (Exception e) {
             TableData<UnitWarnBean> bean = new TableData<>();
             String message = messageService.getMessage(MonitorConstant.LOG_ERROR);

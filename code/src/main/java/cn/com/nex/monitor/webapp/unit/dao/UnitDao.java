@@ -4,6 +4,7 @@ import cn.com.nex.monitor.webapp.common.constant.DBConstant;
 import cn.com.nex.monitor.webapp.common.dao.CommonDao;
 import cn.com.nex.monitor.webapp.dashboard.bean.DashboardUnitBean;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
+import cn.com.nex.monitor.webapp.unit.bean.UnitChainBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.SqlOutParameter;
@@ -241,6 +242,23 @@ public class UnitDao extends CommonDao<UnitBean> {
             } else {
                 return null;
             }
+        });
+    }
+
+    public UnitChainBean getUnitChain(String unitId) {
+        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, `PARENT_ID`, getUnitPath(`UNIT_ID`) AS UNIT_FULL_PATH, getUnitIdChain(`UNIT_ID`) AS UNIT_ID_CHAIN FROM `UNIT` WHERE `UNIT_ID`=?";
+        return jdbcTemplate.query(sql, new String[] { unitId }, rs -> {
+            if (rs.next()) {
+                UnitChainBean bean = new UnitChainBean();
+                bean.setId(rs.getString("UNIT_ID"));
+                bean.setName(rs.getString("UNIT_NAME"));
+                bean.setPId(rs.getString("PARENT_ID"));
+                bean.setFullPath(rs.getString("UNIT_FULL_PATH"));
+                bean.setIdChain(rs.getString("UNIT_ID_CHAIN"));
+
+                return bean;
+            }
+            return null;
         });
     }
 }

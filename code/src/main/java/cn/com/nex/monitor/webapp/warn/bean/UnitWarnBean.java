@@ -14,6 +14,7 @@ import java.util.Date;
 public class UnitWarnBean extends CommonBean {
     private int warnId;
     private String unitName;
+    private String unitPath;
     private String unitId;
     private int unitStatus;
     private Date notifyTime;

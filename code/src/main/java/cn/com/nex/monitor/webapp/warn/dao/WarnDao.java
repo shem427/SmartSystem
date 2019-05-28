@@ -46,19 +46,23 @@ public class WarnDao extends CommonDao<UnitWarnBean> {
         return "WARN_ID";
     }
 
-    public List<UnitWarnBean> getWarnsByUser(SearchParam param, String userId, Date begin, Date end) {
-        String sql = "SELECT W.`WARN_ID`, W.`UNIT_ID`, U.`UNIT_NAME`, W.`UNIT_STATUS`, W.`NOTIFY_TIME` FROM `UNIT_WARN` W, `UNIT_MANAGER` M, `UNIT` U WHERE M.`UNIT_ID`=W.`UNIT_ID` AND W.`UNIT_ID`=U.`UNIT_ID` AND M.`USER_ID`=? ";
+    public List<UnitWarnBean> getWarnsByUser(SearchParam param, String userId, Date begin, Date end, String unitPath) {
+        String sql = "SELECT * FROM (" +
+                "SELECT W.`WARN_ID`, W.`UNIT_ID`, U.`UNIT_NAME`, getUnitPath(U.`UNIT_ID`) AS UNIT_PATH, W.`UNIT_STATUS`, W.`NOTIFY_TIME` FROM `UNIT_WARN` W, `UNIT_MANAGER` M, `UNIT` U WHERE M.`UNIT_ID`=W.`UNIT_ID` AND W.`UNIT_ID`=U.`UNIT_ID` AND M.`USER_ID`=?" +
+                ") SUB WHERE LEFT(SUB.UNIT_PATH, ?) = ? ";
         List<Object> params = new ArrayList<>();
         params.add(userId);
+        params.add(unitPath.length());
+        params.add(unitPath);
         if (begin != null) {
-            sql += " AND W.`NOTIFY_TIME` > ? ";
+            sql += " AND SUB.`NOTIFY_TIME` > ? ";
             params.add(begin);
         }
         if (end != null) {
-            sql += " AND W.`NOTIFY_TIME` < ? ";
+            sql += " AND SUB.`NOTIFY_TIME` < ? ";
             params.add(end);
         }
-        sql += " ORDER BY NOTIFY_TIME DESC ";
+        sql += " ORDER BY SUB.NOTIFY_TIME DESC ";
         sql += param.toSQL();
         return jdbcTemplate.query(sql, params.toArray(), rs -> {
             List<UnitWarnBean> beanList = new ArrayList<>();
@@ -66,6 +70,7 @@ public class WarnDao extends CommonDao<UnitWarnBean> {
                 UnitWarnBean bean = new UnitWarnBean();
                 bean.setWarnId(rs.getInt("WARN_ID"));
                 bean.setUnitName(rs.getString("UNIT_NAME"));
+                bean.setUnitPath(rs.getString("UNIT_PATH"));
                 bean.setUnitId(rs.getString("UNIT_ID"));
                 bean.setUnitStatus(rs.getInt("UNIT_STATUS"));
                 bean.setNotifyTime(rs.getTimestamp("NOTIFY_TIME"));
@@ -75,16 +80,21 @@ public class WarnDao extends CommonDao<UnitWarnBean> {
         });
     }
 
-    public int countWarnsByUser(String userId, Date begin, Date end) {
-        String sql = "SELECT COUNT(1) AS TOTAL FROM `UNIT_WARN` W, `UNIT_MANAGER` M WHERE M.`UNIT_ID`=W.`UNIT_ID` AND M.`USER_ID`=?";
+    public int countWarnsByUser(String userId, Date begin, Date end, String unitPath) {
+//        String sql = "SELECT COUNT(1) AS TOTAL FROM `UNIT_WARN` W, `UNIT_MANAGER` M WHERE M.`UNIT_ID`=W.`UNIT_ID` AND M.`USER_ID`=?";
+        String sql = "SELECT COUNT(1) AS TOTAL FROM (" +
+                "SELECT W.`WARN_ID`, W.`UNIT_ID`, U.`UNIT_NAME`, getUnitPath(U.`UNIT_ID`) AS UNIT_PATH, W.`UNIT_STATUS`, W.`NOTIFY_TIME` FROM `UNIT_WARN` W, `UNIT_MANAGER` M, `UNIT` U WHERE M.`UNIT_ID`=W.`UNIT_ID` AND W.`UNIT_ID`=U.`UNIT_ID` AND M.`USER_ID`=?" +
+                ") SUB WHERE LEFT(SUB.UNIT_PATH, ?) = ? ";
         List<Object> params = new ArrayList<>();
         params.add(userId);
+        params.add(unitPath.length());
+        params.add(unitPath);
         if (begin != null) {
-            sql += " AND W.`NOTIFY_TIME` > ? ";
+            sql += " AND SUB.`NOTIFY_TIME` > ? ";
             params.add(begin);
         }
         if (end != null) {
-            sql += " AND W.`NOTIFY_TIME` < ? ";
+            sql += " AND SUB.`NOTIFY_TIME` < ? ";
             params.add(end);
         }
         return jdbcTemplate.query(sql, params.toArray(), getTotalExtractor());

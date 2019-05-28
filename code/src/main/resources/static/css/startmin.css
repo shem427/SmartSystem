@@ -802,7 +802,7 @@ div.flot-area {
 /*------------- Dashboard ED -------------*/
 
 .warn-table {
-    max-height: calc(100vh - 350px);
+    max-height: calc(100vh - 360px);
     overflow: auto;
 }
 .radiaiton-table {
@@ -849,4 +849,39 @@ div.flot-area {
 }
 .dropdown-menu > li.dropdown-item > a {
     color: #337ab7;
+}
+.mega-dropdown-menu {
+    padding: 12px 0px;
+    width: 80%;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    left: 70px;
+    top: 62px;
+}
+.mega-dropdown-menu > li > ul {
+    padding: 0;
+    margin: 0;
+}
+.mega-dropdown-menu > li > ul > li {
+    list-style: none;
+    padding-bottom: 2px;
+}
+.mega-dropdown-menu .dropdown-header {
+    font-size: 14px;
+    font-weight: 400;
+}
+.dropdown-header > ul > li {
+    display: inline;
+    margin-left: 5px;
+}
+.dropdown-header > ul > li.selected {
+    color: white;
+    background-color: #002a80;
+}
+.mega-dropdown-menu form {
+    margin: 3px 20px;
+}
+.dropdown-menu > li > div {
+    text-align: center;
+    padding-right: 20px;
 }
