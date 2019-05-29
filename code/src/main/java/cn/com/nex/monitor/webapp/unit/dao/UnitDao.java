@@ -261,4 +261,30 @@ public class UnitDao extends CommonDao<UnitBean> {
             return null;
         });
     }
+
+    public List<UnitChainBean> getUnitByType(List<Integer> typeList) {
+        if (typeList == null || typeList.isEmpty()) {
+            return null;
+        }
+        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, getUnitPath(`UNIT_ID`) AS UNIT_PATH, `PARENT_ID`, `REMARK` FROM `UNIT` WHERE ";
+        for (int i = 0; i < typeList.size(); i++) {
+            if (i > 0) {
+                sql += "OR ";
+            }
+            sql += "`UNIT_TYPE`=? ";
+        }
+        return jdbcTemplate.query(sql, typeList.toArray(), rs -> {
+            List<UnitChainBean> unitList = new ArrayList<>();
+            while (rs.next()) {
+                UnitChainBean bean = new UnitChainBean();
+                bean.setId(rs.getString("UNIT_ID"));
+                bean.setName(rs.getString("UNIT_NAME"));
+                bean.setFullPath(rs.getString("UNIT_PATH"));
+                bean.setUnitRemark(rs.getString("REMARK"));
+                bean.setPId(rs.getString("PARENT_ID"));
+                unitList.add(bean);
+            }
+            return unitList;
+        });
+    }
 }

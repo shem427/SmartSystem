@@ -1,12 +1,12 @@
 package cn.com.nex.monitor.webapp.status.service;
 
-import cn.com.nex.monitor.webapp.common.bean.CommonBean;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
 import cn.com.nex.monitor.webapp.sensor.dao.SensorDao;
 import cn.com.nex.monitor.webapp.status.bean.MapMarkerBean;
 import cn.com.nex.monitor.webapp.status.bean.StatusBean;
 import cn.com.nex.monitor.webapp.status.dao.StatusDao;
 import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
+import cn.com.nex.monitor.webapp.unit.bean.UnitChainBean;
 import cn.com.nex.monitor.webapp.unit.dao.UnitDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,8 +24,8 @@ public class StatusService {
     @Autowired
     private StatusDao statusDao;
 
-    @Value("${cn.com.nex.monitor.top.unit}")
-    private String topUnitId;
+    @Value("${cn.com.nex.monitor.entity.unit.type}")
+    private String entityUnitTypes;
 
     @Value("${cn.com.nex.monitor.map.key}")
     private String mapKey;
@@ -50,10 +50,16 @@ public class StatusService {
     }
 
     public List<MapMarkerBean> getAllHospitalLocation() {
+        List<Integer> entityUnitTypeList = new ArrayList<>();
+        String[] typeArray = entityUnitTypes.split(",");
+        for (int i = 0; i < typeArray.length; i++) {
+            int type = Integer.valueOf(typeArray[i]);
+            entityUnitTypeList.add(type);
+        }
         List<MapMarkerBean> markerList = new ArrayList<>();
-        List<UnitBean> unitList = unitDao.getUnitByParentId(topUnitId);
-        for (UnitBean unit : unitList) {
-            double[] locations = MonitorUtil.getLatLngByAddress(unit.getName(), mapKey, mapCK);
+        List<UnitChainBean> unitList = unitDao.getUnitByType(entityUnitTypeList);
+        for (UnitChainBean unit : unitList) {
+            double[] locations = MonitorUtil.getLatLngByAddress(getAddressFromPath(unit.getFullPath()), mapKey, mapCK);
             if (locations != null) {
                 MapMarkerBean bean = new MapMarkerBean();
                 bean.setHospitalId(unit.getId());
@@ -74,5 +80,14 @@ public class StatusService {
 
     public StatusBean getUnitStatus(String unitId, String userId) {
         return statusDao.getUnitStatus(unitId, userId);
+    }
+
+    private String getAddressFromPath(String path) {
+        String[] pathArray = path.split("/");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i < pathArray.length; i++) {
+            sb.append(pathArray[i]);
+        }
+        return sb.toString();
     }
 }

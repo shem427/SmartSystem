@@ -1,4 +1,4 @@
-<div class="row">
+mapKey<div class="row">
     <div class="col-xs-12">
         <h4 class="page-header" id="pageTitle">
             状态 -
@@ -159,7 +159,8 @@
 <script th:src="@{/script/status.js}"></script>
 <script>
     $(function() {
-        $.mr.map.create($('#mapKey').val());
+        var mapKey = $('#mapKey').val();
+        $.mr.map.create(mapKey);
         $.mr.status.initHospital();
         $.mr.status.markHospital();
     });
