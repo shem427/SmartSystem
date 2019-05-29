@@ -266,13 +266,14 @@ public class UnitDao extends CommonDao<UnitBean> {
         if (typeList == null || typeList.isEmpty()) {
             return null;
         }
-        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, getUnitPath(`UNIT_ID`) AS UNIT_PATH, `PARENT_ID`, `REMARK` FROM `UNIT` WHERE ";
+        String sql = "SELECT `UNIT_ID`, `UNIT_NAME`, getUnitPath(`UNIT_ID`) AS UNIT_PATH, `PARENT_ID`, `REMARK` FROM `UNIT` WHERE ACTIVE=true AND ( ";
         for (int i = 0; i < typeList.size(); i++) {
             if (i > 0) {
                 sql += "OR ";
             }
             sql += "`UNIT_TYPE`=? ";
         }
+        sql += ")";
         return jdbcTemplate.query(sql, typeList.toArray(), rs -> {
             List<UnitChainBean> unitList = new ArrayList<>();
             while (rs.next()) {

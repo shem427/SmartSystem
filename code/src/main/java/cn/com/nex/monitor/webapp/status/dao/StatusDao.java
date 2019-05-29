@@ -52,7 +52,7 @@ public class StatusDao {
             bean.setWarningRadiationData(rs.getInt("WARN"));
         });
         jdbcTemplate.query(errorSql, new Object[] { thresholdBean.getWarn(), userId, unitPathLength, bean.getUnitPath() }, rs -> {
-            bean.setWarningRadiationData(rs.getInt("ERROR"));
+            bean.setErrorRadiationData(rs.getInt("ERROR"));
         });
 
         return bean;

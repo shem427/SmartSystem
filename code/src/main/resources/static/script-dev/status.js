@@ -127,6 +127,15 @@ $(function() {
                 _self._initMegaItemEvt(unitId)
             });
         },
+        _initDetailEvt: function() {
+            var detailLinks = $('.panel-footer');
+            detailLinks.each(function(idx, item) {
+                $(item).parent().click(function(e) {
+                    e.preventDefault();
+                    // TODO:
+                });
+            });
+        },
         initHospital: function() {
             var upLevel = $('#btnUpLevel');
             var pId = $('#currentUnitId').val();
@@ -170,6 +179,7 @@ $(function() {
                         ]
                     });
                     _self._initUnitMegaMenu();
+                    _self._initDetailEvt();
                 }
             });
 
