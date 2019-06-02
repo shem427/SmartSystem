@@ -131,8 +131,27 @@ $(function() {
             var detailLinks = $('.panel-footer');
             detailLinks.each(function(idx, item) {
                 $(item).parent().click(function(e) {
+                    var currentUnitId = $('#currentUnitId');
+                    var detailType;
                     e.preventDefault();
-                    // TODO:
+
+                    if (idx === 0) {
+                        detailType = 'normal';
+                    } else if (idx === 1) {
+                        detailType = 'abnormal';
+                    } else if (idx === 2) {
+                        detailType = 'active';
+                    } else if (idx === 3) {
+                        detailType = 'inactive';
+                    }
+                    // detail modal dialog.
+                    $.mr.modal.create({
+                        url: 'status/statusDetail',
+                        data: {
+                            unitId: currentUnitId,
+                            detailType: detailType
+                        }
+                    });
                 });
             });
         },
@@ -249,6 +268,72 @@ $(function() {
                 data: data.errorRadiationData
             }];
         },
+        initUnitStatusDetail: function() {
+            $.mr.table.create({
+                selector: '#unitDetailTable',
+                url: 'status/getUnitDetails',
+                pageSize: 5,
+                pageList: [5, 10, 20, 50],
+                columns: [{
+                    field: 'unitName',
+                    title: '组织名称'
+                }, {
+                    field: 'unitPath',
+                    title: '组织路径'
+                }, {
+                    field: 'remark',
+                    title: '备注'
+                }, {
+                    field: 'managers',
+                    title: '负责人'
+                }],
+                queryParams: function(params) {
+                    var unitId = $('#unitId').val();
+                    var detailType = $('#detailType').val();
+                    return {
+                        limit: params.limit,
+                        offset: params.offset,
+                        sortOrder: params.order,
+                        sortField: params.sort,
+                        unitId: unitId,
+                        detailType: detailType
+                    };
+                }
+            });
+        },
+        initSensorStatusDetail: function() {
+            $.mr.table.create({
+                selector: '#sensorDetailTable',
+                url: 'status/getSensorDetails',
+                pageSize: 5,
+                pageList: [5, 10, 20, 50],
+                columns: [{
+                    field: 'sensorName',
+                    title: '传感器名称'
+                }, {
+                    field: 'radiationId',
+                    title: '紫外模块ID'
+                }, {
+                    field: 'remark',
+                    title: '备注'
+                }, {
+                    field: 'unitPath',
+                    title: '所属组织'
+                }],
+                queryParams: function(params) {
+                    var unitId = $('#unitId').val();
+                    var detailType = $('#detailType').val();
+                    return {
+                        limit: params.limit,
+                        offset: params.offset,
+                        sortOrder: params.order,
+                        sortField: params.sort,
+                        unitId: unitId,
+                        detailType: detailType
+                    };
+                }
+            });
+        }
     };
     _self = $.mr.status;
 });

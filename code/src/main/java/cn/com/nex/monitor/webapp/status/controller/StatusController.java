@@ -1,11 +1,14 @@
 package cn.com.nex.monitor.webapp.status.controller;
 
 import cn.com.nex.monitor.webapp.common.MessageService;
+import cn.com.nex.monitor.webapp.common.bean.SearchParam;
+import cn.com.nex.monitor.webapp.common.bean.TableData;
 import cn.com.nex.monitor.webapp.common.util.MonitorUtil;
+import cn.com.nex.monitor.webapp.sensor.bean.SensorBean;
 import cn.com.nex.monitor.webapp.status.bean.MapMarkerBean;
 import cn.com.nex.monitor.webapp.status.bean.StatusBean;
 import cn.com.nex.monitor.webapp.status.service.StatusService;
-import cn.com.nex.monitor.webapp.unit.bean.UnitBean;
+import cn.com.nex.monitor.webapp.unit.bean.UnitChainBean;
 import cn.com.nex.monitor.webapp.user.bean.UserBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +54,38 @@ public class StatusController {
         model.put("mapCK", mapCK);
 
         return new ModelAndView("status/hospitalPage", model);
+    }
+
+    @GetMapping(value = "/statusDetail")
+    public ModelAndView unitStatusDetail(String unitId, String detailType) {
+        String detailTitle = messageService.getMessage("mr.status.type." + detailType);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("detailTitle", detailTitle);
+        model.put("unitId", unitId);
+        model.put("detailType", detailType);
+
+        String viewName;
+        if ("normal".equalsIgnoreCase(detailType)
+                || "abnormal".equalsIgnoreCase(detailType)) {
+            viewName = "status/unitStatusDetailModal";
+        } else {
+            viewName = "status/sensorStatusDetailModal";
+        }
+
+        return new ModelAndView(viewName, model);
+    }
+
+    @GetMapping(value = "/getUnitStatusDetail")
+    public TableData<UnitChainBean> getUnitStatusDetail(SearchParam param, String unitId, String detailType) {
+        // TODO:
+        return null;
+    }
+
+    @GetMapping(value = "/getSensorStatusDetail")
+    public TableData<SensorBean> getSensorStatusDetail(SearchParam param, String unitId, String detailType) {
+        // TODO:
+        return null;
     }
 
     @GetMapping(value = "/statusIndex")
