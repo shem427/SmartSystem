@@ -77,15 +77,15 @@ public class StatusController {
     }
 
     @GetMapping(value = "/getUnitStatusDetail")
+    @ResponseBody
     public TableData<UnitChainBean> getUnitStatusDetail(SearchParam param, String unitId, String detailType) {
-        // TODO:
-        return null;
+        return statusService.getUnitStatusDetail(param, unitId, detailType);
     }
 
     @GetMapping(value = "/getSensorStatusDetail")
+    @ResponseBody
     public TableData<SensorBean> getSensorStatusDetail(SearchParam param, String unitId, String detailType) {
-        // TODO:
-        return null;
+        return statusService.getSensorStatusDetail(param, unitId, detailType);
     }
 
     @GetMapping(value = "/statusIndex")

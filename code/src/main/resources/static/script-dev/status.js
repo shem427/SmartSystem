@@ -131,7 +131,7 @@ $(function() {
             var detailLinks = $('.panel-footer');
             detailLinks.each(function(idx, item) {
                 $(item).parent().click(function(e) {
-                    var currentUnitId = $('#currentUnitId');
+                    var currentUnitId = $('#currentUnitId').val();
                     var detailType;
                     e.preventDefault();
 
@@ -271,21 +271,18 @@ $(function() {
         initUnitStatusDetail: function() {
             $.mr.table.create({
                 selector: '#unitDetailTable',
-                url: 'status/getUnitDetails',
+                url: 'status/getUnitStatusDetail',
                 pageSize: 5,
                 pageList: [5, 10, 20, 50],
                 columns: [{
-                    field: 'unitName',
+                    field: 'name',
                     title: '组织名称'
                 }, {
-                    field: 'unitPath',
+                    field: 'fullPath',
                     title: '组织路径'
                 }, {
-                    field: 'remark',
+                    field: 'unitRemark',
                     title: '备注'
-                }, {
-                    field: 'managers',
-                    title: '负责人'
                 }],
                 queryParams: function(params) {
                     var unitId = $('#unitId').val();
@@ -300,11 +297,12 @@ $(function() {
                     };
                 }
             });
+
         },
         initSensorStatusDetail: function() {
             $.mr.table.create({
                 selector: '#sensorDetailTable',
-                url: 'status/getSensorDetails',
+                url: 'status/getSensorStatusDetail',
                 pageSize: 5,
                 pageList: [5, 10, 20, 50],
                 columns: [{
