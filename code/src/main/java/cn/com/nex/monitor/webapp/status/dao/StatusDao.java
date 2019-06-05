@@ -7,6 +7,7 @@ import cn.com.nex.monitor.webapp.setting.bean.ThresholdBean;
 import cn.com.nex.monitor.webapp.status.bean.StatusBean;
 import cn.com.nex.monitor.webapp.unit.bean.UnitChainBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,9 @@ import java.util.List;
 
 @Component
 public class StatusDao {
+    @Value("${cn.com.nex.monitor.active.interval}")
+    private int activeInterval;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -121,13 +125,48 @@ public class StatusDao {
         });
     }
 
-    public int countSensorDetail(String unitId, String detailType) {
-        // TODO:
-        return 0;
+    public int countSensorDetail(String unitPath, String detailType) {
+        String sql = "SELECT COUNT(1) AS TOTAL FROM "
+                + "(SELECT MAX(D.`DATA_TIME`) AS LAST_TIME, S.`SENSOR_NAME`, S.`RADIATION_MODEL_ID`, S.`SENSOR_REMARK`, getUnitPath(S.`UNIT_ID`) AS UNIT_PATH FROM `SENSOR_DATA` D, `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID` AND LEFT(getUnitPath(S.UNIT_ID), ?) = ? GROUP BY D.`RADIATION_MODEL_ID`) T"
+                + " WHERE TIMESTAMPDIFF(HOUR, T.`LAST_TIME`, NOW()) ";
+        if ("active".equalsIgnoreCase(detailType)) {
+            sql += "<?";
+        } else {
+            sql += ">=?";
+        }
+
+        return jdbcTemplate.query(sql, new Object[] {unitPath.length(), unitPath, activeInterval}, rs -> {
+            int total = 0;
+            if (rs.next()) {
+                total = rs.getInt(DBConstant.TOTAL);
+            }
+            return total;
+        });
     }
 
-    public List<SensorBean> listSensorDetail(SearchParam searchParam, String unitId, String detailType) {
-        // TODO:
-        return null;
+    public List<SensorBean> listSensorDetail(SearchParam searchParam, String unitPath, String detailType) {
+        String sql = "SELECT T.SENSOR_NAME, T.RADIATION_MODEL_ID, T.SENSOR_REMARK, T.UNIT_PATH FROM "
+                + "(SELECT MAX(D.`DATA_TIME`) AS LAST_TIME, S.`SENSOR_NAME`, S.`RADIATION_MODEL_ID`, S.`SENSOR_REMARK`, getUnitPath(S.`UNIT_ID`) AS UNIT_PATH FROM `SENSOR_DATA` D, `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID` AND LEFT(getUnitPath(S.UNIT_ID), ?) = ? GROUP BY D.`RADIATION_MODEL_ID`) T"
+                + " WHERE TIMESTAMPDIFF(HOUR, T.`LAST_TIME`, NOW()) ";
+        if ("active".equalsIgnoreCase(detailType)) {
+            sql += "<? ";
+        } else {
+            sql += ">=? ";
+        }
+        sql += searchParam.toSQL();
+        return jdbcTemplate.query(sql, new Object[] {unitPath.length(), unitPath, activeInterval}, rs -> {
+            List<SensorBean> beanList = new ArrayList<>();
+            while (rs.next()) {
+                SensorBean bean = new SensorBean();
+                bean.setSensorName(rs.getString("SENSOR_NAME"));
+                bean.setRadiationModelId(rs.getString("RADIATION_MODEL_ID"));
+                bean.setSensorRemark(rs.getString("SENSOR_REMARK"));
+                bean.setUnitFullPath(rs.getString("UNIT_PATH"));
+
+                beanList.add(bean);
+            }
+
+            return beanList;
+        });
     }
 }

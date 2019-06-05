@@ -309,13 +309,10 @@ $(function() {
                     field: 'sensorName',
                     title: '传感器名称'
                 }, {
-                    field: 'radiationId',
-                    title: '紫外模块ID'
-                }, {
-                    field: 'remark',
+                    field: 'unitRemark',
                     title: '备注'
                 }, {
-                    field: 'unitPath',
+                    field: 'unitFullPath',
                     title: '所属组织'
                 }],
                 queryParams: function(params) {

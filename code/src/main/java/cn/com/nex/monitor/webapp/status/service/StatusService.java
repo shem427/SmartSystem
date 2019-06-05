@@ -97,8 +97,9 @@ public class StatusService {
     }
 
     public TableData<SensorBean> getSensorStatusDetail(SearchParam param, String unitId, String detailType) {
-        List<SensorBean> rows = statusDao.listSensorDetail(param, unitId, detailType);
-        int total = statusDao.countSensorDetail(unitId, detailType);
+        String unitPath = unitDao.getUnitFullPath(unitId);
+        List<SensorBean> rows = statusDao.listSensorDetail(param, unitPath, detailType);
+        int total = statusDao.countSensorDetail(unitPath, detailType);
 
         TableData<SensorBean> tableData = new TableData<>();
         tableData.setRows(rows);
