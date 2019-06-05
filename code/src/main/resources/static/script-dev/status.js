@@ -130,7 +130,7 @@ $(function() {
         _initDetailEvt: function() {
             var detailLinks = $('.panel-footer');
             detailLinks.each(function(idx, item) {
-                $(item).parent().click(function(e) {
+                $(item).parent().unbind().click(function(e) {
                     var currentUnitId = $('#currentUnitId').val();
                     var detailType;
                     e.preventDefault();
