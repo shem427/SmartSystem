@@ -23,6 +23,7 @@ public class UserDao extends CommonDao<UserBean> {
     private static final String PHONE_NUMBER = "PHONE_NUMBER";
     private static final String USER_ROLE = "USER_ROLES";
     private static final String PASSWORD = "USER_PASSWORD";
+    private static final String ACTIVE = "ACTIVE";
 
     @Autowired
     private MonitorPasswordEncoder passwordEncoder;
@@ -36,6 +37,7 @@ public class UserDao extends CommonDao<UserBean> {
         bean.setUserRoles(rs.getString(USER_ROLE));
         bean.setPhoneNumber(rs.getString(PHONE_NUMBER));
         bean.setPassword(rs.getString(PASSWORD));
+        bean.setActive(rs.getBoolean(ACTIVE));
 
         return bean;
     }

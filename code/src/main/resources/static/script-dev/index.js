@@ -14,6 +14,7 @@ $(function() {
             var $userLink = $('#userLink');
             var $unitLink = $('#unitLink');
             var $sensorLink = $('#sensorLink');
+            var $unKnownsensorLink = $('#$unKnownsensorLink');
             var $warnLink = $('#warnLink');
             var $hospitalStatusLink = $('#hospitalStatusLink');
             var $statusSearchLink = $('#statusSearchLink');
@@ -63,6 +64,14 @@ $(function() {
                 menuItems.removeClass('active');
                 $sensorLink.addClass('active');
                 _self.getWrapperPage('sensor/index');
+            });
+
+            // unknown sensor link
+            $unKnownsensorLink.click(function(e) {
+                e.preventDefault();
+                menuItems.removeClass('active');
+                $unKnownsensorLink.addClass('active');
+                _self.getWrapperPage('sensorUnknown/index');
             });
 
             // update profile

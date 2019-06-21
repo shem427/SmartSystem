@@ -118,6 +118,9 @@
                         <a id="sensorLink" href="#" class="menuItem"><i class="fa fa-lightbulb-o fa-fw"></i>传感器管理</a>
                     </li>
                     <li sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a id="unKnownSensorLink" href="#" class="menuItem"><i class="fa fa-sign-in fa-fw"></i>未知传感器</a>
+                    </li>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')">
                         <a id="userLink" href="#" class="menuItem"><i class="fa fa-user fa-fw"></i>用户管理</a>
                     </li>
                     <li>

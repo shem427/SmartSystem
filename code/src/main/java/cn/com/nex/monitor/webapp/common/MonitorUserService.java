@@ -28,7 +28,9 @@ public class MonitorUserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         UserBean user = userDao.get(userId);
         if (user == null) {
-            throw new UsernameNotFoundException(userId + " do not exist!");
+            throw new UsernameNotFoundException(userId + " not exist!");
+        } else if (!user.isActive()) {
+            throw new UsernameNotFoundException(userId + " not active!");
         }
 
         user.setAuthorities(getAuthorities(user.getUserRoles()));
