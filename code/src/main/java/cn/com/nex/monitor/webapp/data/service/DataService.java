@@ -34,4 +34,8 @@ public class DataService {
 
         return tableData;
     }
+
+    public int moveData(String radiationModelId) {
+        return dao.moveDataToRadition(radiationModelId);
+    }
 }

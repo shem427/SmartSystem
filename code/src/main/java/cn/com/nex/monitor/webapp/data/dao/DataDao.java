@@ -71,7 +71,7 @@ public class DataDao extends CommonDao<DataBean> {
     }
 
     public List<SensorUnknowBean> getUnknownSensors(SearchParam param) {
-        String sql = "SELECT `RADIATION_MODEL_ID`, count(`DATA_ID`) AS DATA_COUNT FROM `SENSOR_DATA` D WHERE NOT EXISTS (SELECT `DATA_ID` FROM `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID`) GROUP BY `RADIATION_MODEL_ID` ";
+        String sql = "SELECT `RADIATION_MODEL_ID`, count(`DATA_ID`) AS DATA_COUNT FROM `SENSOR_DATA` D WHERE NOT EXISTS (SELECT `DATA_ID` FROM `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID` AND S.`ACTIVE`=true) GROUP BY `RADIATION_MODEL_ID` ";
         if (param != null) {
             sql += param.toSQL();
         }
@@ -89,13 +89,18 @@ public class DataDao extends CommonDao<DataBean> {
     }
 
     public int countUnknownSensors(SearchParam param) {
-        String sql = "SELECT count(`RADIATION_MODEL_ID`) AS TOTAL FROM `SENSOR_DATA` D WHERE NOT EXISTS (SELECT `DATA_ID` FROM `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID`) GROUP BY `RADIATION_MODEL_ID` ";
+        String sql = "SELECT count(`RADIATION_MODEL_ID`) AS TOTAL FROM `SENSOR_DATA` D WHERE NOT EXISTS (SELECT `DATA_ID` FROM `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID` AND S.`ACTIVE`=true) GROUP BY `RADIATION_MODEL_ID` ";
         return jdbcTemplate.query(sql, rs -> {
             if (rs.next()) {
                 return rs.getInt("TOTAL");
             }
             return 0;
         });
+    }
+
+    public int moveDataToRadition(String radiationId) {
+        String sql = "INSERT INTO `RADIATION` (`UNIT_ID`, `RAD_VALUE`, `UPLOAD_TIME`) SELECT S.`UNIT_ID`, D.`DATA_VALUE`, NOW() FROM `SENSOR_DATA` D, `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID` AND D.`RADIATION_MODEL_ID`=?";
+        return jdbcTemplate.update(sql, radiationId);
     }
 
     private String getUnitIdByRadiationModel(String radiationModelId) {

@@ -63,7 +63,7 @@ public class UserDao extends CommonDao<UserBean> {
         // parameter
         List<String> argList = new ArrayList<>();
         // sql文
-        String sql = "SELECT `USER_ID`,`USER_NAME`,`MAIL_ADDRESS`,`PHONE_NUMBER`,`USER_ROLES`,`USER_PASSWORD` FROM `USER`";
+        String sql = "SELECT `USER_ID`,`USER_NAME`,`MAIL_ADDRESS`,`PHONE_NUMBER`,`USER_ROLES`,`USER_PASSWORD`, `ACTIVE` FROM `USER`";
 
         String sqlWhere = getWhereForSearch(userIdLike, nameLike, argList);
         if (sqlWhere.length() > 0) {
