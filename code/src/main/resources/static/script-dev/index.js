@@ -14,7 +14,7 @@ $(function() {
             var $userLink = $('#userLink');
             var $unitLink = $('#unitLink');
             var $sensorLink = $('#sensorLink');
-            var $unKnownsensorLink = $('#$unKnownsensorLink');
+            var $unKnownsensorLink = $('#unKnownSensorLink');
             var $warnLink = $('#warnLink');
             var $hospitalStatusLink = $('#hospitalStatusLink');
             var $statusSearchLink = $('#statusSearchLink');

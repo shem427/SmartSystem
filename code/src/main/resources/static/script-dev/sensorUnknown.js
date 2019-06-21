@@ -15,9 +15,9 @@ $(function() {
                     field: 'dataCount',
                     title: '数据件数'
                 }, {
-                    title: '&nbsp;',
+                    title: '操作',
                     formatter: function(value, row) {
-                        return '<button class="btn btn-xs btn-default btnRegistSensor" id="' + row.radiationModelId + '">登录</button>';
+                        return '<div style="width:100%;text-align:center;"><button class="btn btn-xs btn-default btnRegistSensor" id="' + row.radiationModelId + '">登录</button></div>';
                     }
                 }],
                 queryParams: function(params) {
@@ -36,6 +36,8 @@ $(function() {
         _setTableEvt: function() {
             $('.btnRegistSensor').unbind().click(function() {
                 // TODO:
+                var radiationModelId = $(this).prop('id');
+                alert('TODO: ' + radiationModelId);
             });
         },
         init: function() {
