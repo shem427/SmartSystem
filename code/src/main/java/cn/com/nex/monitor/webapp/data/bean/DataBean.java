@@ -11,6 +11,7 @@ import java.util.Date;
 public class DataBean extends CommonBean {
     private String msg;
     private String iD;
-    private int value;
+    private double value;
+    private double power;
     private Date uploadTime;
 }

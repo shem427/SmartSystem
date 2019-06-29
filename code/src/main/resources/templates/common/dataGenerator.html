@@ -89,6 +89,7 @@ $(function() {
 
         var uploadData = function() {
             var value = parseInt(Math.random()*(100-10+1)+10, 10);
+            var power = parseInt(Math.random() * 100) / 10;
             $.ajax({
                 url: 'data/upload',
                 type: 'post',
@@ -96,7 +97,8 @@ $(function() {
                 data: JSON.stringify({
                     msg: '$$$dataUpdated===',
                     ID: radiationModelId,
-                    value: value
+                    value: value,
+                    power: power
                 })
             });
         };

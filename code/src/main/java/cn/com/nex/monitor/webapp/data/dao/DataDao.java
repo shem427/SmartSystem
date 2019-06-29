@@ -61,13 +61,13 @@ public class DataDao extends CommonDao<DataBean> {
             LOG.warn("紫外模块[" + data.getID() + "]没有登录并关联到紫外灯！");
             return 0;
         }
-        String sql = "INSERT INTO `RADIATION` (`UNIT_ID`, `RAD_VALUE`, `UPLOAD_TIME`) VALUES (?,?,?)";
-        return jdbcTemplate.update(sql, unitId, data.getValue(), new Timestamp(data.getUploadTime().getTime()));
+        String sql = "INSERT INTO `RADIATION` (`UNIT_ID`, `RAD_VALUE`, `POWER`, `UPLOAD_TIME`) VALUES (?,?,?,?)";
+        return jdbcTemplate.update(sql, unitId, data.getValue(), data.getPower(), new Timestamp(data.getUploadTime().getTime()));
     }
 
     public int uploadSensorData(DataBean data) {
-        String sql = "INSERT INTO `SENSOR_DATA` (`RADIATION_MODEL_ID`, `DATA_VALUE`, `DATA_TIME`) VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql, data.getID(), data.getValue(), new Timestamp(new Date().getTime()));
+        String sql = "INSERT INTO `SENSOR_DATA` (`RADIATION_MODEL_ID`, `DATA_VALUE`, `POWER`, `DATA_TIME`) VALUES (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, data.getID(), data.getValue(), data.getPower(), new Timestamp(new Date().getTime()));
     }
 
     public List<SensorUnknowBean> getUnknownSensors(SearchParam param) {
@@ -99,7 +99,7 @@ public class DataDao extends CommonDao<DataBean> {
     }
 
     public int moveDataToRadition(String radiationId) {
-        String sql = "INSERT INTO `RADIATION` (`UNIT_ID`, `RAD_VALUE`, `UPLOAD_TIME`) SELECT S.`UNIT_ID`, D.`DATA_VALUE`, NOW() FROM `SENSOR_DATA` D, `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID` AND D.`RADIATION_MODEL_ID`=?";
+        String sql = "INSERT INTO `RADIATION` (`UNIT_ID`, `RAD_VALUE`, `POWER` `UPLOAD_TIME`) SELECT S.`UNIT_ID`, D.`DATA_VALUE`, D.`POWER`, NOW() FROM `SENSOR_DATA` D, `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID` AND D.`RADIATION_MODEL_ID`=?";
         return jdbcTemplate.update(sql, radiationId);
     }
 
