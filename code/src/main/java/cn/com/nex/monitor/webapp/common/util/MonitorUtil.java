@@ -101,7 +101,7 @@ public final class MonitorUtil {
     }
 
     public static String formatDate(Date date) {
-        return formatDate(date, "yyyy-MM-dd HH:mm:ss.SSS");
+        return formatDate(date, "yyyy-MM-dd HH:mm:ss");
     }
 
     public static String formatDate(Date date, String pattern) {

@@ -10,7 +10,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class UnitDataBean extends CommonBean {
     private String unidId;
-    private List<Integer> unitDatas;
+    private List<Double> unitDatas;
     private int normalCount = 0;
     private int warningCount = 0;
     private int errorCount = 0;

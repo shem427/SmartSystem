@@ -57,7 +57,7 @@
                         </div>
                         <div class="form-group">
                             <label for="amount">
-                                紫外模块ID
+                                数据件数
                             </label>
                             <input id="amount" name="amount" class="form-control" placeholder="数据规模" type="number" />
                         </div>
@@ -83,13 +83,21 @@
 <script th:src="@{/i18n/resource_zh.js}"></script>
 <script>
 $(function() {
+    var randomHex = function() {
+        var result = '';
+
+        result += Math.floor(Math.random() * 16).toString(16);
+        result += Math.floor(Math.random() * 16).toString(16);
+
+        return result;
+    };
     $('#btnExecute').click(function() {
         var radiationModelId = $('#radiationModelId').val();
         var amount = parseInt($('#amount').val());
 
         var uploadData = function() {
-            var value = parseInt(Math.random()*(100-10+1)+10, 10);
-            var power = parseInt(Math.random() * 100) / 10;
+            var value = randomHex() + ',' + randomHex();
+            var power = Math.floor(Math.random() * 100) / 10;
             $.ajax({
                 url: 'data/upload',
                 type: 'post',

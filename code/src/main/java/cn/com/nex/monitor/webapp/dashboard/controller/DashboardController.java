@@ -129,11 +129,11 @@ public class DashboardController {
         int warning = 0;
         int error = 0;
         try {
-            List<Integer> datas = dashboardService.getUnitRadiationData(unitId);
+            List<Double> datas = dashboardService.getUnitRadiationData(unitId);
             ThresholdBean threshold = settingService.getThreshold(DBConstant.RADIATION_THRESHOLD);
             bean.setUnidId(unitId);
             bean.setUnitDatas(datas);
-            for (int v : datas) {
+            for (double v : datas) {
                 if (v >= threshold.getNorml()) {
                     normal++;
                 } else if (v < threshold.getWarn()) {

@@ -91,12 +91,12 @@ public class DashboardDao {
         return count > 0;
     }
 
-    public List<Integer> getUnitRadiationData(String unitId) {
+    public List<Double> getUnitRadiationData(String unitId) {
         String sql = "SELECT `RAD_VALUE` FROM `RADIATION` WHERE `UNIT_ID`=? ORDER BY `RAD_ID` DESC LIMIT 500";
         return jdbcTemplate.query(sql, new String[] {unitId}, rs -> {
-            List<Integer> retList = new ArrayList<>();
+            List<Double> retList = new ArrayList<>();
             while (rs.next()) {
-                retList.add(rs.getInt("RAD_VALUE"));
+                retList.add(rs.getDouble("RAD_VALUE"));
             }
             return retList;
         });
@@ -114,7 +114,7 @@ public class DashboardDao {
             while (rs.next()) {
                 RadiationBean rb = new RadiationBean();
                 rb.setRadNo(rs.getInt("NO"));
-                rb.setRadValue(rs.getInt("RAD_VALUE"));
+                rb.setRadValue(rs.getDouble("RAD_VALUE"));
                 rb.setUploadTime(MonitorUtil.formatDate(rs.getTimestamp("UPLOAD_TIME")));
                 list.add(rb);
             }

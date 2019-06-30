@@ -46,7 +46,7 @@ public class WarnController {
         Date beginDate = null;
         Date endDate = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             if (!StringUtils.isEmpty(begin)) {
                 beginDate = sdf.parse(begin + " 00:00:00.000");
             }

@@ -8,6 +8,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class RadiationBean extends CommonBean {
     private int radNo;
-    private int radValue;
+    private double radValue;
     private String uploadTime;
 }

@@ -99,7 +99,7 @@ public class DataDao extends CommonDao<DataBean> {
     }
 
     public int moveDataToRadition(String radiationId) {
-        String sql = "INSERT INTO `RADIATION` (`UNIT_ID`, `RAD_VALUE`, `POWER` `UPLOAD_TIME`) SELECT S.`UNIT_ID`, D.`DATA_VALUE`, D.`POWER`, NOW() FROM `SENSOR_DATA` D, `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID` AND D.`RADIATION_MODEL_ID`=?";
+        String sql = "INSERT INTO `RADIATION` (`UNIT_ID`, `RAD_VALUE`, `POWER`, `UPLOAD_TIME`) SELECT S.`UNIT_ID`, D.`DATA_VALUE`, D.`POWER`, NOW() FROM `SENSOR_DATA` D, `SENSOR` S WHERE D.`RADIATION_MODEL_ID`=S.`RADIATION_MODEL_ID` AND D.`RADIATION_MODEL_ID`=?";
         return jdbcTemplate.update(sql, radiationId);
     }
 

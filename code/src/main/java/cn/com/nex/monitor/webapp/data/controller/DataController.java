@@ -87,6 +87,6 @@ public class DataController {
         long h = Long.parseLong(t[0], 16);
         long l = Long.parseLong(t[1], 16);
 
-        return 510 * ((h * 16 + l) * (3.3 / 4096) / 2) / 0.8;
+        return 510d * ((h * 16 + l) * (3.3 / 4096) / 2) / 0.8;
     }
 }

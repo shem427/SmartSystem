@@ -49,7 +49,7 @@ public class DashboardService {
         return dashboardDao.isParentUnit(unitId);
     }
 
-    public List<Integer> getUnitRadiationData(String unitId) {
+    public List<Double> getUnitRadiationData(String unitId) {
         return dashboardDao.getUnitRadiationData(unitId);
     }
 
