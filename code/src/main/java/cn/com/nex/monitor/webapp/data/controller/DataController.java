@@ -87,6 +87,11 @@ public class DataController {
         long h = Long.parseLong(t[0], 16);
         long l = Long.parseLong(t[1], 16);
 
-        return 510d * ((h * 16 + l) * (3.3 / 4096) / 2) / 0.8 - 75.5;
+        double realValue = 510d * ((h * 16 + l) * (3.3 / 4096) / 2) / 0.8 - 75.5;
+        if (realValue <= 0.0d) {
+            return 0.0d;
+        } else {
+            return realValue;
+        }
     }
 }
