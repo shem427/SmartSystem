@@ -48,14 +48,19 @@ public class DataController {
             throw new IllegalArgumentException("msg not correct. msg=" + msg);
         }
 
-        DataBean bean = new DataBean();
-        bean.setID(id);
-        bean.setMsg(msg);
-        bean.setValue(getValue(value));
-        bean.setPower(getPower(power));
-        bean.setUploadTime(new Date());
+        double realValue = getValue(value);
+        if (realValue <= 0.0d) {
+            LOG.warn("msg=" + msg + "|ID=" + id + "|value="+value + "|power=" + power + "; not valid. data not saved.");
+        } else {
+            DataBean bean = new DataBean();
+            bean.setID(id);
+            bean.setMsg(msg);
+            bean.setValue(realValue);
+            bean.setPower(getPower(power));
+            bean.setUploadTime(new Date());
 
-        dataService.uploadData(bean);
+            dataService.uploadData(bean);
+        }
 
         return "sucess";
     }
@@ -86,8 +91,11 @@ public class DataController {
         }
         long h = Long.parseLong(t[0], 16);
         long l = Long.parseLong(t[1], 16);
+        if (h == 0L && l == 0L) {
+            return 0.0d;
+        }
 
-        double realValue = 510d * ((h * 16 + l) * (3.3 / 4096) / 2) / 0.8 - 75.5;
+        double realValue = 0.0362d * (510 * ((h * 16 + l) * (3.3 / 4096) / 2) / 0.8 - 75.5) + 0.5481;
         if (realValue <= 0.0d) {
             return 0.0d;
         } else {
